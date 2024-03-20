@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -11,10 +11,16 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 })
 export class HeaderComponent {
   menuIcon = faBars;
-  @Output() menuOpenEvent = new EventEmitter<boolean>();
+  closeIcon = faClose;
+  menuOpen = false;
 
   onClickMenuIcon() {
-    this.menuOpenEvent.emit(true);
+    console.log('onClickMenuIcon');
+    this.menuOpen = true;
+  }
+
+  onClose() {
+    this.menuOpen = false;
   }
 }
 
