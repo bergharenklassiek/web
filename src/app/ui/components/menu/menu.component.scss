@@ -1,0 +1,33 @@
+.app-menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    background-color: rgba(255,255,255, 0.95);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.15s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+
+    &--open {
+        width: 50%;
+    }
+
+    &--close {
+        width: 0%;
+    }
+
+    &__content {
+        display: flex;
+        flex-flow: column;
+        gap: 20px;
+        padding: 30px;
+        
+        a {
+            text-decoration: none;
+            font-size: large;
+            font-weight: bold;
+            color: black;
+        }
+    }
+}
