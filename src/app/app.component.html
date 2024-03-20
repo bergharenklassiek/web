@@ -1,5 +1,6 @@
 <div>
-  <app-header></app-header>
+  <app-menu [open]="openMenu" (clickOutside)="onCloseMenu($event)" appClickOutside></app-menu>
+  <app-header (menuOpenEvent)="onOpenMenu($event)"></app-header>
   <router-outlet />
   <app-footer></app-footer>
 </div>
