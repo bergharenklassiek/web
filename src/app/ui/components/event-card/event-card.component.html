@@ -1,19 +1,19 @@
-<div class="app-event-card">
-    <img class="app-event-card__image" src="{{ story.content.images[0].filename | storyBlokUrl }}">
-    <div class="app-event-card__text-wrapper">
-        <div class="app-event-card__text-wrapper__text">
-            <span class="app-event-card__text-wrapper__text__date">{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
-            <span class="app-event-card__text-wrapper__text__title">
-                {{ story.content.title }}
-            </span>
-            <span class="app-event-card__text-wrapper__text__summary">
-                {{ story.content.summary }}
-            </span>
-        </div>
-        <a routerLink="/events/{{ story.slug }}">
+<a routerLink="/events/{{ story.slug }}">
+    <div class="app-event-card">
+        <img class="app-event-card__image" src="{{ story.content.images[0].filename | storyBlokUrl }}">
+        <div class="app-event-card__text-wrapper">
+            <div class="app-event-card__text-wrapper__text">
+                <span class="app-event-card__text-wrapper__text__date">{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
+                <span class="app-event-card__text-wrapper__text__title">
+                    {{ story.content.title }}
+                </span>
+                <span class="app-event-card__text-wrapper__text__summary">
+                    {{ story.content.summary }}
+                </span>
+            </div>
             <div class="app-event-card__text-wrapper__button">
                 Lees meer
             </div>
-        </a>
+        </div>
     </div>
-</div>
+</a>

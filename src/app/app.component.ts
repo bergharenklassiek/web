@@ -1,17 +1,16 @@
-import { Component, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
 import { FooterComponent } from './ui/components/footer/footer.component';
 import { ContentService } from './core/services/content.service';
-import { MenuComponent } from './ui/components/menu/menu.component';
 import { ClickOutsideDirective } from './core/directives/click-outside.directive';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent, MenuComponent, ClickOutsideDirective],
+  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent, ClickOutsideDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
