@@ -1,0 +1,15 @@
+.app-home-page {
+    display: grid;
+
+    &__header {
+        margin: 20px;
+        text-align: center;
+    }
+
+    &__events {
+        overflow-y: hidden;
+        display: flex;
+        gap: 20px;
+        padding: 10px 20px;
+    }
+}

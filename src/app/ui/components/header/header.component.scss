@@ -1,0 +1,19 @@
+.app-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    font-weight: 700;
+    font-size: 22px;
+    background-color: white;
+    color: rgb(255, 0, 72);
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+    height: 50px;
+    box-shadow: 0 -6px 10px 5px rgba(162, 162, 162, 0.5);
+
+    &__menu {
+        margin-left: 20px;
+    }
+}

@@ -1,0 +1,23 @@
+<div class="app-event-page" *ngIf="event">
+    <swiper-container class="app-event-page__images"
+        slides-per-view="1"
+        space-between="10"
+
+    >
+        <!-- <ng-container *ngFor="let image of event.images">
+            <swiper-slide class="app-event-page__images__image">
+                <img class="app-event-page__images__image" src="{{ image.filename | storyBlokUrl }}" />
+            </swiper-slide>
+        </ng-container> -->
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+    </swiper-container>
+    <h2 class="app-event-page__title">{{ event.title }}</h2>
+    <div class="app-event-page__description">
+        <app-rich-text *ngIf="event" [richText]="event.description"></app-rich-text>
+    </div>
+</div>

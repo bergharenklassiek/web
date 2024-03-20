@@ -1,16 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
+import { FooterComponent } from './ui/components/footer/footer.component';
+import { ContentService } from './core/services/content.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FaIconComponent, HeaderComponent],
+  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   faCoffee = faCoffee;
+
+  constructor(private contentService: ContentService) {}
+  
+  ngOnInit(): void {
+    this.contentService.loadData();
+  }
 }

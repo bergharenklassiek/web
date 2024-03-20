@@ -1,0 +1,28 @@
+.app-event-page {
+    &__images {
+        margin: 10px 30px;
+        
+        &__image {
+            border-radius: 20px;
+            overflow: hidden;
+            object-fit: cover;
+            height: 300px;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        margin: 0;
+        padding: 0px 100px;
+        @media (width <= 600px) {
+            padding: 0px 30px;
+        }
+    }
+
+    &__description {
+        padding: 0px 100px;
+        @media (width <= 600px) {
+            padding: 0px 30px;
+        }
+    }
+}
