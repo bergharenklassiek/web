@@ -1,14 +1,19 @@
 <div class="app-event-page" *ngIf="event">
-    <swiper-container class="app-event-page__images"
+    <swiper-container 
+        style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
+        class="app-event-page__images"
         slides-per-view="1"
-        space-between="10"
-
+        space-between="40"
+        navigation="true"
+        centered-slides="true"
+        autoplay="true"
     >
-        <!-- <ng-container *ngFor="let image of event.images">
-            <swiper-slide class="app-event-page__images__image">
-                <img class="app-event-page__images__image" src="{{ image.filename | storyBlokUrl }}" />
-            </swiper-slide>
-        </ng-container> -->
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
         <swiper-slide class="app-event-page__images__image">
             <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
         </swiper-slide>

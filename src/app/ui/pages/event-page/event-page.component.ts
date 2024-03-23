@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component } from '@angular/core';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
-import { Event } from '../../../core/models/event';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { ContentService } from '../../../core/services/content.service';
