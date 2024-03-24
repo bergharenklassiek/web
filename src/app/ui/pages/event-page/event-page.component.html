@@ -1,12 +1,8 @@
 <div class="app-event-page" *ngIf="event">
-    <swiper-container 
+    <swiper-container #swiperRef
         style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
         class="app-event-page__images"
-        slides-per-view="1"
-        space-between="40"
-        navigation="true"
-        centered-slides="true"
-        autoplay="true"
+        [config]="swiperConfig"
     >
         <swiper-slide class="app-event-page__images__image">
             <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
@@ -21,6 +17,27 @@
             <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
         </swiper-slide>
     </swiper-container>
+    <!-- <swiper-container 
+        style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
+        class="app-event-page__images"
+        slides-per-view="2"
+        space-between="40"
+        navigation="true"
+        autoplay="true"
+    >
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+        <swiper-slide class="app-event-page__images__image">
+            <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+        </swiper-slide>
+    </swiper-container> -->
     <h2 class="app-event-page__title">{{ event.title }}</h2>
     <div class="app-event-page__description">
         <app-rich-text *ngIf="event" [richText]="event.description"></app-rich-text>

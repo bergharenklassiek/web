@@ -1,6 +1,9 @@
 .app-event-page {
     &__images {
-        margin: 10px 30px;
+        padding: 15px 200px;
+        @media (width <= 800px) {
+            padding: 15px 15px;
+        }
         
         &__image {
             border-radius: 20px;
@@ -13,16 +16,16 @@
 
     &__title {
         margin: 0;
-        padding: 0px 100px;
-        @media (width <= 600px) {
-            padding: 0px 30px;
+        padding: 0px 200px;
+        @media (width <= 800px) {
+            padding: 0px 20px;
         }
     }
 
     &__description {
-        padding: 0px 100px;
-        @media (width <= 600px) {
-            padding: 0px 30px;
+        padding: 0px 200px;
+        @media (width <= 800px) {
+            padding: 0px 20px;
         }
     }
 }
