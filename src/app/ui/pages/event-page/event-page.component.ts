@@ -26,7 +26,7 @@ export class EventPageComponent implements AfterViewInit {
     autoplay: true,
     navigation: true,
     slidesPerView: 1,
-    spaceBetween: 40,
+    spaceBetween: 15,
   } 
 
   constructor(private route: ActivatedRoute, private contentService: ContentService, private breakpointObserver: BreakpointObserver) {}
