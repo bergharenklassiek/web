@@ -1,2 +1,10 @@
 <div class="app-footer">
+    <div class="app-footer__contact-details">
+        @for (detail of contactDetails; track $index) {
+            <span class="app-footer__contact-details__item">
+                <fa-icon [icon]="iconsContactTypesMap[detail.type]"></fa-icon>
+                {{ detail.value }}
+            </span>
+        }
+    </div>
 </div>

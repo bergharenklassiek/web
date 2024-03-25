@@ -1,8 +1,24 @@
 .app-footer {
     display: grid;
-    height: 50px;
-    background-color: rgb(232, 232, 232);
+    min-height: 100px;
+    background-color: #070c65;
     text-align: center;
     justify-content: center;
     align-items: center;
+    color: white;
+    
+    &__contact-details {
+        font-size: 14px;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        justify-items: start;
+        gap: 10px;
+
+        @media (width <= 650px) {
+            grid-template-columns: repeat(1, 1fr);
+            padding: 20px 0;
+        }
+    }
 }

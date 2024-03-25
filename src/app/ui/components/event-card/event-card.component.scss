@@ -5,7 +5,7 @@ a {
 
 .app-event-card {
     border-radius: 20px;
-    background-color: rgb(232, 232, 232);
+    background-color: #fae6e6;
     width: 300px;
     display: flex;
     flex-flow: column;
@@ -36,10 +36,7 @@ a {
             display: grid;
             gap: 10px;
             text-wrap: wrap;
-    
-            &__date {
-                font-size: 14px;
-            }
+            color: #01056e;
     
             &__title {
                 font-weight: bold;
@@ -72,5 +69,4 @@ a {
             font-weight: bold;
         }
     }
-
 }
