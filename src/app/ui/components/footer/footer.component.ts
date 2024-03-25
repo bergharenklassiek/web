@@ -20,7 +20,7 @@ export class FooterComponent {
 
   contactDetails = [
     { type: 'name', value: 'Stichting Bergharen Klassiek' },
-    { type: 'kvk', value: '12345678' },
+    { type: 'kvk', value: 'KvK: 12345678' },
     { type: 'account', value: 'NL12ABNA012345678' },
     { type: 'email', value: 'bergharenklassiek@outlook.com' },
     { type: 'address', value: 'Veldsestraat 10, Bergharen' }

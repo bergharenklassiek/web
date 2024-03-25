@@ -3,7 +3,15 @@
         @for (detail of contactDetails; track $index) {
             <span class="app-footer__contact-details__item">
                 <fa-icon [icon]="iconsContactTypesMap[detail.type]"></fa-icon>
-                {{ detail.value }}
+                @if (detail.type === 'email') {
+                    <a href="mailto:{{detail.value}}">{{ detail.value }}</a>    
+                }
+                @else if (detail.type === 'address') {
+                    <a href="geo:51.8526682,5.63755">{{ detail.value }}</a>
+                }
+                @else { 
+                    {{ detail.value }}
+                }
             </span>
         }
     </div>
