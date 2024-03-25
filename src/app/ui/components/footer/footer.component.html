@@ -7,7 +7,7 @@
                     <a href="mailto:{{detail.value}}">{{ detail.value }}</a>    
                 }
                 @else if (detail.type === 'address') {
-                    <a href="geo:51.8526682,5.63755">{{ detail.value }}</a>
+                    <a href="https://maps.google.com/?q=Veldsestraat+10+Bergharen" target="_blank">{{ detail.value }}</a>
                 }
                 @else { 
                     {{ detail.value }}
