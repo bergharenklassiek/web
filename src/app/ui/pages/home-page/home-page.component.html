@@ -2,12 +2,10 @@
     <div class="app-home-page__header">
       {{ homePage().headerText }}
     </div>
-    <div class="app-home-page__events" *ngIf="stories">
-      <ng-container *ngFor="let story of stories()">
-        <span>
-          <app-event-card [story]="story"></app-event-card>
-        </span>
-      </ng-container>
+    <div class="app-home-page__events">
+      @for (story of stories(); track story.id) {
+        <app-event-card [story]="story"></app-event-card>
+      }
     </div>
     <div class="app-home-page__about">
       <app-rich-text [richText]="homePage().about"></app-rich-text>
