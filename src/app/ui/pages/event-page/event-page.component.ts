@@ -32,12 +32,14 @@ export class EventPageComponent implements AfterViewInit {
   constructor(private route: ActivatedRoute, private contentService: ContentService, private breakpointObserver: BreakpointObserver) {}
   
   ngAfterViewInit(): void {
-    Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);
-    this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
-      Object.assign(this.swiperRef?.nativeElement, {
-        ...this.swiperConfig, 
-        slidesPerView: state.matches ? 1 : 2
-      })
-    });
+    if (this.swiperRef?.nativeElement) {
+      Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);
+      this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
+        Object.assign(this.swiperRef?.nativeElement, {
+          ...this.swiperConfig, 
+          slidesPerView: state.matches ? 1 : 2
+        })
+      });
+    }
   }
 }

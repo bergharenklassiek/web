@@ -1,0 +1,15 @@
+<div class="app-agenda-page">
+    @for (story of stories(); track $index) {
+        <a href="/events/{{ story.slug }}">
+            <div class="app-agenda-page__item">
+                @if (story.content.images.length) {
+                    <img src="{{ story.content.images[0].filename | storyBlokUrl }}" />                
+                }
+                <div class="app-agenda-page__item__text">
+                    <span>{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
+                    <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
+                </div>
+            </div>
+        </a>
+    }
+</div>
