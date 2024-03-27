@@ -23,6 +23,6 @@ export class FooterComponent {
     { type: 'kvk', value: 'KvK: 12345678' },
     { type: 'account', value: 'NL12ABNA012345678' },
     { type: 'email', value: 'bergharenklassiek@outlook.com' },
-    { type: 'address', value: 'Veldsestraat 10, Bergharen' }
+    { type: 'address', value: 'Adres kerk: Veldsestraat 10, Bergharen' }
   ];
 }
