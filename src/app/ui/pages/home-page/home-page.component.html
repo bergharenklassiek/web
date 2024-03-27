@@ -3,8 +3,8 @@
       {{ homePage().headerText }}
     </div>
     <div class="app-home-page__events">
-      @for (story of stories(); track story.id) {
-        <app-event-card [story]="story"></app-event-card>
+      @for (story of stories(); track $index) {
+        <app-event-card [story]="story" [cardIndex]="$index"></app-event-card>
       }
     </div>
     <div class="app-home-page__about">
