@@ -1,10 +1,12 @@
+@import 'variables';
+
 .app-header {
     display: grid;
     grid-template-columns: 15% 1fr 15%;
     font-weight: 700;
     font-size: 22px;
     background-color: white;
-    color: #01056e;
+    color: $primaryBlue;
     align-items: center;
     justify-content: center;
     position: sticky;
@@ -15,11 +17,16 @@
 
     &__menu-button {
         text-align: center;
-        color: rgb(255, 0, 72);
+        color: $primaryRed;
     }
 
     &__title {
         text-align: center;
+
+        a {
+            text-decoration: none;
+            color: $primaryBlue;
+        }
     }
 
     &__menu {
@@ -44,7 +51,7 @@
         &__close-button {
             padding-top: 10px;
             padding-left: 30px;
-            color: rgb(255, 0, 72);
+            color: $primaryRed;
         }
     
         &__content {

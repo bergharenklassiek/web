@@ -1,3 +1,5 @@
+@import 'variables';
+
 .app-agenda-page {
     padding: 20px;
     display: grid;
@@ -5,12 +7,12 @@
     
     a {
         text-decoration: none;
-        color: #01056e;
+        color: $primaryBlue;
     }
 
     &__item {
         height: 80px;
-        background-color: #fae6e6;
+        background-color: $secondaryPink;
         border-radius: 20px;
         overflow: hidden;
         display: grid;

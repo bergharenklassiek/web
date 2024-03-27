@@ -1,7 +1,9 @@
+@import 'variables';
+
 .app-footer {
     display: grid;
     min-height: 100px;
-    background-color: #070c65;
+    background-color: $primaryBlue;
     text-align: center;
     justify-content: center;
     align-items: center;

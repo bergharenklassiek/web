@@ -1,11 +1,13 @@
+@import 'variables';
+
 a {
     text-decoration: none;
-    color: #000;
+    color: black;
 }
 
 .app-event-card {
     border-radius: 20px;
-    background-color: #fae6e6;
+    background-color: $secondaryPink;
     width: 300px;
     display: flex;
     flex-flow: column;
@@ -36,7 +38,7 @@ a {
             display: grid;
             gap: 10px;
             text-wrap: wrap;
-            color: #01056e;
+            color: $primaryBlue;
     
             &__title {
                 font-weight: bold;
@@ -62,7 +64,7 @@ a {
         &__button {
             width: 40%;
             padding: 10px;
-            background-color: rgb(255, 0, 72);
+            background-color: $primaryRed;
             border-radius: 20px;
             color: white;
             text-align: center;
