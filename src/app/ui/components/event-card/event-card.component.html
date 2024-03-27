@@ -1,6 +1,6 @@
 <a href="/events/{{ story.slug }}">
     <div class="app-event-card">
-        <img class="app-event-card__image" src="{{ story.content.images[0].filename | storyBlokUrl }}" loading="lazy">
+        <img class="app-event-card__image" alt="{{ story.content.images[0].alt }}" src="{{ story.content.images[0].filename | storyBlokUrl }}" loading="lazy">
         <div class="app-event-card__text-wrapper">
             <div class="app-event-card__text-wrapper__text">
                 <span>{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
