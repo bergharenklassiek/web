@@ -6,16 +6,36 @@
             [config]="swiperConfig"
         >
             <swiper-slide class="app-event-page__images__image">
-                <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+                <img 
+                    class="app-event-page__images__image" 
+                    src="{{ event.images[0].filename| storyBlokUrl }}" 
+                    loading="lazy"
+                    alt="event.images[0].filename + 'img'"
+                />
             </swiper-slide>
             <swiper-slide class="app-event-page__images__image">
-                <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+                <img 
+                    class="app-event-page__images__image" 
+                    src="{{ event.images[0].filename| storyBlokUrl }}" 
+                    loading="lazy"
+                    alt="event.images[0].filename + 'img'"
+                />
             </swiper-slide>
             <swiper-slide class="app-event-page__images__image">
-                <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+                <img 
+                    class="app-event-page__images__image" 
+                    src="{{ event.images[0].filename| storyBlokUrl }}" 
+                    loading="lazy"
+                    alt="event.images[0].filename + 'img'"
+                />
             </swiper-slide>
             <swiper-slide class="app-event-page__images__image">
-                <img class="app-event-page__images__image" src="{{ event.images[0].filename| storyBlokUrl }}" />
+                <img 
+                    class="app-event-page__images__image" 
+                    src="{{ event.images[0].filename| storyBlokUrl }}" 
+                    loading="lazy"
+                    alt="event.images[0].filename + 'img'"
+                />
             </swiper-slide>
         </swiper-container>
         <h2 class="app-event-page__title">{{ event.title }}</h2>
