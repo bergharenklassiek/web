@@ -24,6 +24,11 @@ export function app(): express.Express {
     maxAge: '1y'
   }));
 
+  server.get('/sitemap.xml', (req, res) => {
+    res.type('text/plain');
+    res.send('Hello, world!')
+  });
+
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
