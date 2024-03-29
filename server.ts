@@ -17,6 +17,13 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
+  server.get('/sitemap.xml', (req, res) => {
+    console.log('req', req);
+    res.header('Content-Type', 'application/xml');
+    res.header('Content-Encoding', 'gzip');
+    res.send('bla');
+  });
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
