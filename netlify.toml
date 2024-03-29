@@ -8,6 +8,11 @@
     status = 200
 
 [[redirects]]
+    from = "/sitemap.xml"
+    to = "https://sitemap-bergharenklassiek.netlify.app/sitemap.xml"
+    status = 200
+
+[[redirects]]
     from = "/*"
     to = "/index.html"
     status = 200
