@@ -13,13 +13,6 @@ export function app(): express.Express {
   const indexHtml = join(serverDistFolder, 'index.server.html');
 
   const commonEngine = new CommonEngine();
-  
-  server.get('/sitemap.xml', (req, res) => {
-    console.log('req', req);
-    res.header('Content-Type', 'application/xml');
-    res.header('Content-Encoding', 'gzip');
-    res.send('bla');
-  });
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
