@@ -16,9 +16,7 @@ export class HeaderComponent implements OnInit {
   closeIcon = faClose;
   menuOpen = false;
 
-  constructor(private router: Router) {
-    console.log('Instantiated header.component');
-  }
+  constructor(private router: Router) {}
   
   ngOnInit(): void {
     this.router.events.pipe(
