@@ -1,6 +1,6 @@
 <div class="app-agenda-page">
     @for (story of stories(); track $index) {
-        <a routerLink="/events/{{ story.slug }}">
+        <a routerLink="/events/{{ story.slug }}" routerLinkActive="active">
             <div class="app-agenda-page__item">
                 @if (story.content.images.length) {
                     <img src="{{ story.content.images[0].filename | storyBlokUrl }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
