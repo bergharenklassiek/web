@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,9 @@ export class AppComponent {
   faCoffee = faCoffee;
   openMenu = false;
 
-  constructor(private contentService: ContentService) {}
+  constructor(private contentService: ContentService) {
+    afterNextRender(() => localStorage.removeItem('scroll-list'));
+  }
   
   ngOnInit(): void {
     this.contentService.loadData();

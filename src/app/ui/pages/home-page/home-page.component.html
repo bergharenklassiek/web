@@ -2,9 +2,9 @@
     <div class="app-home-page__header">
       {{ homePage().headerText }}
     </div>
-    <div class="app-home-page__events">
+    <div class="app-home-page__events" (scroll)="onScroll($event)" id="scroll-list">
       @for (story of stories(); track $index) {
-        <app-event-card [story]="story" [cardIndex]="$index"></app-event-card>
+        <app-event-card id="{{ story.id }}" [story]="story" [cardIndex]="$index"></app-event-card>
       }
     </div>
     <div class="app-home-page__about">
