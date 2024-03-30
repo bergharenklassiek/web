@@ -7,7 +7,7 @@
             <fa-icon [icon]="closeIcon" size="xl"></fa-icon>
         </div>
         <div class="app-header__menu__content">
-            @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Ondersteuning', 'Contact']; track $index) {
+            @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Ondersteuning', 'Contact']; track option) {
                 <a 
                     routerLink="/{{ option === 'Home' ? '' : option.toLowerCase().replace(' ', '-') }}" 
                     routerLinkActive="active" 

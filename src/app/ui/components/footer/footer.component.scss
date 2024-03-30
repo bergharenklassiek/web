@@ -3,11 +3,10 @@
 .app-footer {
     display: grid;
     min-height: 100px;
-    background-color: $primaryBlue;
+    background-color: $secondaryGrey;
     text-align: center;
     justify-content: center;
     align-items: center;
-    color: white;
     
     &__contact-details {
         font-size: 14px;
@@ -28,7 +27,7 @@
             gap: 10px;
 
             a {
-                color: white;
+                color: $primaryBlue;
                 text-decoration: none;
             }
         }
