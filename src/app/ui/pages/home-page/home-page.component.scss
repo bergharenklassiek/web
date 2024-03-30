@@ -2,26 +2,45 @@
 
 .app-home-page {
     display: grid;
-    gap: 20px;
+    gap: $space-default;
     justify-items: bottom;
 
+    @media (width <= 600px) {
+        gap: $space-default-mobile;
+    }
+
     &__header {
-        padding: 20px 20px 0 20px;
+        padding: $space-default $space-default 0 $space-default;
         text-align: center;
+
+        @media (width <= 600px) {
+            padding: $space-default-mobile $space-default-mobile 0 $space-default-mobile;
+        }
     }
 
     &__events {
         overflow-y: hidden;
         display: flex;
-        gap: 20px;
-        padding: 0 20px;
+        gap: $space-default;
+        padding: 0 $space-default;
+
+        @media (width <= 600px) {
+            gap: $space-default-mobile;
+            padding: 0 $space-default-mobile;
+        }
     }
 
     &__about {
-        margin: 0 20px 20px 20px;
-        padding: 20px;
-        border-radius: 20px;
+        margin: 0 $space-default $space-default $space-default;
+        padding: $space-default;
+        border-radius: $space-default;
         text-align: center;
         background-color: $secondaryYellow;
+
+        @media (width <= 600px) {
+            margin: 0 $space-default-mobile $space-default-mobile $space-default-mobile;
+            padding: $space-default-mobile;
+            border-radius: $space-default-mobile;
+        }
     }
 }
