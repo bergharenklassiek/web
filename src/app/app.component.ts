@@ -6,6 +6,7 @@ import { HeaderComponent } from './ui/components/header/header.component';
 import { FooterComponent } from './ui/components/footer/footer.component';
 import { ContentService } from './core/services/content.service';
 import { ClickOutsideDirective } from './core/directives/click-outside.directive';
+import { scrollLeftKey } from './app.config';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent {
   openMenu = false;
 
   constructor(private contentService: ContentService) {
-    afterNextRender(() => localStorage.removeItem('scroll-list'));
+    afterNextRender(() => localStorage.removeItem(scrollLeftKey));
   }
   
   ngOnInit(): void {

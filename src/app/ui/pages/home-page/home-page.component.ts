@@ -3,6 +3,7 @@ import { ContentService } from '../../../core/services/content.service';
 import { EventCardComponent } from '../../components/event-card/event-card.component';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
+import { scrollLeftKey, scrollListKey } from '../../../app.config';
 
 @Component({
   selector: 'app-home-page',
@@ -18,12 +19,12 @@ export class HomePageComponent {
   
   constructor(private contentService: ContentService) {
     afterNextRender(() => {
-      const scrollLeft = localStorage?.getItem('scrollLeft');
-      document.getElementById('scroll-list')?.scrollTo({ left: parseInt(scrollLeft ?? '0') });
+      const scrollLeft = localStorage?.getItem(scrollLeftKey);
+      document.getElementById(scrollListKey)?.scrollTo({ left: parseInt(scrollLeft ?? '0') });
     });
   }
   
   onScroll(_: any) {
-    localStorage.setItem('scrollLeft', (document.getElementById('scroll-list')?.scrollLeft ?? 0).toString());
+    localStorage.setItem(scrollLeftKey, (document.getElementById(scrollListKey)?.scrollLeft ?? 0).toString());
   }
 }

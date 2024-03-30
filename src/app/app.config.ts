@@ -21,3 +21,6 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'nl'}
   ]
 };
+
+export const scrollListKey = 'scroll-list';
+export const scrollLeftKey = 'scrollLeft';
