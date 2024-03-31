@@ -1,0 +1,8 @@
+@import 'variables';
+
+.app-not-found-page {
+    padding: $space-default;
+    @media (width <= 600px) {
+        padding: $space-default-mobile;
+    }
+}
