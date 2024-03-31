@@ -3,7 +3,7 @@
         <a routerLink="/events/{{ story.slug }}" routerLinkActive="active">
             <div class="app-agenda-page__item">
                 @if (story.content.images.length) {
-                    <img src="{{ story.content.images[0].filename | storyBlokUrl:100 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
+                    <img src="{{ story.content.images[0].filename | storyBlokUrl:300 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
                 }
                 <div class="app-agenda-page__item__text">
                     <span>{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
