@@ -8,30 +8,4 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-    
-    &__contact-details {
-        font-size: 14px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, auto);
-        justify-items: start;
-        gap: 14px;
-
-        @media (width <= 650px) {
-            grid-template-columns: repeat(1, 1fr);
-            grid-template-rows: auto;
-        }
-
-        &__item {
-            display: grid;
-            grid-template-columns: 20px 1fr;
-            gap: 10px;
-            text-align: left;
-            padding: 0 20px;
-
-            a {
-                color: $primaryBlue;
-            }
-        }
-    }
 }
