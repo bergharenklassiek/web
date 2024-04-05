@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconDefinition, faAt, faEuroSign, faFileLines, faLocationDot, faSignature } from '@fortawesome/free-solid-svg-icons';
+import { ContentService } from '../../../core/services/content.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,16 +14,11 @@ export class FooterComponent {
   iconsContactTypesMap: { [key: string]: IconDefinition } = {
     'name': faSignature,
     'kvk': faFileLines,
-    'account': faEuroSign,
+    'bankaccount': faEuroSign,
     'email': faAt,
     'address': faLocationDot,
   };
+  contactList = this.contentService.contactList;
 
-  contactDetails = [
-    { type: 'name', value: 'Stichting Bergharen Klassiek' },
-    { type: 'kvk', value: 'KvK: 12345678' },
-    { type: 'account', value: 'NL12ABNA012345678' },
-    { type: 'email', value: 'bergharenklassiek@outlook.com' },
-    { type: 'address', value: 'Adres kerk: Veldsestraat 10, Bergharen' }
-  ];
+  constructor(private contentService: ContentService) {}
 }
