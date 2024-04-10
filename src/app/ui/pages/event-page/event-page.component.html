@@ -17,11 +17,13 @@
                 </div>
             </swiper-slide>
             <swiper-slide class="app-event-page__images__image">
-                <img 
-                    src="{{ event.images[0].filename| storyBlokUrl:600 }}" 
-                    loading="lazy"
-                    alt="{{ event.images[0].alt }}"
-                />
+                <div class="swiper-zoom-container">
+                    <img 
+                        src="{{ event.images[0].filename| storyBlokUrl:600 }}" 
+                        loading="lazy"
+                        alt="{{ event.images[0].alt }}"
+                    />
+                </div>
             </swiper-slide>
         }
         </swiper-container>
