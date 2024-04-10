@@ -26,7 +26,7 @@ export class EventPageComponent implements AfterViewInit {
     autoplay: true,
     navigation: true,
     zoom: {
-      maxRatio: 3,
+      maxRatio: 5,
       minRatio: 1,
     },
     slidesPerView: 1,
