@@ -6,7 +6,7 @@
                 <a href="{{ contactItem.content.link!.url }}" target="_blank">{{ contactItem.content.displayValue }}</a>                    
             }
             @else {
-                {{ contactItem.content.displayValue }}
+                <span>{{ contactItem.content.displayValue }}</span>
             } 
         </span>
     }

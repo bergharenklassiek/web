@@ -2,12 +2,15 @@
     <div class="app-home-page__header">
       {{ homePage().headerText }}
     </div>
+    <div class="app-home-page__header-short">
+      {{ homePage().headerTextShort }}
+    </div>
     <div class="app-home-page__events" (scroll)="onScroll($event)" id="scroll-list">
       @for (story of stories(); track $index) {
         <app-event-card id="{{ story.id }}" [story]="story" [cardIndex]="$index"></app-event-card>
       }
     </div>
     <div class="app-home-page__about">
-      <app-rich-text [richText]="homePage().about"></app-rich-text>
+      <app-rich-text [richText]="homePage().aboutTeaser"></app-rich-text>
     </div>
   </div>

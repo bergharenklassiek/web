@@ -3,6 +3,7 @@
         <swiper-container #swiperRef
             style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
             class="app-event-page__images"
+            [class.app-event-page__images--single]="swiperConfig.slidesPerView === 1"
             [config]="swiperConfig"
         >
         @for (image of event.images; track $index) {

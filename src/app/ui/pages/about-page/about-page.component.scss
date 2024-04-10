@@ -1,0 +1,19 @@
+@import 'variables';
+
+.app-about-page {
+
+    &__title {
+        margin: 0;
+        padding: $space-default 200px 0;
+        @media (width <= 800px) {
+            padding: $space-default-mobile $space-default-mobile 0;
+        }
+    }
+
+    &__description {
+        padding: 0 200px $space-default;
+        @media (width <= 800px) {
+            padding: 0 $space-default-mobile $space-default-mobile;
+        }
+    }
+}
