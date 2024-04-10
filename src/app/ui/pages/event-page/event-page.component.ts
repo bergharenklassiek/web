@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { ContentService } from '../../../core/services/content.service';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
-import { SwiperOptions } from 'swiper/types';
+import { SwiperOptions, ZoomOptions } from 'swiper/types';
 
 @Component({
   selector: 'app-event-page',
@@ -25,7 +25,10 @@ export class EventPageComponent implements AfterViewInit {
   swiperConfig: SwiperOptions = {
     autoplay: true,
     navigation: true,
-    zoom: true,
+    zoom: {
+      maxRatio: 3,
+      minRatio: 1,
+    },
     slidesPerView: 1,
     spaceBetween: 15,
   } 
