@@ -19,7 +19,7 @@ import { SwiperOptions } from 'swiper/types';
 export class EventPageComponent implements AfterViewInit {
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
 
-  event = this.contentService.events().find(s => s.slug == this.route.snapshot.paramMap.get('event-slug'))?.content;
+  event = this.contentService.events().find(s => s.slug == this.route.snapshot.paramMap.get('event-slug'))?.content!;
   isSmallScreen?: boolean;
 
   swiperConfig: SwiperOptions = {
@@ -37,7 +37,7 @@ export class EventPageComponent implements AfterViewInit {
       this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
         Object.assign(this.swiperRef?.nativeElement, {
           ...this.swiperConfig, 
-          slidesPerView: state.matches ? 1 : 2
+          slidesPerView: state.matches ? 1 : (this.event.images?.length ?? 0) > 1 ? 2 : 1
         })
       });
     }

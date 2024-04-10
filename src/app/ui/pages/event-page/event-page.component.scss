@@ -2,9 +2,13 @@
 
 .app-event-page {
     &__images {
-        padding: 15px 200px;
+        padding: $space-default 200px;
         @media (width <= 800px) {
-            padding: 15px 15px;
+            padding: $space-default-mobile;
+        }
+
+        &--single {
+            max-width: 600px;
         }
         
         &__image {
@@ -20,14 +24,14 @@
         margin: 0;
         padding: 0px 200px;
         @media (width <= 800px) {
-            padding: 0px $space-default-mobile;
+            padding: 0 $space-default-mobile;
         }
     }
 
     &__description {
-        padding: 0px 200px;
+        padding: 0 200px $space-default;
         @media (width <= 800px) {
-            padding: 0px $space-default-mobile;
+            padding: 0 $space-default-mobile;
         }
     }
 }
