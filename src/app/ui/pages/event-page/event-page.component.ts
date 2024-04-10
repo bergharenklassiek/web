@@ -25,6 +25,7 @@ export class EventPageComponent implements AfterViewInit {
   swiperConfig: SwiperOptions = {
     autoplay: true,
     navigation: true,
+    zoom: true,
     slidesPerView: 1,
     spaceBetween: 15,
   } 
