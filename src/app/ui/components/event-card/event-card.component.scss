@@ -16,6 +16,10 @@ a {
     text-wrap: balance;
     overflow: hidden;
     border: 1px white solid;
+
+    &:hover {
+        color: red;
+    }
     
     &__image {
         width: 100%;
