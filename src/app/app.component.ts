@@ -5,13 +5,12 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
 import { FooterComponent } from './ui/components/footer/footer.component';
 import { ContentService } from './core/services/content.service';
-import { ClickOutsideDirective } from './core/directives/click-outside.directive';
 import { scrollLeftKey } from './app.config';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent, ClickOutsideDirective],
+  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
