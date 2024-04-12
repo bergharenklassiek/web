@@ -21,10 +21,13 @@
     }
 
     &__title {
-        margin: 0;
         padding: 0px 200px;
         @media (width <= 800px) {
             padding: 0 $space-default-mobile;
+        }
+        
+        h2 {
+            margin: 0;
         }
     }
 
