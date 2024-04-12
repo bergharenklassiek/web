@@ -18,13 +18,13 @@ export class HomePageComponent {
   stories = this.contentService.events;
   
   constructor(private contentService: ContentService) {
-    // afterNextRender(() => {
-    //   const scrollLeft = localStorage?.getItem(scrollLeftKey);
-    //   document.getElementById(scrollListKey)?.scrollTo({ left: parseInt(scrollLeft ?? '0') });
-    // });
+    afterNextRender(() => {
+      const scrollLeft = localStorage?.getItem(scrollLeftKey);
+      document.getElementById(scrollListKey)?.scrollTo({ left: parseInt(scrollLeft ?? '0') });
+    });
   }
   
-  // onScroll(_: any) {
-  //   localStorage.setItem(scrollLeftKey, (document.getElementById(scrollListKey)?.scrollLeft ?? 0).toString());
-  // }
+  onScroll(_: any) {
+    localStorage.setItem(scrollLeftKey, (document.getElementById(scrollListKey)?.scrollLeft ?? 0).toString());
+  }
 }

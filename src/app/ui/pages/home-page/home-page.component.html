@@ -5,8 +5,7 @@
     <div class="app-home-page__header-short">
       {{ homePage().headerTextShort }}
     </div>
-    <!-- <div class="app-home-page__events" (scroll)="onScroll($event)" id="scroll-list"> -->
-    <div class="app-home-page__events" id="scroll-list">
+    <div class="app-home-page__events" (scroll)="onScroll($event)" id="scroll-list">
       @for (story of stories(); track $index) {
         <app-event-card id="{{ story.id }}" [story]="story" [cardIndex]="$index"></app-event-card>
       }
