@@ -19,7 +19,7 @@
         </swiper-container>
         <div class="app-event-page__title">
             <h2>{{ event.title }}</h2>
-            <div>{{ event.date | date: 'EE d MMMM HH:mm' }}</div>
+            <div>{{ event.date | appDate }}</div>
         </div>
         <div class="app-event-page__description">
             <app-rich-text [richText]="event.description"></app-rich-text>

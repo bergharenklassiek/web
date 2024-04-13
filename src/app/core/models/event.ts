@@ -5,7 +5,7 @@ export interface Event {
     title: string;
     summary: string;
     artists: string[];
-    date: Date;
+    date: string;
     location: string;
     description: ISbRichtext;
     images: Asset[];

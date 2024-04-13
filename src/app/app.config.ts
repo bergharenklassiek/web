@@ -4,7 +4,7 @@ import { InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
 registerLocaleData(localeNl);
 
@@ -18,8 +18,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withInMemoryScrolling(scrollConfig)), 
     provideClientHydration(), 
     provideHttpClient(withFetch()), 
-    { provide: LOCALE_ID, useValue: 'nl'}
-  ]
+    { provide: LOCALE_ID, useValue: 'nl'},
+    { provide: DatePipe, useClass: DatePipe }
+  ],
 };
 
 export const scrollListKey = 'scroll-list';

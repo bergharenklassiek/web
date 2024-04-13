@@ -6,7 +6,7 @@
                     <img src="{{ story.content.images[0].filename | storyBlokUrl:300 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
                 }
                 <div class="app-agenda-page__item__text">
-                    <span>{{ story.content.date| date:'EE d MMMM HH:mm' }}</span>
+                    <span>{{ story.content.date | appDate }}</span>
                     <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
                 </div>
             </div>

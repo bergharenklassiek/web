@@ -6,12 +6,13 @@ import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { ContentService } from '../../../core/services/content.service';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { SwiperOptions } from 'swiper/types';
+import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 
 @Component({
   selector: 'app-event-page',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RichTextComponent, CommonModule, StoryBlokUrlPipe, LayoutModule ],
+  imports: [RichTextComponent, CommonModule, StoryBlokUrlPipe, LayoutModule, AppDatePipe ],
   templateUrl: './event-page.component.html',
   styleUrl: './event-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
