@@ -7,12 +7,14 @@ import { ContentService } from '../../../core/services/content.service';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { SwiperOptions } from 'swiper/types';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
+import { ImageModule } from 'primeng/image';
+import { CarouselModule } from 'primeng/carousel'; 
 
 @Component({
   selector: 'app-event-page',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RichTextComponent, CommonModule, StoryBlokUrlPipe, LayoutModule, AppDatePipe ],
+  imports: [RichTextComponent, CommonModule, StoryBlokUrlPipe, LayoutModule, AppDatePipe, ImageModule, CarouselModule ],
   templateUrl: './event-page.component.html',
   styleUrl: './event-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

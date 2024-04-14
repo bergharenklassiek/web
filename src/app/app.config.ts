@@ -6,6 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
+import { provideAnimations } from '@angular/platform-browser/animations';
 registerLocaleData(localeNl);
 
 const scrollConfig: InMemoryScrollingOptions = {
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withInMemoryScrolling(scrollConfig)), 
     provideClientHydration(), 
-    provideHttpClient(withFetch()), 
+    provideHttpClient(withFetch()),
+    provideAnimations(), 
     { provide: LOCALE_ID, useValue: 'nl'},
     { provide: DatePipe, useClass: DatePipe }
   ],

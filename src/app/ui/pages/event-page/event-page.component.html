@@ -1,5 +1,10 @@
 <div class="app-event-page">
     @if (event) {
+        <p-carousel [value]="event.images" indicatorStyleClass="indicators">
+            
+        </p-carousel>
+        <!-- <p-image src="{{ event.images[0].filename | storyBlokUrl }}" [preview]="true"></p-image> -->
+
         <swiper-container #swiperRef
             style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
             class="app-event-page__images"
