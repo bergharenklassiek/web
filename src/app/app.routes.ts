@@ -9,6 +9,7 @@ import { AboutPageComponent } from './ui/pages/about-page/about-page.component';
 export const routes: Routes = [
     { path: 'agenda', component: AgendaPageComponent },
     { path: 'contact', component: ContactPageComponent },
+    { path: 'events/:event-slug', redirectTo: '/agenda/:event-slug', pathMatch: 'full' },
     { path: 'agenda/:event-slug', component: EventPageComponent },
     { path: 'over-ons', component: AboutPageComponent },
     { path: '', component: HomePageComponent },
