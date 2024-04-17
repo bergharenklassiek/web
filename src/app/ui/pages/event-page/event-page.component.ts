@@ -18,16 +18,14 @@ import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 })
 export class EventPageComponent implements AfterViewInit {
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
-
-  event = this.contentService.events().find(s => s.slug == this.route.snapshot.paramMap.get('event-slug'))?.content!;
-  isSmallScreen?: boolean;
-
   swiperConfig: SwiperOptions = {
     autoplay: true,
     navigation: true,
     slidesPerView: 1,
     spaceBetween: 15,
   } 
+
+  event = this.contentService.events().find(s => s.slug == this.route.snapshot.paramMap.get('event-slug'))?.content!;
 
   constructor(private route: ActivatedRoute, private contentService: ContentService, private breakpointObserver: BreakpointObserver) {}
   
