@@ -38,4 +38,17 @@ export class ContentService {
       .get<{ story: Story<AboutPage> }>(`${this.storyblokBaseUrl}/stories/about?${this.token}`)
       .subscribe(response => this.aboutPage.set(response.story.content));
   }
+
+  getEvent(slug: string): Event {
+    if (this.events().findIndex(e => e.slug === slug) === -1) {
+      this.loadEvent(slug);
+    }
+    return this.events().find(e => e.slug === slug)?.content!;
+  }
+
+  loadEvent(slug: string): void {
+    this.http
+      .get<{ story: Story<Event> }>(`${this.storyblokBaseUrl}/stories/${slug}?${this.token}`)
+      .subscribe(response => this.events.update(stories => stories.concat(response.story)));
+  }
 }
