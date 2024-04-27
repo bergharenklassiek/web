@@ -5,6 +5,7 @@ import { NotFoundPageComponent } from './ui/pages/not-found-page/not-found-page.
 import { AgendaPageComponent } from './ui/pages/agenda-page/agenda-page.component';
 import { ContactPageComponent } from './ui/pages/contact-page/contact-page.component';
 import { AboutPageComponent } from './ui/pages/about-page/about-page.component';
+import { ContentPageComponent } from './ui/pages/content-page/content-page.component';
 
 export const routes: Routes = [
     { path: 'agenda', component: AgendaPageComponent },
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'events/:event-slug', redirectTo: '/agenda/:event-slug', pathMatch: 'full' },
     { path: 'agenda/:event-slug', component: EventPageComponent },
     { path: 'over-ons', component: AboutPageComponent },
+    { path: 'gebouw', component: ContentPageComponent },
     { path: '', component: HomePageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];

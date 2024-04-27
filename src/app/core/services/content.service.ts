@@ -5,6 +5,7 @@ import { Event } from '../models/event';
 import { Story } from '../models/story';
 import { ContactItem } from '../models/contact-item';
 import { AboutPage } from '../models/about-page';
+import { ContentPage } from '../models/content-page';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class ContentService {
   aboutPage = signal<AboutPage>({} as AboutPage);
   events = signal<Story<Event>[]>([]);
   contactList = signal<Story<ContactItem>[]>([]);
+  contentPages = signal<Story<ContentPage>[]>([]);
   contactListTypes = ['name','kvk','bankaccount','email','address'];
 
   constructor(private http: HttpClient) { }
@@ -37,6 +39,10 @@ export class ContentService {
     this.http
       .get<{ story: Story<AboutPage> }>(`${this.storyblokBaseUrl}/stories/about?${this.token}`)
       .subscribe(response => this.aboutPage.set(response.story.content));
+
+    this.http
+      .get<{ stories: Story<ContentPage>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContentPage&${this.token}`)
+      .subscribe(response => this.contentPages.set(response.stories));
   }
 
   getEvent(slug: string): Event {

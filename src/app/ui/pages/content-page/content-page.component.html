@@ -1,0 +1,10 @@
+@if (contentPage) {
+    <div class="app-content-page">
+        <h3 class="app-content-page__title">
+            {{ contentPage.content.title }}
+        </h3>
+        <div class="app-content-page__description">
+            <app-rich-text [richText]="contentPage.content.description"></app-rich-text>
+        </div>
+    </div>
+}
