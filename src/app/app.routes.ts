@@ -14,6 +14,7 @@ export const routes: Routes = [
     { path: 'agenda/:event-slug', component: EventPageComponent },
     { path: 'over-ons', component: AboutPageComponent },
     { path: 'gebouw', component: ContentPageComponent },
+    { path: 'concerten-in-de-regio', component: ContentPageComponent },
     { path: '', component: HomePageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];

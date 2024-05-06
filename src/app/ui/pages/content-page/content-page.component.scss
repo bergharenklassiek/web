@@ -15,5 +15,12 @@
         @media (width <= 800px) {
             padding: 0 $space-default-mobile $space-default-mobile;
         }
+
+        ::ng-deep {
+            img {
+                width: 100%;
+                object-fit: cover;
+            }
+        }
     }
 }
