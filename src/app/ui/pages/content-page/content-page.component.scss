@@ -1,6 +1,24 @@
 @import 'variables';
 
 .app-content-page {
+    &__images {
+        padding: $space-default 200px;
+        @media (width <= 800px) {
+            padding: $space-default-mobile;
+        }
+
+        &--single {
+            max-width: 600px;
+        }
+        
+        &__image {
+            border-radius: 20px;
+            overflow: hidden;
+            object-fit: cover;
+            height: 300px;
+            width: 100%;
+        }
+    }
 
     &__title {
         margin: 0;

@@ -6,7 +6,6 @@ import { ContentService } from '../../../core/services/content.service';
 import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { SwiperOptions } from 'swiper/types';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
-import { Story } from '../../../core/models/story';
 import { Event } from '../../../core/models/event';
 
 @Component({

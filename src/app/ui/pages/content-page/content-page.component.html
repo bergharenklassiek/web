@@ -1,10 +1,27 @@
-@if (contentPage) {
-    <div class="app-content-page">
+<div class="app-content-page">
+    @if (contentPage) {
+        <swiper-container #swiperRef
+                style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
+                class="app-content-page__images"
+                [class.app-content-page__images--single]="swiperConfig.slidesPerView === 1"
+                [config]="swiperConfig"
+            >
+            @for (image of contentPage.content.images; track $index) {
+                <swiper-slide class="app-content-page__images__image">
+                    <img 
+                        class="app-content-page__images__image"
+                        src="{{ image.filename | storyBlokUrl:600 }}" 
+                        loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
+                        alt="{{ image.alt }}"
+                    />
+                </swiper-slide>
+            }
+        </swiper-container>
         <h3 class="app-content-page__title">
             {{ contentPage.content.title }}
         </h3>
         <div class="app-content-page__description">
             <app-rich-text [richText]="contentPage.content.description"></app-rich-text>
         </div>
-    </div>
-}
+    }
+</div>
