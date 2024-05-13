@@ -38,7 +38,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     this.event = this.contentService.getEvent(this.route.snapshot.paramMap.get('event-slug')!);
-    this.meta.updateTag({ name: 'description', content: this.event.summary });
+    this.meta.updateTag({ name: 'description', content: this.event?.summary });
   }
   
   ngAfterViewInit(): void {
