@@ -3,9 +3,8 @@
         <img 
             class="app-event-card__image" 
             alt="{{ story.content.images[0].alt }}" 
-            ngSrc="{{ story.content.images[0].filename | storyBlokUrl:400 }}"
-            width="300"
-            height="180"
+            src="{{ story.content.images[0].filename | storyBlokUrl:400 }}" 
+            loading="{{ cardIndex === 0 ? 'eager' : 'lazy' }}"
         >
         <div class="app-event-card__text-wrapper">
             <div class="app-event-card__text-wrapper__text">
