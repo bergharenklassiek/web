@@ -7,6 +7,7 @@ import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { SwiperOptions } from 'swiper/types';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { Event } from '../../../core/models/event';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-event-page',
@@ -28,10 +29,16 @@ export class EventPageComponent implements OnInit, AfterViewInit {
 
   event?: Event;
   
-  constructor(private route: ActivatedRoute, private contentService: ContentService, private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private contentService: ContentService, 
+    private breakpointObserver: BreakpointObserver,
+    private meta: Meta
+  ) {}
   
   ngOnInit(): void {
     this.event = this.contentService.getEvent(this.route.snapshot.paramMap.get('event-slug')!);
+    this.meta.updateTag({ name: 'description', content: this.event.summary });
   }
   
   ngAfterViewInit(): void {
