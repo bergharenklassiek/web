@@ -1,7 +1,6 @@
 <div class="app-header">
     <fa-icon class="app-header__menu-button" [icon]="menuIcon" size="lg" (click)="onClickMenuIcon()"></fa-icon>
     <div class="app-header__title"><a routerLink="/" routerLinkActive="active">Bergharen Klassiek</a></div>
-
     <div class="app-header__menu" [class.app-header__menu--open]="menuOpen" [class.app-header__menu--closed]="!menuOpen">
         <div class="app-header__menu__close-button" (click)="onClose()">
             <fa-icon [icon]="closeIcon" size="xl"></fa-icon>
