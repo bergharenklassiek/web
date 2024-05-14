@@ -1,19 +1,5 @@
 @import 'variables';
 
-@font-face {
-    font-family: 'Comfortaa';
-    font-style: normal;
-    font-weight: 400;
-    src: url('../assets/fonts/Comfortaa-Regular.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'Comfortaa';
-    font-style: normal;
-    font-weight: 700;
-    src: url('../assets/fonts/Comfortaa-Bold.woff2') format('woff2');
-}
-
 /* You can add global styles to this file, and also import other style files */
 * {
     font-family: 'Comfortaa';
@@ -24,4 +10,3 @@ body {
     margin: 0;
     color: $primaryBlue;
 }
-
