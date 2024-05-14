@@ -39,9 +39,8 @@
         &__text {
             display: grid;
             grid-template-columns: 1fr;
-            padding: 10px;
-            gap: 5px;
-            align-content: space-around;
+            padding: 0 10px;
+            align-content: space-evenly;
 
             &__title {
                 @supports (-webkit-line-clamp: 2) {
