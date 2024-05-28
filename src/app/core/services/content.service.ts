@@ -19,7 +19,7 @@ export class ContentService {
   events = signal<Story<Event>[]>([]);
   contactList = signal<Story<ContactItem>[]>([]);
   contentPages = signal<Story<ContentPage>[]>([]);
-  contactListTypes = ['name','kvk','bankaccount','email','address'];
+  contactListTypes = ['name','kvk', 'fiscalnumber', 'bankaccount','email','address'];
 
   constructor(private http: HttpClient) { }
 
