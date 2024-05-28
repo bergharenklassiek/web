@@ -15,7 +15,7 @@ export class ContactDetailsComponent {
   iconsContactTypesMap: { [key: string]: IconDefinition } = {
     'name': faSignature,
     'kvk': faFileLines,
-    'fiscalNumber': faFileLines,
+    'fiscalnumber': faFileLines,
     'bankaccount': faEuroSign,
     'email': faAt,
     'address': faLocationDot,
