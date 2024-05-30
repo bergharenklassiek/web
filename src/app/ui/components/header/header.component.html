@@ -6,7 +6,7 @@
             <fa-icon [icon]="closeIcon" size="xl"></fa-icon>
         </div>
         <div class="app-header__menu__content">
-            @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Concerten in de regio', 'Contact']; track option) {
+            @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Concerten in de regio', 'ANBI', 'Contact']; track option) {
                 <a 
                     routerLink="/{{ option === 'Home' ? '' : option.toLowerCase().replaceAll(' ', '-') }}" 
                     routerLinkActive="active" 
