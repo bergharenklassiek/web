@@ -21,7 +21,7 @@
     }
 
     &__title {
-        padding: 0px 200px;
+        padding: 0px 20%;
         @media (width <= 800px) {
             padding: 0 $space-default-mobile;
         }
@@ -32,7 +32,7 @@
     }
 
     &__description {
-        padding: 0 200px $space-default;
+        padding: 0 20% $space-default;
         @media (width <= 800px) {
             padding: 0 $space-default-mobile;
         }

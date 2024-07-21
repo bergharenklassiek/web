@@ -8,10 +8,11 @@
     }
 
     &__header {
-        padding: $space-default $space-default 0 $space-default;
+        padding: $space-default 30% 0 30%;
         text-align: center;
         @media (width <= 600px) {
             display: none;
+            padding: $space-default-mobile;
         }
     }
     
@@ -36,9 +37,10 @@
     }
 
     &__teaser-video {
-        margin: 0 $space-default;
+        padding: 0 20%;
         @media (width <= 600px) {
             margin: 0 $space-default-mobile;
+            padding: 0;
         }
         
         iframe {
@@ -50,7 +52,7 @@
     }
 
     &__about {
-        margin: 0 $space-default $space-default $space-default;
+        margin: 0 20% $space-default;
         padding: $space-default;
         border-radius: $space-default;
         text-align: center;
