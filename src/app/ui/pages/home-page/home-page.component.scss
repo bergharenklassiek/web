@@ -30,6 +30,7 @@
         display: flex;
         gap: $space-default;
         padding: 0 $space-default;
+        justify-content: center;
         @media (width <= 600px) {
             gap: $space-default-mobile;
             padding: 0 $space-default-mobile;
