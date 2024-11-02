@@ -34,6 +34,10 @@
             gap: $space-default-mobile;
             padding: 0 $space-default-mobile;
         }
+
+        &--centered {
+            justify-content: center;
+        }
     }
 
     &__teaser-video {
