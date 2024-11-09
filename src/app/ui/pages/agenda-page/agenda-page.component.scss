@@ -4,6 +4,29 @@
     padding: 20px;
     display: grid;
     gap: 20px;
+
+    &__buttons {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+        text-align: center;
+        border-bottom: 2px solid #eeeeee;
+        padding-bottom: 20px;
+
+        &__button {
+            padding: 10px;
+            background-color: $secondaryPink;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            
+            &--checked {
+                background-color: $primaryRed;
+            }
+        }
+    }
     
     a {
         text-decoration: none;
