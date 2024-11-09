@@ -7,7 +7,7 @@
 
     &__buttons {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
         text-align: center;
         border-bottom: 2px solid #eeeeee;
@@ -16,13 +16,14 @@
         &__button {
             padding: 10px;
             background-color: $secondaryPink;
+            color: $primaryBlue;
             border-radius: 20px;
-            color: white;
             text-align: center;
             font-weight: bold;
             cursor: pointer;
             
             &--checked {
+                color: white;
                 background-color: $primaryRed;
             }
         }
