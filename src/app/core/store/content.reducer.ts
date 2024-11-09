@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Event } from "../models/event";
-import { loadPastEvents, loadPastEventsSuccess } from "./content.actions";
+import { loadPastEvents, loadPastEventsSuccess, removeEvents } from "./content.actions";
 import { Story } from "../models/story";
 
 export interface ContentState {
@@ -20,5 +20,6 @@ export const contentReducer = createReducer(
         ...state, 
         isLoading: false, 
         events: state.events.concat(events.filter(e => state.events.findIndex(storedEvent => storedEvent.id === e.id) === -1))
-    }))
+    })),
+    on(removeEvents, (_) => ( initialState ))
 )

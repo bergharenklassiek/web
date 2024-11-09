@@ -27,7 +27,6 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@honeycombio/opentelemetry-web": "^0.1.1",
     "@netlify/functions": "^2.6.0",
     "@ngrx/effects": "^18.1.1",
     "@ngrx/store": "^18.1.1",

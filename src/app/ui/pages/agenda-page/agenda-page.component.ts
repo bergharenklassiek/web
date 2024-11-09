@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContentService } from '../../../core/services/content.service';
 import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { select, Store } from '@ngrx/store';
-import { loadPastEvents } from '../../../core/store/content.actions';
+import { loadPastEvents, removeEvents } from '../../../core/store/content.actions';
 import { selectPastEvents } from '../../../core/store/content.selectors';
 import { ContentState } from '../../../core/store/content.reducer';
 import { Observable } from 'rxjs';
@@ -28,6 +28,9 @@ export class AgendaPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.pastEvents$ = this.store.pipe(select(selectPastEvents));
+
+    console.log('showPastEvents', this.showPastEvents);
+    console.log('stories', this.stories());
   }
   
   onClick(showPastEvents: boolean) {

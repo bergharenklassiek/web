@@ -25,4 +25,30 @@
             <app-rich-text [richText]="event.description"></app-rich-text>
         </div>
     }
+    @if (pastEvent$ | async; as event) {
+        <swiper-container #swiperRef
+            style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
+            class="app-event-page__images"
+            [class.app-event-page__images--single]="swiperConfig.slidesPerView === 1"
+            [config]="swiperConfig"
+        >
+        @for (image of event.images; track $index) {
+            <swiper-slide class="app-event-page__images__image">
+                <img 
+                    class="app-event-page__images__image"
+                    src="{{ image.filename | storyBlokUrl:600 }}" 
+                    loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
+                    alt="{{ event.images[0].alt }}"
+                />
+            </swiper-slide>
+        }
+        </swiper-container>
+        <div class="app-event-page__title">
+            <h2>{{ event.title }}</h2>
+            <div>{{ event.date | appDate }}</div>
+        </div>
+        <div class="app-event-page__description">
+            <app-rich-text [richText]="event.description"></app-rich-text>
+        </div>
+    }
 </div>
