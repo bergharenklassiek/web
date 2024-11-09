@@ -6,6 +6,7 @@ import { Story } from '../models/story';
 import { ContactItem } from '../models/contact-item';
 import { AboutPage } from '../models/about-page';
 import { ContentPage } from '../models/content-page';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +57,11 @@ export class ContentService {
     this.http
       .get<{ story: Story<Event> }>(`${this.storyblokBaseUrl}/stories/${slug}?${this.token}`)
       .subscribe(response => this.events.update(stories => stories.concat(response.story)));
+  }
+
+  loadEvents(past: boolean = false): Observable<Story<Event>[]> {
+    return this.http
+      .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:desc&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)
+      .pipe(map((response) => response.stories));
   }
 }
