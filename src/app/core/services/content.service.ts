@@ -59,6 +59,12 @@ export class ContentService {
       .subscribe(response => this.events.update(stories => stories.concat(Date.parse(response.story.content.date) > Date.now() ? response.story : [])));
   }
 
+  loadEvent2(slug: string) {
+    return this.http
+      .get<{ story: Story<Event> }>(`${this.storyblokBaseUrl}/stories/${slug}?${this.token}`)
+      .pipe(map((response) => response.story));
+  }
+
   loadEvents(past: boolean = false): Observable<Story<Event>[]> {
     return this.http
       .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:desc&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)

@@ -12,6 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectEvent } from '../../../core/store/content.selectors';
 import { AsyncPipe } from '@angular/common';
+import { loadEvent } from '../../../core/store/content.actions';
 
 @Component({
   selector: 'app-event-page',
@@ -32,7 +33,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   } 
 
   event?: Event;
-  pastEvent$?: Observable<Event | undefined>;
+  event$?: Observable<Event | undefined>;
   
   constructor(
     private route: ActivatedRoute, 
@@ -44,9 +45,9 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('event-slug')!;
-    this.event = this.contentService.getEvent(slug);
-    this.pastEvent$ = this.store.pipe(select(selectEvent(slug)));
-    this.meta.updateTag({ name: 'description', content: this.event?.summary });
+    this.store.dispatch(loadEvent({ eventSlug: slug }));
+    this.event$ = this.store.pipe(select(selectEvent(slug)));
+    // this.meta.updateTag({ name: 'description', content: this.event?.summary });
   }
   
   ngAfterViewInit(): void {

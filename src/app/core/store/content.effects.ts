@@ -1,8 +1,10 @@
 import { inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { ContentService } from "../services/content.service";
-import { loadPastEvents, loadPastEventsSuccess } from "./content.actions";
-import { map, mergeMap } from "rxjs";
+import { loadEvent, loadEventSuccess, loadPastEvents, loadPastEventsSuccess } from "./content.actions";
+import { filter, map, mergeMap, tap, withLatestFrom } from "rxjs";
+import { select, Store } from "@ngrx/store";
+import { selectEvent } from "./content.selectors";
 
 export const loadPastEventsEffect = createEffect(
     (actions$ = inject(Actions), contentService = inject(ContentService)) => {
@@ -17,3 +19,18 @@ export const loadPastEventsEffect = createEffect(
     },
     { functional: true }
 );
+
+export const loadEventEffect = createEffect(
+    (actions$ = inject(Actions), contentService = inject(ContentService), store = inject(Store)) => {
+        return actions$.pipe(
+            ofType(loadEvent),
+            tap(() => console.log('fetching event')),
+            mergeMap((action) => 
+                contentService.loadEvent2(action.eventSlug).pipe(
+                    map((event) => loadEventSuccess({ event })),
+                )
+            )
+        )
+    },
+    { functional: true }
+)

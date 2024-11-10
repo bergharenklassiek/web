@@ -25,7 +25,7 @@
             <app-rich-text [richText]="event.description"></app-rich-text>
         </div>
     }
-    @if (pastEvent$ | async; as event) {
+    @if (event$ | async; as event) {
         <swiper-container #swiperRef
             style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
             class="app-event-page__images"
