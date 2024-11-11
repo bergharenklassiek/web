@@ -26,7 +26,6 @@ export class AgendaPageComponent implements OnInit {
   constructor(private store: Store<ContentState>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(loadEvents({ loadPast: this.showPastEvents }));
     this.events$ = this.store.pipe(select(selectEvents(this.showPastEvents)));
   }
   

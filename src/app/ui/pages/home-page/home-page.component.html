@@ -5,11 +5,13 @@
     <div class="app-home-page__header-short">
       {{ homePage().headerTextShort }}
     </div>
-    <div class="app-home-page__events" [ngClass]="{'app-home-page__events--centered': stories().length === 1 }" (scroll)="onScroll($event)" id="scroll-list">
-      @for (story of stories(); track $index) {
-        <app-event-card id="{{ story.id }}" [story]="story" [cardIndex]="$index"></app-event-card>
-      }
-    </div>
+    @if (events$ | async; as events) {
+      <div class="app-home-page__events" [ngClass]="{'app-home-page__events--centered': events.length === 1 }" (scroll)="onScroll($event)" id="scroll-list">
+        @for (event of events; track $index) {
+          <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
+        }
+      </div>
+    }
     <div class="app-home-page__teaser-video">
       <iframe
           src="https://tube.rvere.com/embed?v=Iu5zm53P3Ak"
