@@ -17,7 +17,6 @@ export class ContentService {
 
   homePage = signal<HomePage>({} as HomePage);
   aboutPage = signal<AboutPage>({} as AboutPage);
-  events = signal<Story<Event>[]>([]);
   contactList = signal<Story<ContactItem>[]>([]);
   contentPages = signal<Story<ContentPage>[]>([]);
   contactListTypes = ['name','kvk', 'fiscalnumber', 'bankaccount','email','address'];
@@ -28,10 +27,6 @@ export class ContentService {
     this.http
       .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
       .subscribe((homePage) => this.homePage.set(homePage.story.content));
-
-    this.http
-      .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:asc&filter_query[date][gt_date]=${new Date().toISOString().split('T')[0]}&${this.token}`)
-      .subscribe(response => this.events.set(response.stories));
 
     this.http
       .get<{ stories: Story<ContactItem>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContactItem&${this.token}`)
