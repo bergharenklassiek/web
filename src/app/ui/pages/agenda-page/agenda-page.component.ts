@@ -30,10 +30,10 @@ export class AgendaPageComponent implements OnInit {
   }
   
   onClick(showPastEvents: boolean) {
-    this.showPastEvents = showPastEvents;
-    if (this.showPastEvents) {
-      this.store.dispatch(loadEvents({ loadPast: this.showPastEvents }));
-      this.events$ = this.store.pipe(select(selectEvents(this.showPastEvents)));
+    if (this.showPastEvents != showPastEvents) {
+      this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
+      this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));
     }
+    this.showPastEvents = showPastEvents;
   }
 }
