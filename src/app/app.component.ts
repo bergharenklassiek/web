@@ -1,6 +1,5 @@
 import { Component, Inject, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
 import { FooterComponent } from './ui/components/footer/footer.component';
@@ -12,7 +11,7 @@ import { config, dom } from "@fortawesome/fontawesome-svg-core";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FaIconComponent, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

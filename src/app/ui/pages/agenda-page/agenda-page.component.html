@@ -3,7 +3,7 @@
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': !showPastEvents}" (click)="onClick(false)">Aankomende concerten</span>
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': showPastEvents}" (click)="onClick(true)">Concert historie</span>
     </div>
-    @if (showPastEvents === false) {
+    <!-- @if (showPastEvents === false) {
         @for (story of stories(); track $index) {
             <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
                 <div class="app-agenda-page__item">
@@ -17,8 +17,8 @@
                 </div>
             </a>
         }
-    }
-    @else {
+    } -->
+    <!-- @else {
         @for (story of pastEvents$ | async; track $index) {
             <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
                 <div class="app-agenda-page__item">
@@ -32,5 +32,19 @@
                 </div>
             </a>
         }
-    }
+    } -->
+    
+        @for (story of events$ | async; track $index) {
+            <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
+                <div class="app-agenda-page__item">
+                    @if (story.content.images.length) {
+                        <img src="{{ story.content.images[0].filename | storyBlokUrl:300 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
+                    }
+                    <div class="app-agenda-page__item__text">
+                        <span>{{ story.content.date | appDate : 'year' }}</span>
+                        <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
+                    </div>
+                </div>
+            </a>
+        }
 </div>

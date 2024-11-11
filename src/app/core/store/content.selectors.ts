@@ -3,9 +3,9 @@ import { ContentState } from "./content.reducer";
 
 export const selectContent = createFeatureSelector<ContentState>('content');
 
-export const selectPastEvents = createSelector(
+export const selectEvents = (pastEvents: boolean) => createSelector(
     selectContent,
-    (state) => state.events.filter(e => Date.parse(e.content.date) < Date.now())
+    (state) => state.events.filter(e => pastEvents ? Date.parse(e.content.date) < Date.now() : Date.parse(e.content.date) >= Date.now())
 );
 
 export const selectEvent = (eventSlug: string) => createSelector(

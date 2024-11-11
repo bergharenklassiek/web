@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContentService } from '../../../core/services/content.service';
 import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { select, Store } from '@ngrx/store';
-import { loadPastEvents, removeEvents } from '../../../core/store/content.actions';
-import { selectPastEvents } from '../../../core/store/content.selectors';
+import { loadEvents } from '../../../core/store/content.actions';
+import { selectEvents } from '../../../core/store/content.selectors';
 import { ContentState } from '../../../core/store/content.reducer';
 import { Observable } from 'rxjs';
 import { Story } from '../../../core/models/story';
@@ -20,23 +20,21 @@ import { AsyncPipe, NgClass } from '@angular/common';
   styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent implements OnInit {
-  stories = this.contentService.events;
-  pastEvents$?: Observable<Story<Event>[]>;
+  events$?: Observable<Story<Event>[]>;
   showPastEvents = false;
 
-  constructor(private contentService: ContentService, private store: Store<ContentState>) {}
+  constructor(private store: Store<ContentState>) {}
 
   ngOnInit(): void {
-    this.pastEvents$ = this.store.pipe(select(selectPastEvents));
-
-    console.log('showPastEvents', this.showPastEvents);
-    console.log('stories', this.stories());
+    this.store.dispatch(loadEvents({ loadPast: this.showPastEvents }));
+    this.events$ = this.store.pipe(select(selectEvents(this.showPastEvents)));
   }
   
   onClick(showPastEvents: boolean) {
     this.showPastEvents = showPastEvents;
-    if (showPastEvents) {
-      this.store.dispatch(loadPastEvents());
+    if (this.showPastEvents) {
+      this.store.dispatch(loadEvents({ loadPast: this.showPastEvents }));
+      this.events$ = this.store.pipe(select(selectEvents(this.showPastEvents)));
     }
   }
 }
