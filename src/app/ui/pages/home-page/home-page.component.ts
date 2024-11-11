@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 import { Event } from '../../../core/models/event';
 import { Story } from '../../../core/models/story';
 import { select, Store } from '@ngrx/store';
-import { selectEvents } from '../../../core/store/content.selectors';
+import { selectEvents, selectHomePage } from '../../../core/store/content.selectors';
+import { HomePage } from '../../../core/models/home-page';
 
 @Component({
   selector: 'app-home-page',
@@ -19,11 +20,12 @@ import { selectEvents } from '../../../core/store/content.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent {
-  homePage = this.contentService.homePage;
+  homePage$?: Observable<Story<HomePage> | undefined>;
   events$?: Observable<Story<Event>[] | undefined>;
   
-  constructor(private contentService: ContentService, private store: Store) {
+  constructor(private store: Store) {
     this.events$ = this.store.pipe(select(selectEvents(false)));
+    this.homePage$ = this.store.pipe(select(selectHomePage));
     
     afterNextRender(() => {
       const scrollLeft = localStorage?.getItem(scrollLeftKey);

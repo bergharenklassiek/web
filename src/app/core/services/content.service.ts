@@ -25,10 +25,6 @@ export class ContentService {
 
   loadData(): void {
     this.http
-      .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
-      .subscribe((homePage) => this.homePage.set(homePage.story.content));
-
-    this.http
       .get<{ stories: Story<ContactItem>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContactItem&${this.token}`)
       .subscribe(response => this.contactList.set(response.stories.sort((a,b) => this.contactListTypes.indexOf(a.content.type) - this.contactListTypes.indexOf(b.content.type))));
 
@@ -41,7 +37,13 @@ export class ContentService {
       .subscribe(response => this.contentPages.set(response.stories));
   }
 
-  loadEvent(slug: string) {
+  loadHomePage(): Observable<Story<HomePage>> {
+    return this.http
+      .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
+      .pipe(map((response) => response.story));
+  }
+
+  loadEvent(slug: string): Observable<Story<Event>> {
     return this.http
       .get<{ story: Story<Event> }>(`${this.storyblokBaseUrl}/stories/${slug}?${this.token}`)
       .pipe(map((response) => response.story));
@@ -49,7 +51,7 @@ export class ContentService {
 
   loadEvents(past: boolean = false): Observable<Story<Event>[]> {
     return this.http
-      .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:desc&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)
+      .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:${past ? 'desc' : 'asc'}&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)
       .pipe(map((response) => response.stories));
   }
 }
