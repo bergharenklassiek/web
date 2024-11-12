@@ -15,19 +15,12 @@ export class ContentService {
   private storyblokBaseUrl = 'https://api.storyblok.com/v2/cdn';
   private token = 'token=acu9a7B7tQrUQ6dr0rQTqgtt';
 
-  homePage = signal<HomePage>({} as HomePage);
   aboutPage = signal<AboutPage>({} as AboutPage);
-  contactList = signal<Story<ContactItem>[]>([]);
   contentPages = signal<Story<ContentPage>[]>([]);
-  contactListTypes = ['name','kvk', 'fiscalnumber', 'bankaccount','email','address'];
 
   constructor(private http: HttpClient) { }
 
   loadData(): void {
-    this.http
-      .get<{ stories: Story<ContactItem>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContactItem&${this.token}`)
-      .subscribe(response => this.contactList.set(response.stories.sort((a,b) => this.contactListTypes.indexOf(a.content.type) - this.contactListTypes.indexOf(b.content.type))));
-
     this.http
       .get<{ story: Story<AboutPage> }>(`${this.storyblokBaseUrl}/stories/about?${this.token}`)
       .subscribe(response => this.aboutPage.set(response.story.content));
