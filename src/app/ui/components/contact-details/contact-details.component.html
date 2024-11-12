@@ -1,13 +1,15 @@
 <div class="app-contact-details">
-    @for (contactItem of contactList(); track $index) {
-        <span class="app-contact-details__item">
-            <fa-icon [icon]="iconsContactTypesMap[contactItem.content.type]" size="lg"></fa-icon>
-            @if (contactItem.content.type === 'email' || contactItem.content.type === 'address') {
-                <a href="{{ contactItem.content.link!.url }}" target="_blank">{{ contactItem.content.displayValue }}</a>                    
-            }
-            @else {
-                <span>{{ contactItem.content.displayValue }}</span>
-            } 
-        </span>
+    @if (contactItems$ | async; as contactItems) {
+        @for (contactItem of contactItems; track $index) {
+            <span class="app-contact-details__item">
+                <fa-icon [icon]="iconsContactTypesMap[contactItem.content.type]" size="lg"></fa-icon>
+                @if (contactItem.content.type === 'email' || contactItem.content.type === 'address') {
+                    <a href="{{ contactItem.content.link!.url }}" target="_blank">{{ contactItem.content.displayValue }}</a>                    
+                }
+                @else {
+                    <span>{{ contactItem.content.displayValue }}</span>
+                } 
+            </span>
+        }
     }
 </div>

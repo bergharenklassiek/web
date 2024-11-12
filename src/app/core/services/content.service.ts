@@ -43,6 +43,12 @@ export class ContentService {
       .pipe(map((response) => response.story));
   }
 
+  loadContactItems(): Observable<Story<ContactItem>[]> {
+    return this.http
+      .get<{ stories: Story<ContactItem>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContactItem&${this.token}`)
+      .pipe(map((response) => response.stories));
+  }
+
   loadEvent(slug: string): Observable<Story<Event>> {
     return this.http
       .get<{ story: Story<Event> }>(`${this.storyblokBaseUrl}/stories/${slug}?${this.token}`)

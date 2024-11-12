@@ -1,7 +1,7 @@
 import { inject } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
 import { ContentService } from "../services/content.service";
-import { loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
+import { loadContactItemsSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
 import { map, mergeMap } from "rxjs";
 
 export const loadHomePageEffect = createEffect(
@@ -10,6 +10,18 @@ export const loadHomePageEffect = createEffect(
             ofType(ROOT_EFFECTS_INIT),
             mergeMap(() => contentService.loadHomePage().pipe(
                 map((homePage) => loadHomePageSuccess({ homePage }))
+            ))
+        )
+    },
+    { functional: true }
+);
+
+export const loadContactItemsEffect = createEffect(
+    (actions$ = inject(Actions), contentService = inject(ContentService)) => {
+        return actions$.pipe(
+            ofType(ROOT_EFFECTS_INIT),
+            mergeMap(() => contentService.loadContactItems().pipe(
+                map((contactItems) => loadContactItemsSuccess({ contactItems }))
             ))
         )
     },

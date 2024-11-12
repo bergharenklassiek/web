@@ -1,24 +1,28 @@
 import { createReducer, on } from "@ngrx/store";
 import { Event } from "../models/event";
-import { loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
+import { loadContactItemsSuccess, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
 import { Story } from "../models/story";
 import { HomePage } from "../models/home-page";
+import { ContactItem } from "../models/contact-item";
 
 export interface ContentState {
     isLoading: boolean;
     homePage?: Story<HomePage>;
+    contactItems: Story<ContactItem>[];
     events: Story<Event>[];
 }
 
 export const initialState: ContentState = {
     isLoading: false,
     homePage: undefined,
+    contactItems: [],
     events: []
 };
 
 export const contentReducer = createReducer(
     initialState,
     on(loadHomePageSuccess, (state, action) => ({ ...state, homePage: action.homePage })),
+    on(loadContactItemsSuccess, (state, action) => ({ ...state, contactItems: action.contactItems })),
     on(loadEvents, (state) => ({ ...state, isLoading: true })),
     on(loadEventsSuccess, (state, { events }) => ({ 
         ...state, 

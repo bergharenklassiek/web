@@ -4,6 +4,7 @@ import { ContentState } from "./content.reducer";
 export const selectContent = createFeatureSelector<ContentState>('content');
 
 export const selectHomePage = createSelector(selectContent, (state) => state.homePage);
+export const selectContactItems = createSelector(selectContent, (state) => state.contactItems);
 
 export const selectEvents = (pastEvents: boolean) => createSelector(
     selectContent,
