@@ -15,24 +15,17 @@ export class ContentService {
   private storyblokBaseUrl = 'https://api.storyblok.com/v2/cdn';
   private token = 'token=acu9a7B7tQrUQ6dr0rQTqgtt';
 
-  aboutPage = signal<AboutPage>({} as AboutPage);
-  contentPages = signal<Story<ContentPage>[]>([]);
-
   constructor(private http: HttpClient) { }
-
-  loadData(): void {
-    this.http
-      .get<{ story: Story<AboutPage> }>(`${this.storyblokBaseUrl}/stories/about?${this.token}`)
-      .subscribe(response => this.aboutPage.set(response.story.content));
-
-    this.http
-      .get<{ stories: Story<ContentPage>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContentPage&${this.token}`)
-      .subscribe(response => this.contentPages.set(response.stories));
-  }
 
   loadHomePage(): Observable<Story<HomePage>> {
     return this.http
       .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
+      .pipe(map((response) => response.story));
+  }
+
+  loadAboutPage(): Observable<Story<AboutPage>> {
+    return this.http
+      .get<{ story: Story<AboutPage> }>(`${this.storyblokBaseUrl}/stories/about?${this.token}`)
       .pipe(map((response) => response.story));
   }
 
@@ -41,6 +34,12 @@ export class ContentService {
       .get<{ stories: Story<ContactItem>[] }>(`${this.storyblokBaseUrl}/stories?content_type=ContactItem&${this.token}`)
       .pipe(map((response) => response.stories));
   }
+
+  loadContentPage(slug: string): Observable<Story<ContentPage>> {
+    return this.http
+      .get<{ story: Story<ContentPage> }>(`${this.storyblokBaseUrl}/stories/${slug}?content_type=ContentPage&${this.token}`)
+      .pipe(map((response) => response.story));
+  } 
 
   loadEvent(slug: string): Observable<Story<Event>> {
     return this.http

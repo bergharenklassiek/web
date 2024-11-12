@@ -1,4 +1,4 @@
-import { ApplicationConfig, LOCALE_ID } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, isDevMode } from '@angular/core';
 import { InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,6 +10,7 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import * as contentEffects from '../app/core/store/content.effects';
 import { contentReducer } from './core/store/content.reducer';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 registerLocaleData(localeNl);
 
@@ -26,10 +27,18 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'nl' },
     { provide: DatePipe, useClass: DatePipe },
     provideStore({
-      content: contentReducer
+        content: contentReducer
     }),
-    provideEffects(contentEffects)
-  ],
+    provideEffects(contentEffects),
+    provideStoreDevtools({ 
+      maxAge: 25, 
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: true,
+      traceLimit: 75,
+      connectInZone: true
+    })
+],
 };
 
 export const scrollListKey = 'scroll-list';
