@@ -34,7 +34,7 @@ export const contentReducer = createReducer(
     on(loadContentPageSuccess, (state, action) => ({ 
         ...state, 
         isLoading: false, 
-        contentPages: state.contentPages.indexOf(action.contentPage) > -1
+        contentPages: state.contentPages.map(c => c.id).indexOf(action.contentPage.id) > -1
             ? state.contentPages.splice(state.contentPages.indexOf(action.contentPage), 1)
             : state.contentPages.concat(action.contentPage)
     })),
@@ -47,7 +47,7 @@ export const contentReducer = createReducer(
     on(removeEvents, (_) => ( initialState )),
     on(loadEventSuccess, (state, action) => ({
         ...state,
-        events: state.events.indexOf(action.event) > -1 
+        events: state.events.map(e => e.id).indexOf(action.event.id) > -1 
             ? state.events.splice(state.events.indexOf(action.event), 1)
             : state.events.concat(action.event)
     }))
