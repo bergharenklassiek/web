@@ -48,7 +48,7 @@ export const contentReducer = createReducer(
     on(loadEventSuccess, (state, action) => ({
         ...state,
         events: state.events.map(e => e.id).indexOf(action.event.id) > -1 
-            ? state.events.splice(state.events.indexOf(action.event), 1)
+            ? state.events
             : state.events.concat(action.event)
     }))
 )
