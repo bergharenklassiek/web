@@ -27,28 +27,28 @@ export const initialState: ContentState = {
 
 export const contentReducer = createReducer(
     initialState,
-    on(loadHomePageSuccess, (state, action) => ({ ...state, homePage: action.homePage })),
-    on(loadContactItemsSuccess, (state, action) => ({ ...state, contactItems: action.contactItems })),
-    on(loadAboutPageSuccess, (state, action) => ({ ...state, aboutPage: action.aboutPage })),
+    on(loadHomePageSuccess, (state, { homePage }) => ({ ...state, homePage })),
+    on(loadContactItemsSuccess, (state, { contactItems }) => ({ ...state, contactItems })),
+    on(loadAboutPageSuccess, (state, { aboutPage }) => ({ ...state, aboutPage })),
     on(loadContentPage, (state) => ({ ...state, isLoading: true })),
-    on(loadContentPageSuccess, (state, action) => ({ 
+    on(loadContentPageSuccess, (state, { contentPage }) => ({ 
         ...state, 
         isLoading: false, 
-        contentPages: state.contentPages.map(e => e.id).findIndex(e => e === action.contentPage.id) > -1
-            ? state.contentPages.map(c => c.id === action.contentPage.id ? action.contentPage : c)
-            : state.contentPages.concat(action.contentPage)
+        contentPages: state.contentPages.map(e => e.id).findIndex(e => e === contentPage.id) > -1
+            ? state.contentPages.map(c => c.id === contentPage.id ? contentPage : c)
+            : state.contentPages.concat(contentPage)
     })),
     on(loadEvents, (state) => ({ ...state, isLoading: true })),
     on(loadEventsSuccess, (state, { events }) => ({ 
         ...state, 
-        isLoading: false, 
+        isLoading: false,
         events: state.events.concat(events.filter(e => state.events.findIndex(storedEvent => storedEvent.id === e.id) === -1))
     })),
     on(removeEvents, (_) => ( initialState )),
-    on(loadEventSuccess, (state, action) => ({
+    on(loadEventSuccess, (state, { event }) => ({
         ...state,
-        events: state.events.map(e => e.id).findIndex(e => e === action.event.id) > -1
-            ? state.events.map(e => e.id === action.event.id ? action.event : e)
-            : state.events.concat(action.event) 
+        events: state.events.map(e => e.id).findIndex(e => e === event.id) > -1
+            ? state.events.map(e => e.id === event.id ? event : e)
+            : state.events.concat(event) 
     }))
 )

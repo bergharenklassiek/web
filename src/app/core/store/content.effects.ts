@@ -2,9 +2,9 @@ import { inject } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
 import { ContentService } from "../services/content.service";
 import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
-import { filter, map, mergeMap } from "rxjs";
+import { filter, map, mergeMap, tap } from "rxjs";
 import { Store } from "@ngrx/store";
-import { selectContentPage, selectEvent } from "./content.selectors";
+import { selectAboutPage, selectContentPage, selectEvent, selectEvents } from "./content.selectors";
 
 export const loadHomePageEffect = createEffect(
     (actions$ = inject(Actions), contentService = inject(ContentService)) => {
@@ -19,11 +19,14 @@ export const loadHomePageEffect = createEffect(
 );
 
 export const loadAboutPageEffect = createEffect(
-    (actions$ = inject(Actions), contentService = inject(ContentService)) => {
+    (actions$ = inject(Actions), store = inject(Store), contentService = inject(ContentService)) => {
         return actions$.pipe(
             ofType(loadAboutPage),
-            mergeMap(() => contentService.loadAboutPage().pipe(
-                map((aboutPage) => loadAboutPageSuccess({ aboutPage }))
+            mergeMap(() => store.select(selectAboutPage).pipe(
+                filter((aboutPage) => !aboutPage),
+                mergeMap(() => contentService.loadAboutPage().pipe(
+                    map((aboutPage) => loadAboutPageSuccess({ aboutPage }))
+                ))
             ))
         )
     },
@@ -58,14 +61,15 @@ export const loadContentPageEffect = createEffect(
 );
 
 export const loadEventsEffect = createEffect(
-    (actions$ = inject(Actions), contentService = inject(ContentService)) => {
+    (actions$ = inject(Actions), store = inject(Store), contentService = inject(ContentService)) => {
         return actions$.pipe(
             ofType(ROOT_EFFECTS_INIT, loadEvents),
-            mergeMap((action) => 
-                contentService.loadEvents(action.loadPast).pipe(
-                    map((stories) => loadEventsSuccess({ events: stories})),
-                )
-            )
+            mergeMap((action) => store.select(selectEvents(action ? action.loadPast : false)).pipe(
+                filter(events => events.length === 0),
+                mergeMap(() => contentService.loadEvents(action.loadPast).pipe(
+                    map((events) => loadEventsSuccess({ events })),
+                ))
+            ))
         )
     },
     { functional: true }
