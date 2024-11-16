@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Event } from "../models/event";
-import { loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
+import { displayPastEvents, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
 import { Story } from "../models/story";
 import { HomePage } from "../models/home-page";
 import { ContactItem } from "../models/contact-item";
@@ -9,6 +9,7 @@ import { ContentPage } from "../models/content-page";
 
 export interface ContentState {
     isLoading: boolean;
+    displayPastEvents: boolean;
     homePage?: Story<HomePage>;
     contactItems: Story<ContactItem>[];
     aboutPage?: Story<AboutPage>;
@@ -18,6 +19,7 @@ export interface ContentState {
 
 export const initialState: ContentState = {
     isLoading: false,
+    displayPastEvents: false,
     homePage: undefined,
     contactItems: [],
     aboutPage: undefined,
@@ -50,5 +52,6 @@ export const contentReducer = createReducer(
         events: state.events.map(e => e.id).findIndex(e => e === event.id) > -1
             ? state.events.map(e => e.id === event.id ? event : e)
             : state.events.concat(event) 
-    }))
+    })),
+    on(displayPastEvents, (state, { displayPastEvents}) => ({ ...state, displayPastEvents }))
 )

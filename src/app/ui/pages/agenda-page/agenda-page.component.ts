@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ContentService } from '../../../core/services/content.service';
 import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { select, Store } from '@ngrx/store';
-import { loadEvents } from '../../../core/store/content.actions';
-import { selectEvents } from '../../../core/store/content.selectors';
+import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
+import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
 import { ContentState } from '../../../core/store/content.reducer';
 import { Observable } from 'rxjs';
 import { Story } from '../../../core/models/story';
@@ -19,21 +19,16 @@ import { AsyncPipe, NgClass } from '@angular/common';
   templateUrl: './agenda-page.component.html',
   styleUrl: './agenda-page.component.scss'
 })
-export class AgendaPageComponent implements OnInit {
-  events$?: Observable<Story<Event>[]>;
-  showPastEvents = false;
+export class AgendaPageComponent {
+  events$ = this.store.pipe(select(selectEvents(false)));
+  showPastEvents$ = this.store.select(selectDisplayPastEvents);
 
-  constructor(private store: Store<ContentState>) {}
-
-  ngOnInit(): void {
-    this.events$ = this.store.pipe(select(selectEvents(this.showPastEvents)));
-  }
+  constructor(private store: Store<ContentState>, private cdRef: ChangeDetectorRef) {}
   
   onClick(showPastEvents: boolean) {
-    if (this.showPastEvents != showPastEvents) {
-      this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
-      this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));
-    }
-    this.showPastEvents = showPastEvents;
+    this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));
+    this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
+    this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));
+    this.cdRef.detectChanges();
   }
 }

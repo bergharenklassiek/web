@@ -22,3 +22,5 @@ export const selectEvent = (eventSlug: string) => createSelector(
     selectContent,
     (state) => state.events.find(e => e.slug === eventSlug)?.content
 );
+
+export const selectDisplayPastEvents = createSelector(selectContent, (state) => state.displayPastEvents);
