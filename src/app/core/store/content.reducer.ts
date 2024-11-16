@@ -34,9 +34,7 @@ export const contentReducer = createReducer(
     on(loadContentPageSuccess, (state, action) => ({ 
         ...state, 
         isLoading: false, 
-        contentPages: state.contentPages.map(c => c.id).indexOf(action.contentPage.id) > -1
-            ? state.contentPages.splice(state.contentPages.indexOf(action.contentPage), 1)
-            : state.contentPages.concat(action.contentPage)
+        contentPages: state.contentPages.map(c => c.id === action.contentPage.id ? action.contentPage : c)
     })),
     on(loadEvents, (state) => ({ ...state, isLoading: true })),
     on(loadEventsSuccess, (state, { events }) => ({ 
@@ -47,8 +45,8 @@ export const contentReducer = createReducer(
     on(removeEvents, (_) => ( initialState )),
     on(loadEventSuccess, (state, action) => ({
         ...state,
-        events: state.events.map(e => e.id).indexOf(action.event.id) > -1 
-            ? state.events
-            : state.events.concat(action.event)
+        events: state.events.map(e => e.id).findIndex(e => e === action.event.id) > -1
+            ? state.events.map(e => e.id === action.event.id ? action.event : e)
+            : state.events.concat(action.event) 
     }))
 )
