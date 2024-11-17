@@ -8,6 +8,7 @@ describe('ContentReducer', () => {
         it('should replace event alredady in state', () => {
             const initialState: fromReducer.ContentState = {
                 isLoading: false,
+                displayPastEvents: false,
                 contactItems: [],
                 contentPages: [],
                 events: [
@@ -27,6 +28,7 @@ describe('ContentReducer', () => {
             }
             const updatedState = {
                 isLoading: false,
+                displayPastEvents: false,
                 contactItems: [],
                 contentPages: [],
                 events: [
@@ -47,6 +49,7 @@ describe('ContentReducer', () => {
         it('should add new event', () => {
             const initialState: fromReducer.ContentState = {
                 isLoading: false,
+                displayPastEvents: false,
                 contactItems: [],
                 contentPages: [],
                 events: [
@@ -60,8 +63,9 @@ describe('ContentReducer', () => {
                 slug: 'event-abc',
                 content: {} as Event
             }
-            const updatedState = {
+            const updatedState: fromReducer.ContentState = {
                 isLoading: false,
+                displayPastEvents: false,
                 contactItems: [],
                 contentPages: [],
                 events: [

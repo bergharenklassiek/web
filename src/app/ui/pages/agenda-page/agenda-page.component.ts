@@ -7,7 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
 import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
 import { ContentState } from '../../../core/store/content.reducer';
-import { Observable } from 'rxjs';
+import { map, mergeMap, Observable, withLatestFrom } from 'rxjs';
 import { Story } from '../../../core/models/story';
 import { Event } from '../../../core/models/event';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -20,8 +20,10 @@ import { AsyncPipe, NgClass } from '@angular/common';
   styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {
-  events$ = this.store.pipe(select(selectEvents(false)));
   showPastEvents$ = this.store.select(selectDisplayPastEvents);
+  events$ = this.store.select(selectDisplayPastEvents).pipe(
+    mergeMap(displayPastEvents => this.store.select(selectEvents(displayPastEvents)))
+  );
 
   constructor(private store: Store<ContentState>, private cdRef: ChangeDetectorRef) {}
   
