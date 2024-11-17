@@ -1,10 +1,10 @@
 import { Event } from '../models/event';
 import { Story } from '../models/story';
-import { loadEventSuccess } from './content.actions';
+import { displayPastEvents, loadEventSuccess } from './content.actions';
 import * as fromReducer from './content.reducer';
 
 describe('ContentReducer', () => {
-    describe('OnLoadEventSuccess action', () => {
+    describe('loadEventSuccess action', () => {
         it('should replace event alredady in state', () => {
             const initialState: fromReducer.ContentState = {
                 isLoading: false,
@@ -80,6 +80,34 @@ describe('ContentReducer', () => {
             const state = fromReducer.contentReducer(initialState, action);
     
             expect(state).toEqual(updatedState);
+        });
+    });
+
+    describe('displayPastEvents action', () => {
+        it('should set displayPastEvents to true', () => {
+            const action = displayPastEvents({ displayPastEvents: true });
+            const state = fromReducer.contentReducer(fromReducer.initialState, action);
+            expect(state.displayPastEvents).toEqual(true);
+        });
+
+        it('should keep displayPastEvents set to false', () => {
+            const action = displayPastEvents({ displayPastEvents: false });
+            const state = fromReducer.contentReducer(fromReducer.initialState, action);
+            expect(state.displayPastEvents).toEqual(false);
+        });
+
+        it('should correctly set displayPastEvents to false', () => {
+            const initialState = { ...fromReducer.initialState, displayPastEvents: true };
+            const action = displayPastEvents({ displayPastEvents: false });
+            const state = fromReducer.contentReducer(initialState, action);
+            expect(state.displayPastEvents).toEqual(false);
+        });
+
+        it('should keep displayPastEvents set to true', () => {
+            const initialState = { ...fromReducer.initialState, displayPastEvents: true };
+            const action = displayPastEvents({ displayPastEvents: true });
+            const state = fromReducer.contentReducer(initialState, action);
+            expect(state.displayPastEvents).toEqual(true);
         });
     });
 });
