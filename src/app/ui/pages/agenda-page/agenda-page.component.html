@@ -1,7 +1,7 @@
 <div class="app-agenda-page">
     <div class="app-agenda-page__buttons">
-        <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === false }" (click)="onClick(false)">Aankomende concerten</span>
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === true }" (click)="onClick(true)">Concert historie</span>
+        <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === false }" (click)="onClick(false)">Aankomende concerten</span>
     </div>
     @for (story of events$ | async; track $index) {
         <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
