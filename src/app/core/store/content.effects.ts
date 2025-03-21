@@ -1,9 +1,9 @@
 import { inject } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { filter, map, mergeMap } from "rxjs";
 import { ContentService } from "../services/content.service";
 import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
-import { filter, map, mergeMap, tap } from "rxjs";
-import { Store } from "@ngrx/store";
 import { selectAboutPage, selectContentPage, selectEvent, selectEvents } from "./content.selectors";
 
 export const loadHomePageEffect = createEffect(
@@ -65,7 +65,7 @@ export const loadEventsEffect = createEffect(
         return actions$.pipe(
             ofType(ROOT_EFFECTS_INIT, loadEvents),
             mergeMap((action) => store.select(selectEvents(action ? action.loadPast : false)).pipe(
-                filter(events => events.length === 0),
+                filter(events => events.length <= 1),
                 mergeMap(() => contentService.loadEvents(action.loadPast).pipe(
                     map((events) => loadEventsSuccess({ events })),
                 ))
