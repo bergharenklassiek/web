@@ -1,16 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ContentService } from '../../../core/services/content.service';
-import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
-import { RouterModule } from '@angular/router';
-import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
-import { select, Store } from '@ngrx/store';
-import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
-import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
-import { ContentState } from '../../../core/store/content.reducer';
-import { map, mergeMap, Observable, withLatestFrom } from 'rxjs';
-import { Story } from '../../../core/models/story';
-import { Event } from '../../../core/models/event';
 import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { mergeMap } from 'rxjs';
+import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
+import { StoryBlokUrlPipe } from '../../../core/pipes/story-blok-url.pipe';
+import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
+import { ContentState } from '../../../core/store/content.reducer';
+import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
 
 @Component({
   selector: 'app-agenda-page',
@@ -31,6 +28,5 @@ export class AgendaPageComponent {
     this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));
     this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
     this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));
-    this.cdRef.detectChanges();
   }
 }
