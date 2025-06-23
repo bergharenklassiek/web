@@ -3,7 +3,7 @@
         <img 
             class="app-event-card__image" 
             alt="{{ story.content.images[0].alt }}" 
-            src="{{ story.content.images[0].filename | storyBlokUrl:400 }}" 
+            src="{{ story.content.images[0] | storyBlokImage : 400 : 180 }}" 
             loading="{{ cardIndex === 0 ? 'eager' : 'lazy' }}"
         >
         <div class="app-event-card__text-wrapper">
