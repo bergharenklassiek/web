@@ -10,7 +10,7 @@
                 <swiper-slide class="app-content-page__images__image">
                     <img 
                         class="app-content-page__images__image"
-                        src="{{ image.filename | storyBlokUrl:600 }}" 
+                        src="{{ image | storyBlokImage : 600 : 300 }}" 
                         loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
                         alt="{{ image.alt }}"
                     />
