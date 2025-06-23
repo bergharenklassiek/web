@@ -10,7 +10,7 @@
             <swiper-slide class="app-event-page__images__image">
                 <img 
                     class="app-event-page__images__image"
-                    src="{{ image.filename | storyBlokUrl:600 }}" 
+                    src="{{ image | storyBlokImage : 600 : 300 }}" 
                     loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
                     alt="{{ event.images[0].alt }}"
                 />
@@ -36,7 +36,7 @@
             <swiper-slide class="app-event-page__images__image">
                 <img 
                     class="app-event-page__images__image"
-                    src="{{ image.filename | storyBlokUrl:600 }}" 
+                    src="{{ image | storyBlokImage : 600 : 300 }}" 
                     loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
                     alt="{{ event.images[0].alt }}"
                 />
