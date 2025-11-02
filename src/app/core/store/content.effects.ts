@@ -63,7 +63,7 @@ export const loadContentPageEffect = createEffect(
 export const loadEventsEffect = createEffect(
     (actions$ = inject(Actions), store = inject(Store), contentService = inject(ContentService)) => {
         return actions$.pipe(
-            ofType(ROOT_EFFECTS_INIT, loadEvents),
+            ofType(loadEvents),
             mergeMap((action) => store.select(selectEvents(action ? action.loadPast : false)).pipe(
                 filter(events => events.length <= 1),
                 mergeMap(() => contentService.loadEvents(action.loadPast).pipe(
