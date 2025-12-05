@@ -16,7 +16,7 @@ export const loadContentPage = createAction('[Content] Load content page', props
 export const loadContentPageSuccess = createAction('[Content] Load content page success', props<{ contentPage: Story<ContentPage> }>());
 
 export const loadEvents = createAction('[Content] Load events', props<{ loadPast: boolean}>());
-export const loadEventsSuccess = createAction('[Content] Load events success', props<{ events: Story<Event>[]}>());
+export const loadEventsSuccess = createAction('[Content] Load events success', props<{ events: Story<Event>[], pastEvents: boolean}>());
 export const removeEvents = createAction('[Content] Remove events');
 export const loadEvent = createAction('[Content] Load event', props<{ eventSlug: string }>());
 export const loadEventSuccess = createAction('[Content] Load event success', props<{ event: Story<Event> }>());

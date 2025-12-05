@@ -25,6 +25,7 @@ export class AgendaPageComponent {
   constructor(private store: Store<ContentState>, private cdRef: ChangeDetectorRef) {}
   
   onClick(showPastEvents: boolean) {
+    console.log('onClick!');
     this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));
     this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
     this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));

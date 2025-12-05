@@ -48,6 +48,7 @@ export class ContentService {
   }
 
   loadEvents(past: boolean = false): Observable<Story<Event>[]> {
+    console.log('load events');
     return this.http
       .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:${past ? 'desc' : 'asc'}&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)
       .pipe(map((response) => response.stories));

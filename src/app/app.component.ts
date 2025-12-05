@@ -1,4 +1,4 @@
-import { Component, Inject, afterNextRender } from '@angular/core';
+import { Component, Inject, OnInit, afterNextRender, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
@@ -6,6 +6,8 @@ import { FooterComponent } from './ui/components/footer/footer.component';
 import { scrollLeftKey } from './app.config';
 import { DOCUMENT } from '@angular/common';
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
+import { Store } from '@ngrx/store';
+import { loadEvents } from './core/store/content.actions';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +16,10 @@ import { config, dom } from "@fortawesome/fontawesome-svg-core";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   faCoffee = faCoffee;
   openMenu = false;
+  private readonly store = inject(Store);
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     afterNextRender(() => localStorage.removeItem(scrollLeftKey));
@@ -26,6 +29,11 @@ export class AppComponent {
     let styleNode = this.document.createElement("style");
     styleNode.innerHTML = dom.css(); // grab FA's CSS
     head.appendChild(styleNode);
+  }
+
+  ngOnInit(): void {
+    console.log('loading events from app component!');
+    this.store.dispatch(loadEvents({ loadPast: false }));
   }
   
   onOpenMenu(event: boolean) {
