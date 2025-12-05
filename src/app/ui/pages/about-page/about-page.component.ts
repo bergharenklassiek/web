@@ -9,11 +9,11 @@ import { Story } from '../../../core/models/story';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-about-page',
-  standalone: true,
-  imports: [RichTextComponent, AsyncPipe],
-  templateUrl: './about-page.component.html',
-  styleUrl: './about-page.component.scss'
+    selector: 'app-about-page',
+    standalone: true,
+    imports: [RichTextComponent, AsyncPipe],
+    templateUrl: './about-page.component.html',
+    styleUrl: './about-page.component.scss'
 })
 export class AboutPageComponent implements OnInit {
   aboutPage$: Observable<Story<AboutPage> | undefined> = this.store.pipe(select(selectAboutPage));

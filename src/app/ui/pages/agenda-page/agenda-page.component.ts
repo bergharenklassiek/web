@@ -10,11 +10,11 @@ import { ContentState } from '../../../core/store/content.reducer';
 import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
 
 @Component({
-  selector: 'app-agenda-page',
-  standalone: true,
-  imports: [StoryBlokImagePipe, AppDatePipe, RouterModule, AsyncPipe, NgClass],
-  templateUrl: './agenda-page.component.html',
-  styleUrl: './agenda-page.component.scss'
+    selector: 'app-agenda-page',
+    standalone: true,
+    imports: [StoryBlokImagePipe, AppDatePipe, RouterModule, AsyncPipe, NgClass],
+    templateUrl: './agenda-page.component.html',
+    styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {
   showPastEvents$ = this.store.select(selectDisplayPastEvents);

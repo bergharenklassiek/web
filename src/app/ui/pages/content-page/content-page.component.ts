@@ -13,12 +13,12 @@ import { selectContentPage } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 
 @Component({
-  selector: 'app-content-page',
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AsyncPipe],
-  templateUrl: './content-page.component.html',
-  styleUrl: './content-page.component.scss'
+    selector: 'app-content-page',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AsyncPipe],
+    templateUrl: './content-page.component.html',
+    styleUrl: './content-page.component.scss'
 })
 export class ContentPageComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;

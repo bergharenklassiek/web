@@ -5,11 +5,11 @@ import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 import { filter, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [FaIconComponent, RouterModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    standalone: true,
+    imports: [FaIconComponent, RouterModule],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
   menuIcon = faBars;

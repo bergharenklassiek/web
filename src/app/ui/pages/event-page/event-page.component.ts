@@ -15,13 +15,13 @@ import { selectEvent } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 
 @Component({
-  selector: 'app-event-page',
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AppDatePipe, AsyncPipe],
-  templateUrl: './event-page.component.html',
-  styleUrl: './event-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-event-page',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AppDatePipe, AsyncPipe],
+    templateUrl: './event-page.component.html',
+    styleUrl: './event-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventPageComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;

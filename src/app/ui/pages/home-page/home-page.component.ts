@@ -12,12 +12,12 @@ import { selectEvents, selectHomePage } from '../../../core/store/content.select
 import { HomePage } from '../../../core/models/home-page';
 
 @Component({
-  selector: 'app-home-page',
-  standalone: true,
-  imports: [EventCardComponent, RichTextComponent, NgClass, AsyncPipe],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-home-page',
+    standalone: true,
+    imports: [EventCardComponent, RichTextComponent, NgClass, AsyncPipe],
+    templateUrl: './home-page.component.html',
+    styleUrl: './home-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent {
   homePage$?: Observable<Story<HomePage> | undefined>;
