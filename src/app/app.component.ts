@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, afterNextRender, inject } from '@angular/core';
+import { Component, Inject, OnInit, afterNextRender, inject, DOCUMENT } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
 import { FooterComponent } from './ui/components/footer/footer.component';
 import { scrollLeftKey } from './app.config';
-import { DOCUMENT } from '@angular/common';
+
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
 import { Store } from '@ngrx/store';
 import { loadEvents } from './core/store/content.actions';
