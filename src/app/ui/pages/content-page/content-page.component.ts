@@ -1,4 +1,4 @@
-import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
+// import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { RichTextComponent } from '../../components/rich-text/rich-text.componen
     selector: 'app-content-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AsyncPipe],
+    imports: [RichTextComponent, StoryBlokImagePipe, AsyncPipe],
     templateUrl: './content-page.component.html',
     styleUrl: './content-page.component.scss'
 })
@@ -32,7 +32,7 @@ export class ContentPageComponent implements OnInit, AfterViewInit {
   slug = this.router.url.replace('/','');
   contentPage$: Observable<Story<ContentPage> | undefined> = this.store.pipe(select(selectContentPage(this.slug)));;
 
-  constructor(private store: Store, private router: Router, private breakpointObserver: BreakpointObserver) {}
+  constructor(private store: Store, private router: Router) {}
   
   ngOnInit(): void {
     const slug = this.router.url.replace('/','');
@@ -42,14 +42,14 @@ export class ContentPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.swiperRef?.nativeElement) {
       Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);
-      this.breakpointObserver.observe('(max-width: 900px)').pipe(
-        withLatestFrom(this.contentPage$),
-        filter(([, contentPage]) => !!contentPage),
-        tap(([state, contentPage]) => Object.assign(this.swiperRef?.nativeElement, {
-          ...this.swiperConfig, 
-          slidesPerView: state.matches ? 1 : (contentPage?.content?.images?.length ?? 0) > 1 ? 2 : 1
-        }))
-      );
+      // this.breakpointObserver.observe('(max-width: 900px)').pipe(
+      //   withLatestFrom(this.contentPage$),
+      //   filter(([, contentPage]) => !!contentPage),
+      //   tap(([state, contentPage]) => Object.assign(this.swiperRef?.nativeElement, {
+      //     ...this.swiperConfig, 
+      //     slidesPerView: state.matches ? 1 : (contentPage?.content?.images?.length ?? 0) > 1 ? 2 : 1
+      //   }))
+      // );
     }
   }
 }

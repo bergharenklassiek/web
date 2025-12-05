@@ -3,17 +3,24 @@
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === true }" (click)="onClick(true)">Concert historie</span>
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === false }" (click)="onClick(false)">Aankomende concerten</span>
     </div>
-    @for (story of events$ | async; track $index) {
-        <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
-            <div class="app-agenda-page__item">
-                @if (story.content.images.length) {
-                    <img src="{{ story.content.images[0] | storyBlokImage : 200 : 80 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
-                }
-                <div class="app-agenda-page__item__text">
-                    <span>{{ story.content.date | appDate : 'year' }}</span>
-                    <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
-                </div>
-            </div>
-        </a>
+    @if (events$ | async; as events) {
+        @if (events.length === 0) {
+            We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!
+        } 
+        @else {
+            @for (story of events; track $index) {
+                <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
+                    <div class="app-agenda-page__item">
+                        @if (story.content.images.length) {
+                            <img src="{{ story.content.images[0] | storyBlokImage : 200 : 80 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
+                        }
+                        <div class="app-agenda-page__item__text">
+                            <span>{{ story.content.date | appDate : 'year' }}</span>
+                            <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
     }
 </div>

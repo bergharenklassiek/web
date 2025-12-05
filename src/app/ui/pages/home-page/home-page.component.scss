@@ -28,15 +28,29 @@
     &__events {
         overflow-y: hidden;
         display: flex;
-        gap: $space-default;
-        padding: 0 $space-default;
         @media (width <= 600px) {
-            gap: $space-default-mobile;
             padding: 0 $space-default-mobile;
         }
-
+        
         &--centered {
             justify-content: center;
+        }
+        
+        &__items {
+            padding: 0 $space-default;
+            gap: $space-default;
+            @media (width <= 600px) {
+                gap: $space-default-mobile;
+                padding: 0 $space-default-mobile;
+            }
+        }
+
+        &__no-events-message {
+            text-align: center;
+            margin: 0 20%;
+            @media (width <= 600px) {
+                margin: 0 $space-default-mobile $space-default-mobile $space-default-mobile;
+            }
         }
     }
 
