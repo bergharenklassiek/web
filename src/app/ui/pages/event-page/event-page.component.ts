@@ -1,4 +1,4 @@
-import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
+// import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
@@ -15,13 +15,13 @@ import { selectEvent } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 
 @Component({
-  selector: 'app-event-page',
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RichTextComponent, StoryBlokImagePipe, LayoutModule, AppDatePipe, AsyncPipe],
-  templateUrl: './event-page.component.html',
-  styleUrl: './event-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-event-page',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [RichTextComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe],
+    templateUrl: './event-page.component.html',
+    styleUrl: './event-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventPageComponent implements OnInit, AfterViewInit {
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
@@ -38,7 +38,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute, 
     private contentService: ContentService, 
-    private breakpointObserver: BreakpointObserver,
+    // private breakpointObserver: BreakpointObserver,
     private meta: Meta,
     private store: Store
   ) {}
@@ -53,12 +53,12 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.swiperRef?.nativeElement) {
       Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);
-      this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
-        Object.assign(this.swiperRef?.nativeElement, {
-          ...this.swiperConfig, 
-          slidesPerView: state.matches ? 1 : (this.event?.images?.length ?? 0) > 1 ? 2 : 1
-        })
-      });
+      // this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
+      //   Object.assign(this.swiperRef?.nativeElement, {
+      //     ...this.swiperConfig, 
+      //     slidesPerView: state.matches ? 1 : (this.event?.images?.length ?? 0) > 1 ? 2 : 1
+      //   })
+      // });
     }
   }
 }

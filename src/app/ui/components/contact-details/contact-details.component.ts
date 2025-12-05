@@ -11,11 +11,11 @@ import { selectContactItems } from '../../../core/store/content.selectors';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-contact-details',
-  standalone: true,
-  imports: [FaIconComponent, AsyncPipe],
-  templateUrl: './contact-details.component.html',
-  styleUrl: './contact-details.component.scss'
+    selector: 'app-contact-details',
+    standalone: true,
+    imports: [FaIconComponent, AsyncPipe],
+    templateUrl: './contact-details.component.html',
+    styleUrl: './contact-details.component.scss'
 })
 export class ContactDetailsComponent {
   iconsContactTypesMap: { [key: string]: IconDefinition } = {

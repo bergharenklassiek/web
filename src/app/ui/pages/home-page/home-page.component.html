@@ -7,9 +7,16 @@
         {{ homePage.content.headerTextShort }}
       </div>
       @if (events$ | async; as events) {
-        <div class="app-home-page__events" [ngClass]="{'app-home-page__events--centered': events.length === 1 }" (scroll)="onScroll($event)" id="scroll-list">
-          @for (event of events; track $index) {
-            <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
+        <div class="app-home-page__events" [ngClass]="{'app-home-page__events--centered': events.length <= 1 }" (scroll)="onScroll($event)" id="scroll-list">
+          @if (events.length === 0) {
+            <div class="app-home-page__events__no-events-message">
+              <strong>We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!</strong>
+            </div>
+          }
+          @else {
+            @for (event of events; track $index) {
+              <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
+            }
           }
         </div>
       }

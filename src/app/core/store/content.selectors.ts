@@ -24,3 +24,4 @@ export const selectEvent = (eventSlug: string) => createSelector(
 );
 
 export const selectDisplayPastEvents = createSelector(selectContent, (state) => state.displayPastEvents);
+export const selectEventsLoaded = (pastEvents: boolean) => createSelector(selectContent, (state) => pastEvents ? state.eventsLoaded.past : state.eventsLoaded.future);

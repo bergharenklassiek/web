@@ -1,10 +1,11 @@
 import { inject } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { filter, map, mergeMap } from "rxjs";
+import { filter, map, mergeMap, } from "rxjs";
+import { concatLatestFrom } from '@ngrx/operators';
 import { ContentService } from "../services/content.service";
 import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
-import { selectAboutPage, selectContentPage, selectEvent, selectEvents } from "./content.selectors";
+import { selectAboutPage, selectContentPage, selectEvent, selectEvents, selectEventsLoaded, } from "./content.selectors";
 
 export const loadHomePageEffect = createEffect(
     (actions$ = inject(Actions), contentService = inject(ContentService)) => {
@@ -64,11 +65,10 @@ export const loadEventsEffect = createEffect(
     (actions$ = inject(Actions), store = inject(Store), contentService = inject(ContentService)) => {
         return actions$.pipe(
             ofType(loadEvents),
-            mergeMap((action) => store.select(selectEvents(action ? action.loadPast : false)).pipe(
-                filter(events => events.length <= 1),
-                mergeMap(() => contentService.loadEvents(action.loadPast).pipe(
-                    map((events) => loadEventsSuccess({ events })),
-                ))
+            concatLatestFrom((action) => [store.select(selectEventsLoaded(action.loadPast))]),
+            filter(([_, eventsLoaded]) => !eventsLoaded),
+            mergeMap(([action, _]) => contentService.loadEvents(action.loadPast).pipe(
+                map((events) => loadEventsSuccess({ events, pastEvents: action.loadPast })),
             ))
         )
     },
