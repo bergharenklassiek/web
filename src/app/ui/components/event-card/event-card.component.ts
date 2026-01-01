@@ -4,11 +4,12 @@ import { Event } from '../../../core/models/event';
 import { Story } from '../../../core/models/story';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
     selector: 'app-event-card',
     standalone: true,
-    imports: [StoryBlokImagePipe, RouterModule, AppDatePipe],
+    imports: [StoryBlokImagePipe, RouterModule, AppDatePipe, NgOptimizedImage],
     templateUrl: './event-card.component.html',
     styleUrl: './event-card.component.scss'
 })
