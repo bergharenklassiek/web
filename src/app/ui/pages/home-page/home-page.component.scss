@@ -28,7 +28,11 @@
     &__events {
         overflow-y: hidden;
         display: flex;
+        gap: $space-default;
+        padding: 0 $space-default;
+
         @media (width <= 600px) {
+            gap: $space-default-mobile;
             padding: 0 $space-default-mobile;
         }
         
