@@ -20,17 +20,15 @@
           }
         </div>
       }
-      @defer {
-        <div class="app-home-page__teaser-video">
-          <iframe
-              src="https://tube.rvere.com/embed?v=Iu5zm53P3Ak"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen>
-          </iframe>
-        </div>
-      }
+      <div class="app-home-page__teaser-video">
+        <iframe
+            src="https://tube.rvere.com/embed?v=Iu5zm53P3Ak"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen>
+        </iframe>
+      </div>
       <div class="app-home-page__about">
         <app-rich-text [richText]="homePage.content.aboutTeaser"></app-rich-text>
       </div>
