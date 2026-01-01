@@ -1,11 +1,22 @@
 <a [routerLink]="['/agenda', story.slug]">
     <div class="app-event-card">
-        <img 
-            class="app-event-card__image" 
-            alt="{{ story.content.images[0].alt }}" 
-            src="{{ story.content.images[0] | storyBlokImage : 400 : 180 }}" 
-            loading="{{ cardIndex === 0 ? 'eager' : 'lazy' }}"
-        >
+        @if (cardIndex === 0) {
+            <img 
+                class="app-event-card__image" 
+                alt="{{ story.content.images[0].alt }}" 
+                src="{{ story.content.images[0] | storyBlokImage : 400 : 180 }}" 
+                loading="eager"
+                fetchpriority="high"
+            >
+        } @else {
+            <img 
+                class="app-event-card__image" 
+                alt="{{ story.content.images[0].alt }}" 
+                src="{{ story.content.images[0] | storyBlokImage : 400 : 180 }}" 
+                loading="lazy"
+                fetchpriority="low"
+            >
+        }
         <div class="app-event-card__text-wrapper">
             <div class="app-event-card__text-wrapper__text">
                 <span>{{ story.content.date | appDate }}</span>
