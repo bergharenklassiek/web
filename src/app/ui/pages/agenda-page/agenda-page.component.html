@@ -11,8 +11,15 @@
             @for (story of events; track $index) {
                 <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
                     <div class="app-agenda-page__item">
+                        <img 
+                            [src]="story.content.images.length ? (story.content.images[0] | storyBlokImage : 200 : 80) : '/full-logo-BK.png'" 
+                            [alt]="story.content.images.length ? story.content.images[0].alt : 'Logo of Bergharen Klassiek'" 
+                            loading="lazy"
+                        />                
                         @if (story.content.images.length) {
-                            <img src="{{ story.content.images[0] | storyBlokImage : 200 : 80 }}" alt="{{ story.content.images[0].alt }}" loading="lazy"/>                
+                        } 
+                        @else {
+
                         }
                         <div class="app-agenda-page__item__text">
                             <span>{{ story.content.date | appDate : 'year' }}</span>
