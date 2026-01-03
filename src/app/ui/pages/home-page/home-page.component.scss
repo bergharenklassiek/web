@@ -58,10 +58,26 @@
         }
     }
 
-    &__teaser-video {
-        padding: 0 20%;
+    &__about {
+        margin: 0 20%;
+        padding: $space-default;
+        border-radius: $space-default;
+        text-align: center;
+        background-color: $secondaryYellow;
         @media (width <= 600px) {
             margin: 0 $space-default-mobile;
+            padding: $space-default-mobile;
+            border-radius: $space-default-mobile;
+        }
+    }
+
+    &__teaser-video {
+        padding: 0 20%;
+        margin-bottom: $space-default;
+
+        @media (width <= 600px) {
+            margin: 0 $space-default-mobile;
+            margin-bottom: $space-default-mobile;
             padding: 0;
         }
         
@@ -69,19 +85,6 @@
             width: 100%;
             min-height: 300px;
             height: 100%;
-            border-radius: $space-default-mobile;
-        }
-    }
-
-    &__about {
-        margin: 0 20% $space-default;
-        padding: $space-default;
-        border-radius: $space-default;
-        text-align: center;
-        background-color: $secondaryYellow;
-        @media (width <= 600px) {
-            margin: 0 $space-default-mobile $space-default-mobile $space-default-mobile;
-            padding: $space-default-mobile;
             border-radius: $space-default-mobile;
         }
     }
