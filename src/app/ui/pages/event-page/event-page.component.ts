@@ -56,7 +56,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
       map(event => {
         const subject = `Reservering voor ${event.title}`;
         const body = `Hallo,\n\nIk wil graag een reservering maken voor het concert: ${event.title} op ${this.appDatePipe.transform(event.date)} voor [aantal personen] personen.\n\nMet vriendelijke groet,\n[Je naam]`;
-        return `mailto:kees_joosse@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        return `mailto:bergharen.klassiek@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       })
     );
 
