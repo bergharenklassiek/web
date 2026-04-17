@@ -21,13 +21,36 @@
     }
 
     &__title {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
         padding: 0px 20%;
+
         @media (width <= 800px) {
+            grid-template-columns: auto;
             padding: 0 $space-default-mobile;
         }
         
         h2 {
             margin: 0;
+        }
+        
+        &__reservation-button {
+            height: min-content;
+            color: red;
+            padding: 10px;
+            background-color: $primaryRed;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 12px #83838326, 0 0 4px #8383834f;
+            
+            a {
+                color: white;
+                text-decoration: none;
+            }
         }
     }
 

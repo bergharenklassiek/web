@@ -1,10 +1,10 @@
 // import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import { SwiperOptions } from 'swiper/types';
 import { Event } from '../../../core/models/event';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
@@ -18,12 +18,15 @@ import { RichTextComponent } from '../../components/rich-text/rich-text.componen
     selector: 'app-event-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RichTextComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe],
+    imports: [RichTextComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe,],
+    providers: [AppDatePipe],
     templateUrl: './event-page.component.html',
     styleUrl: './event-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventPageComponent implements OnInit, AfterViewInit {
+  appDatePipe = inject(AppDatePipe);
+
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
   swiperConfig: SwiperOptions = {
     autoplay: true,
@@ -34,12 +37,13 @@ export class EventPageComponent implements OnInit, AfterViewInit {
 
   event?: Event;
   event$?: Observable<Event | undefined>;
+  reservationLink$?: Observable<string>;
   
   constructor(
     private route: ActivatedRoute, 
-    private contentService: ContentService, 
+    // private contentService: ContentService, 
     // private breakpointObserver: BreakpointObserver,
-    private meta: Meta,
+    // private meta: Meta,
     private store: Store
   ) {}
   
@@ -47,6 +51,15 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     const slug = this.route.snapshot.paramMap.get('event-slug')!;
     this.store.dispatch(loadEvent({ eventSlug: slug }));
     this.event$ = this.store.pipe(select(selectEvent(slug)));
+    this.reservationLink$ = this.event$.pipe(
+      filter((event): event is Event => !!event),
+      map(event => {
+        const subject = `Reservering voor ${event.title}`;
+        const body = `Hallo,\n\nIk wil graag een reservering maken voor het concert: ${event.title} op ${this.appDatePipe.transform(event.date)} voor [aantal personen] personen.\n\nMet vriendelijke groet,\n[Je naam]`;
+        return `mailto:kees_joosse@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      })
+    );
+
     // this.meta.updateTag({ name: 'description', content: this.event?.summary });
   }
   
