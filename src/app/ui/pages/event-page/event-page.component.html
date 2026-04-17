@@ -48,9 +48,7 @@
                 <h2>{{ event.title }}</h2>
                 <div>{{ event.date | appDate }}</div>
             </span>
-            <div class="app-event-page__title__reservation-button">
-                <a [href]="reservationLink$ | async">Reserveer nu</a>
-            </div>
+            <a class="app-event-page__title__reservation-button" [href]="reservationLink$ | async">Reserveer nu</a>
         </div>
         <div class="app-event-page__description">
             <app-rich-text [richText]="event.description"></app-rich-text>
