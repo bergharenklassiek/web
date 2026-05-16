@@ -1,9 +1,9 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-footer {
     display: grid;
     min-height: 100px;
-    background-color: $secondaryGrey;
+    background-color: vars.$secondaryGrey;
     text-align: center;
     justify-content: center;
     align-items: center;

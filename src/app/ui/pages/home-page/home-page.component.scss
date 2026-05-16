@@ -1,18 +1,18 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-home-page {
     display: grid;
-    gap: $space-default;
+    gap: vars.$space-default;
     @media (width <= 600px) {
-        gap: $space-default-mobile;
+        gap: vars.$space-default-mobile;
     }
 
     &__header {
-        padding: $space-default 30% 0 30%;
+        padding: vars.$space-default 30% 0 30%;
         text-align: center;
         @media (width <= 600px) {
             display: none;
-            padding: $space-default-mobile;
+            padding: vars.$space-default-mobile;
         }
     }
     
@@ -21,19 +21,19 @@
         @media (width <= 600px) {
             display: block;
             text-align: center;
-            padding: $space-default-mobile $space-default-mobile * 2 0 $space-default-mobile * 2;
+            padding: vars.$space-default-mobile vars.$space-default-mobile * 2 0 vars.$space-default-mobile * 2;
         }
     }
 
     &__events {
         overflow-y: hidden;
         display: flex;
-        gap: $space-default;
-        padding: 0 $space-default;
+        gap: vars.$space-default;
+        padding: 0 vars.$space-default;
 
         @media (width <= 600px) {
-            gap: $space-default-mobile;
-            padding: 0 $space-default-mobile;
+            gap: vars.$space-default-mobile;
+            padding: 0 vars.$space-default-mobile;
         }
         
         &--centered {
@@ -41,11 +41,11 @@
         }
         
         &__items {
-            padding: 0 $space-default;
-            gap: $space-default;
+            padding: 0 vars.$space-default;
+            gap: vars.$space-default;
             @media (width <= 600px) {
-                gap: $space-default-mobile;
-                padding: 0 $space-default-mobile;
+                gap: vars.$space-default-mobile;
+                padding: 0 vars.$space-default-mobile;
             }
         }
 
@@ -53,31 +53,31 @@
             text-align: center;
             margin: 0 20%;
             @media (width <= 600px) {
-                margin: 0 $space-default-mobile $space-default-mobile $space-default-mobile;
+                margin: 0 vars.$space-default-mobile vars.$space-default-mobile vars.$space-default-mobile;
             }
         }
     }
 
     &__about {
         margin: 0 20%;
-        padding: $space-default;
-        border-radius: $space-default;
+        padding: vars.$space-default;
+        border-radius: vars.$space-default;
         text-align: center;
-        background-color: $secondaryYellow;
+        background-color: vars.$secondaryYellow;
         @media (width <= 600px) {
-            margin: 0 $space-default-mobile;
-            padding: $space-default-mobile;
-            border-radius: $space-default-mobile;
+            margin: 0 vars.$space-default-mobile;
+            padding: vars.$space-default-mobile;
+            border-radius: vars.$space-default-mobile;
         }
     }
 
     &__teaser-video {
         padding: 0 20%;
-        margin-bottom: $space-default;
+        margin-bottom: vars.$space-default;
 
         @media (width <= 600px) {
-            margin: 0 $space-default-mobile;
-            margin-bottom: $space-default-mobile;
+            margin: 0 vars.$space-default-mobile;
+            margin-bottom: vars.$space-default-mobile;
             padding: 0;
         }
         
@@ -85,7 +85,7 @@
             width: 100%;
             min-height: 300px;
             height: 100%;
-            border-radius: $space-default-mobile;
+            border-radius: vars.$space-default-mobile;
         }
     }
 }

@@ -1,10 +1,10 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-event-page {
     &__images {
-        padding: $space-default 200px;
+        padding: vars.$space-default 200px;
         @media (width <= 800px) {
-            padding: $space-default-mobile;
+            padding: vars.$space-default-mobile;
         }
 
         &--single {
@@ -12,7 +12,7 @@
         }
         
         &__image {
-            border-radius: 20px;
+            border-radius: vars.$space-default;
             overflow: hidden;
             object-fit: cover;
             height: 300px;
@@ -23,12 +23,12 @@
     &__title {
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: 20px;
+        gap: vars.$space-default;
         padding: 0px 20%;
 
         @media (width <= 800px) {
             grid-template-columns: auto;
-            padding: 0 $space-default-mobile;
+            padding: 0 vars.$space-default-mobile;
         }
         
         h2 {
@@ -39,8 +39,8 @@
             height: min-content;
             color: red;
             padding: 10px;
-            background-color: $primaryRed;
-            border-radius: 20px;
+            background-color: vars.$primaryRed;
+            border-radius: vars.$space-default;
             color: white;
             text-align: center;
             font-weight: bold;
@@ -52,9 +52,9 @@
     }
 
     &__description {
-        padding: 0 20% $space-default;
+        padding: 0 20% vars.$space-default;
         @media (width <= 800px) {
-            padding: 0 $space-default-mobile;
+            padding: 0 vars.$space-default-mobile;
         }
     }
 }

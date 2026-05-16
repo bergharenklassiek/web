@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as vars;
 
 a {
     text-decoration: none;
@@ -7,7 +7,7 @@ a {
 
 .app-event-card {
     border-radius: 20px;
-    background-color: $secondaryPink;
+    background-color: vars.$secondaryPink;
     width: 300px;
     display: flex;
     flex-flow: column;
@@ -39,7 +39,7 @@ a {
             display: grid;
             gap: 10px;
             text-wrap: wrap;
-            color: $primaryBlue;
+            color: vars.$primaryBlue;
     
             &__title {
                 font-weight: bold;
@@ -65,7 +65,7 @@ a {
         &__button {
             width: 40%;
             padding: 10px;
-            background-color: $primaryRed;
+            background-color: vars.$primaryRed;
             border-radius: 20px;
             color: white;
             text-align: center;
