@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-agenda-page {
     padding: 20px;
@@ -15,8 +15,8 @@
 
         &__button {
             padding: 10px;
-            background-color: $secondaryPink;
-            color: $primaryBlue;
+            background-color: vars.$secondaryPink;
+            color: vars.$primaryBlue;
             border-radius: 20px;
             text-align: center;
             font-weight: bold;
@@ -25,19 +25,19 @@
             
             &--checked {
                 color: white;
-                background-color: $primaryRed;
+                background-color: vars.$primaryRed;
             }
         }
     }
     
     a {
         text-decoration: none;
-        color: $primaryBlue;
+        color: vars.$primaryBlue;
     }
 
     &__item {
         height: 80px;
-        background-color: $secondaryPink;
+        background-color: vars.$secondaryPink;
         border-radius: 20px;
         overflow: hidden;
         display: grid;

@@ -1,10 +1,10 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-content-page {
     &__images {
-        padding: $space-default 200px;
+        padding: vars.$space-default 200px;
         @media (width <= 800px) {
-            padding: $space-default-mobile;
+            padding: vars.$space-default-mobile;
         }
 
         &--single {
@@ -24,14 +24,14 @@
         margin: 0;
         padding: 0 200px 0;
         @media (width <= 800px) {
-            padding: 0 $space-default-mobile 0;
+            padding: 0 vars.$space-default-mobile 0;
         }
     }
 
     &__description {
-        padding: 0 200px $space-default;
+        padding: 0 200px vars.$space-default;
         @media (width <= 800px) {
-            padding: 0 $space-default-mobile $space-default-mobile;
+            padding: 0 vars.$space-default-mobile vars.$space-default-mobile;
         }
 
         ::ng-deep {

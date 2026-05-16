@@ -1,9 +1,9 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-contact-page {
-    padding: $space-default;
+    padding: vars.$space-default;
 
     @media (width <= 600px) {
-        padding: $space-default-mobile;
+        padding: vars.$space-default-mobile;
     }
 }

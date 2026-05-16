@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as vars;
 
 .app-contact-details {
     font-size: 14px;
@@ -21,7 +21,7 @@
         padding: 0 20px;
 
         a {
-            color: $primaryBlue;
+            color: vars.$primaryBlue;
         }
     }
 }
