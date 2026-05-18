@@ -1,0 +1,35 @@
+@use 'sass:map';
+
+$font-variations: (
+  Regular: (
+    weight: 400,
+    style: normal
+  ),
+  Light: (
+    weight: 300,
+    style: normal
+  ),
+  Medium: (
+    weight: 500,
+    style: normal
+  ),
+  SemiBold: (
+    weight: 600,
+    style: normal
+  ),
+  Bold: (
+    weight: 700,
+    style: normal
+  ),
+);
+
+@each $variation, $properties in $font-variations {
+    @font-face {
+        font-family: 'Comfortaa';
+        font-style: map.get($properties, style);
+        font-weight: map.get($properties, weight);
+        src: 
+        url('../assets/fonts/Comfortaa-#{$variation}.ttf') format('truetype');
+        font-display: swap;
+    }
+}
