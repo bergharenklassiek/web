@@ -6,7 +6,7 @@
             ngSrc="{{ story.content.images.length ? (story.content.images[0] | storyBlokImage : 300 : 180) : '/full-logo-BK.png' }}"
             width="300"
             height="180"
-            [priority]="cardIndex === 0"
+            [priority]="cardIndex === 0 || cardIndex === 1"
         />
         <div class="app-event-card__text-wrapper">
             <div class="app-event-card__text-wrapper__text">
