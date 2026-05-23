@@ -32,6 +32,7 @@
     "@netlify/functions": "^5.1.0",
     "@ngrx/effects": "21.1.0",
     "@ngrx/operators": "^21.1.0",
+    "@ngrx/signals": "^21.1.0",
     "@ngrx/store": "^21.1.0",
     "@ngrx/store-devtools": "^21.1.0",
     "@storyblok/js": "^3.0.7",

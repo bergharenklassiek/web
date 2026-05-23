@@ -1,40 +1,67 @@
 <div class="app-home-page">
-    @if (homePage()) {
-      @let hp = homePage()!;
-      <div class="app-home-page__header">
-        {{ hp?.content?.headerText }}
-      </div>
-      <div class="app-home-page__header-short">
-        {{ hp?.content?.headerTextShort }}
-      </div>
-      @if (events()) {
-        @let evts = events()!;
-        <div class="app-home-page__events" [class.app-home-page__events--centered]="evts.length <= 1" id="scroll-list">
-          @if (evts.length > 0) {
-            @for (event of evts; track event.id) {
-              <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
-            }
-          }
-          @else if (evts.length === 0) {
-            <div class="app-home-page__events__no-events-message">
-              <strong>We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!</strong>
-            </div>
-          }
-        </div>
+  @let evts = events();
+
+  <div class="app-home-page__header">
+    @if (homePage && homePage()) {
+      {{ homePage()!.headerText }}
+    }
+    @else {
+      <span class="app-home-page__skeleton-line"></span>
+    }
+  </div>
+
+  <div class="app-home-page__header-short">
+    @if (homePage && homePage()) {
+      {{ homePage()!.headerTextShort }}
+    }
+    @else {
+      <span class="app-home-page__skeleton-line app-home-page__skeleton-line--short"></span>
+    }
+  </div>
+
+  <div class="app-home-page__events" [class.app-home-page__events--centered]="!!evts && evts.length <= 1" id="scroll-list">
+    @if (evts) {
+      @if (evts.length > 0) {
+        @for (event of evts; track event.id) {
+          <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
+        }
       }
-      <div class="app-home-page__about">
-        <app-rich-text [richText]="hp?.content?.aboutTeaser"></app-rich-text>
-      </div>
-      @defer {
-        <div class="app-home-page__teaser-video">
-          <iframe
-              src="https://tube.rvere.com/embed?v=Iu5zm53P3Ak"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen>
-          </iframe>
+      @else {
+        <div class="app-home-page__events__no-events-message">
+          <strong>We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!</strong>
         </div>
       }
     }
+    @else {
+      @for (placeholder of [0, 1, 2]; track placeholder) {
+        <div class="app-home-page__events-loading-card"></div>
+      }
+    }
   </div>
+
+  <div class="app-home-page__about">
+    @if (homePage && homePage()?.aboutTeaser) {
+      <app-rich-text [richText]="homePage()!.aboutTeaser"></app-rich-text>
+    }
+    @else {
+      <span class="app-home-page__skeleton-line app-home-page__skeleton-line--about"></span>
+    }
+  </div>
+
+  @defer {
+    <div class="app-home-page__teaser-video">
+      <iframe
+          src="https://tube.rvere.com/embed?v=Iu5zm53P3Ak"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen>
+      </iframe>
+    </div>
+  }
+  @placeholder {
+    <div class="app-home-page__teaser-video app-home-page__teaser-video--placeholder">
+      <div class="app-home-page__video-skeleton"></div>
+    </div>
+  }
+</div>

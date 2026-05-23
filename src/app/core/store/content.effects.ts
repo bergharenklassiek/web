@@ -4,18 +4,8 @@ import { Store } from "@ngrx/store";
 import { filter, map, mergeMap, } from "rxjs";
 import { concatLatestFrom } from '@ngrx/operators';
 import { ContentService } from "../services/content.service";
-import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
+import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess } from "./content.actions";
 import { selectAboutPage, selectContentPage, selectEvent, selectEventsLoaded } from "./content.selectors";
-
-export const loadHomePageEffect = createEffect(
-    (actions$ = inject(Actions), contentService = inject(ContentService)) => {
-        return actions$.pipe(
-            ofType(ROOT_EFFECTS_INIT),
-            map(() => loadHomePageSuccess({ homePage: contentService.homePage() }))
-        )
-    },
-    { functional: true }
-);
 
 export const loadAboutPageEffect = createEffect(
     (actions$ = inject(Actions), store = inject(Store), contentService = inject(ContentService)) => {

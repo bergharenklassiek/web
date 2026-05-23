@@ -30,6 +30,6 @@ $font-variations: (
         font-weight: map.get($properties, weight);
         src: 
         url('../assets/fonts/Comfortaa-#{$variation}.ttf') format('truetype');
-        font-display: swap;
+      font-display: optional;
     }
 }
