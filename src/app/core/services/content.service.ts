@@ -49,4 +49,10 @@ export class ContentService {
       .get<{ stories: Story<Event>[] }>(`${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:${past ? 'desc' : 'asc'}&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&${this.token}`)
       .pipe(map((response) => response.stories));
   }
+
+  eventsResource = httpResource<{ stories: Story<Event>[] }>(() => `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:asc&filter_query[date][gt_date]=${new Date().toISOString().split('T')[0]}&${this.token}`);
+  events = computed(() => this.eventsResource.value()?.stories);
+
+  pastEventsResource = httpResource<{ stories: Story<Event>[] }>(() => `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:desc&filter_query[date][lt_date]=${new Date().toISOString().split('T')[0]}&${this.token}`);
+  pastEvents = computed(() => this.pastEventsResource.value()?.stories);
 }

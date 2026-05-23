@@ -16,6 +16,6 @@ export class HomePageComponent {
   private readonly store = inject(Store);
   private readonly contentService = inject(ContentService);
 
-  events$ = this.store.pipe(select(selectEvents(false)));
   homePage = this.contentService.homePage;
+  events = this.contentService.events;
 }
