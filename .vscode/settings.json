@@ -1,0 +1,21 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.addMissingImports": "explicit",
+        "source.removeUnusedImports": "always"
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "html"
+    ],
+    "eslint.options": {
+        "cache": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveWhenNoErrors": true,
+    "files.autoSaveDelay": 1000,
+    "js/ts.preferences.importModuleSpecifier": "non-relative"
+}

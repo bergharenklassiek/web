@@ -5,7 +5,7 @@ import { filter, map, mergeMap, } from "rxjs";
 import { concatLatestFrom } from '@ngrx/operators';
 import { ContentService } from "../services/content.service";
 import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess } from "./content.actions";
-import { selectAboutPage, selectContentPage, selectEvent, selectEvents, selectEventsLoaded, } from "./content.selectors";
+import { selectAboutPage, selectContentPage, selectEvent, selectEventsLoaded } from "./content.selectors";
 
 export const loadHomePageEffect = createEffect(
     (actions$ = inject(Actions), contentService = inject(ContentService)) => {

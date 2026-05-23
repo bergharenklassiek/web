@@ -1,5 +1,5 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { HomePage } from '../models/home-page';
 import { Event } from '../models/event';
 import { Story } from '../models/story';
