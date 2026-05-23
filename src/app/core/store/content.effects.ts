@@ -11,9 +11,7 @@ export const loadHomePageEffect = createEffect(
     (actions$ = inject(Actions), contentService = inject(ContentService)) => {
         return actions$.pipe(
             ofType(ROOT_EFFECTS_INIT),
-            mergeMap(() => contentService.loadHomePage().pipe(
-                map((homePage) => loadHomePageSuccess({ homePage }))
-            ))
+            map(() => loadHomePageSuccess({ homePage: contentService.homePage() }))
         )
     },
     { functional: true }
