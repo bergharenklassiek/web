@@ -29,7 +29,7 @@ $font-variations: (
         font-style: map.get($properties, style);
         font-weight: map.get($properties, weight);
         src: 
-        url('../assets/fonts/Comfortaa-#{$variation}.ttf') format('truetype');
-      font-display: optional;
+        url('/fonts/Comfortaa-#{$variation}.ttf') format('truetype');
+        font-display: swap;
     }
 }
