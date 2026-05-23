@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HomePage } from '../models/home-page';
 import { Event } from '../models/event';
 import { Story } from '../models/story';
@@ -12,16 +12,13 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ContentService {
+  private readonly http = inject(HttpClient);
+
   private storyblokBaseUrl = 'https://api.storyblok.com/v2/cdn';
   private token = 'token=acu9a7B7tQrUQ6dr0rQTqgtt';
 
-  constructor(private http: HttpClient) { }
-
-  loadHomePage(): Observable<Story<HomePage>> {
-    return this.http
-      .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
-      .pipe(map((response) => response.story));
-  }
+  homePageResource = httpResource<{ story: Story<HomePage> }>(() => `${this.storyblokBaseUrl}/stories/home?${this.token}`);
+  homePage = computed(() => this.homePageResource.value()?.story);
 
   loadAboutPage(): Observable<Story<AboutPage>> {
     return this.http

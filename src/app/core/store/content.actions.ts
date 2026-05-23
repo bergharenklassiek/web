@@ -6,7 +6,7 @@ import { ContactItem } from "../models/contact-item";
 import { AboutPage } from "../models/about-page";
 import { ContentPage } from "../models/content-page";
 
-export const loadHomePageSuccess = createAction('[Content] Load homepage success', props<{ homePage: Story<HomePage> }>());
+export const loadHomePageSuccess = createAction('[Content] Load homepage success', props<{ homePage?: Story<HomePage> }>());
 export const loadContactItemsSuccess = createAction('[Content] Load contact items success', props<{ contactItems: Story<ContactItem>[] }>());
 
 export const loadAboutPage = createAction('[Content] Load about page');

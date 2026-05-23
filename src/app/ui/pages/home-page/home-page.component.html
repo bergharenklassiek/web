@@ -1,10 +1,11 @@
 <div class="app-home-page">
-    @if (homePage$ | async; as homePage) {
+    @if (homePage()) {
+      @let hp = homePage()!;
       <div class="app-home-page__header">
-        {{ homePage.content.headerText }}
+        {{ hp?.content?.headerText }}
       </div>
       <div class="app-home-page__header-short">
-        {{ homePage.content.headerTextShort }}
+        {{ hp?.content?.headerTextShort }}
       </div>
       @if (events$ | async; as events) {
         <div class="app-home-page__events" [class.app-home-page__events--centered]="events.length <= 1" id="scroll-list">
@@ -21,7 +22,7 @@
         </div>
       }
       <div class="app-home-page__about">
-        <app-rich-text [richText]="homePage.content.aboutTeaser"></app-rich-text>
+        <app-rich-text [richText]="hp?.content?.aboutTeaser"></app-rich-text>
       </div>
       @defer {
         <div class="app-home-page__teaser-video">
