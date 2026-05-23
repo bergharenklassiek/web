@@ -17,8 +17,15 @@ export class ContentService {
   private storyblokBaseUrl = 'https://api.storyblok.com/v2/cdn';
   private token = 'token=acu9a7B7tQrUQ6dr0rQTqgtt';
 
-  homePageResource = httpResource<{ story: Story<HomePage> }>(() => `${this.storyblokBaseUrl}/stories/home?${this.token}`);
-  homePage = computed(() => this.homePageResource.value()?.story);
+  // homePageResource = httpResource<{ story: Story<HomePage> }>(() => `${this.storyblokBaseUrl}/stories/home?${this.token}`);
+  // homePage = computed(() => this.homePageResource.value()?.story);
+
+  homePage(): Observable<Story<HomePage>> {
+    console.log('Loading home page content from Storyblok API');
+    return this.http
+      .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
+      .pipe(map((response) => response.story));
+  }
 
   loadAboutPage(): Observable<Story<AboutPage>> {
     return this.http
