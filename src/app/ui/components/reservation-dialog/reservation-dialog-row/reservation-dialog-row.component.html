@@ -1,3 +1,14 @@
-<div class="reservation-dialog-row">
-    {{ story().content.title }}
-</div>
+<a class="reservation-dialog-row" [href]="reservationLink(story().content)">
+    <div class="reservation-dialog-row__content">
+        <img 
+            [src]="story().content.images.length ? (story().content.images[0] | storyBlokImage : 200 : 80) : '/full-logo-BK.png'" 
+            [alt]="story().content.images.length ? story().content.images[0].alt : 'Logo of Bergharen Klassiek'" 
+            loading="lazy"
+            class="reservation-dialog-row__content__img"
+        />
+        <div class="reservation-dialog-row__content__text">
+            <div>{{ story().content.date | appDate }}</div>
+            <div><strong>{{ story().content.title }}</strong></div>
+        </div>
+    </div>
+</a>

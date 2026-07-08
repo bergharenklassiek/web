@@ -9,6 +9,8 @@
 .mat-mdc-dialog-content {
     font-size: 1rem;
     color: vars.$primaryBlue;
+    display: grid;
+    gap: 20px;
 }
 
 .reservation-dialog {

@@ -4,7 +4,7 @@
         <span class="app-agenda-page__buttons__button" [ngClass]="{'app-agenda-page__buttons__button--checked': (showPastEvents$ | async) === false }" (click)="onClick(false)">Aankomende concerten</span>
     </div>
     @if (events$ | async; as events) {
-        @if (events.length === 0) {
+        @if (events.length === 0 && (showPastEvents$ | async) === false) {
             We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!
         } 
         @else {
