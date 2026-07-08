@@ -149,8 +149,8 @@
 
     &__reservation-button {
         position: fixed;
-        bottom: vars.$space-default;
-        right: vars.$space-default;
+        bottom: max(vars.$space-default, env(safe-area-inset-bottom, 0px));
+        right: max(vars.$space-default, env(safe-area-inset-right, 0px));
         z-index: 1000;
     }
 }
