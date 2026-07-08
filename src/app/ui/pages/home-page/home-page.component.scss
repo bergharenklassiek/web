@@ -146,4 +146,11 @@
         width: 90%;
         min-height: 2.1rem;
     }
+
+    &__reservation-button {
+        position: fixed;
+        bottom: vars.$space-default;
+        right: vars.$space-default;
+        z-index: 1000;
+    }
 }

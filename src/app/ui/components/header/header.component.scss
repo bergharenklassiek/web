@@ -17,6 +17,7 @@
     &__menu-button {
         text-align: center;
         color: vars.$primaryRed;
+        cursor: pointer;
     }
 
     &__title {
@@ -43,6 +44,7 @@
         background-color: rgba(255,255,255, 0.95);
         overflow-x: hidden;
         transition: 0.15s;
+        border-radius: 50px;
     
         &--open {
             width: 50%;
@@ -56,6 +58,7 @@
             padding-top: 10px;
             padding-left: 30px;
             color: vars.$primaryRed;
+            cursor: pointer;
         }
     
         &__content {
