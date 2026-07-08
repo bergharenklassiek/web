@@ -1,0 +1,20 @@
+@use 'variables' as vars;
+
+.mat-mdc-dialog-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: vars.$primaryBlue;
+}
+
+.mat-mdc-dialog-content {
+    font-size: 1rem;
+    color: vars.$primaryBlue;
+    display: grid;
+    gap: 20px;
+}
+
+.reservation-dialog {
+    &__close-button {
+        cursor: pointer;
+    }
+}

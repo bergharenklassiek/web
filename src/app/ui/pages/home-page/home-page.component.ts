@@ -5,10 +5,11 @@ import { ContentService } from '../../../core/services/content.service';
 import { Dispatcher } from '@ngrx/signals/events';
 import { ContentStore } from '../../../core/store-v2/content.store';
 import { loadHomePage } from '../../../core/store-v2/content.events';
+import { ReservationButtonComponent } from '../../components/reservation-button/reservation-button.component';
 
 @Component({
     selector: 'app-home-page',
-    imports: [EventCardComponent, RichTextComponent],
+    imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent],
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.scss',
 })

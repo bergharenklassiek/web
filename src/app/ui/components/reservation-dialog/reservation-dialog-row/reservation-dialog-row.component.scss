@@ -1,0 +1,29 @@
+@use 'variables' as vars;
+
+.reservation-dialog-row {
+    color: inherit;
+    text-decoration: none;
+    
+    &__content {
+        height: 80px;
+        background-color: vars.$secondaryPink;
+        border-radius: 20px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+    
+        &__img {
+            height: 80px;
+            width: 100%;
+            object-fit: cover;
+            background-color: white;
+        }
+    
+        &__text {
+            font-size: 14px;
+            padding: 5px 10px;
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@use 'variables' as vars;
+
+.reservation-button {
+    background-color: vars.$primaryRed;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 12px rgba(131, 131, 131, 0.1490196078), 0 0 4px rgba(131, 131, 131, 0.3098039216);
+}

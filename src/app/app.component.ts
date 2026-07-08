@@ -8,11 +8,13 @@ import { scrollLeftKey } from './app.config';
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
 import { Store } from '@ngrx/store';
 import { loadEvents } from './core/store/content.actions';
+import { AppDatePipe } from './core/pipes/app-date.pipe';
 
 @Component({
     selector: 'app-root',
     standalone: true,
     imports: [RouterOutlet, HeaderComponent, FooterComponent],
+    providers: [AppDatePipe],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

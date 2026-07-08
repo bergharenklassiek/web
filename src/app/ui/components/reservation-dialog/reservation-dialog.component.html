@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Reserveer</h2>
+<mat-dialog-content>
+    @if (events()) {
+        @for (story of events()!; track story.id) {
+            <app-reservation-dialog-row [story]="story" />
+        }
+    }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="reservation-dialog__close-button" matButton [mat-dialog-close]="true" cdkFocusInitial>Sluiten</div>
+</mat-dialog-actions>

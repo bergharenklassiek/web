@@ -1,7 +1,6 @@
 // import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map, Observable } from 'rxjs';
@@ -9,23 +8,22 @@ import { SwiperOptions } from 'swiper/types';
 import { Event } from '../../../core/models/event';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
-import { ContentService } from '../../../core/services/content.service';
 import { loadEvent } from '../../../core/store/content.actions';
 import { selectEvent } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
+import { ReservationLinkService } from '../../../core/services/reservation-link.service';
 
 @Component({
     selector: 'app-event-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [RichTextComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe,],
-    providers: [AppDatePipe],
     templateUrl: './event-page.component.html',
     styleUrl: './event-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventPageComponent implements OnInit, AfterViewInit {
-  appDatePipe = inject(AppDatePipe);
+  reservationLinkService = inject(ReservationLinkService);
 
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
   swiperConfig: SwiperOptions = {
@@ -53,11 +51,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     this.event$ = this.store.pipe(select(selectEvent(slug)));
     this.reservationLink$ = this.event$.pipe(
       filter((event): event is Event => !!event),
-      map(event => {
-        const subject = `Reservering voor ${event.title}`;
-        const body = `Hallo,\n\nIk wil graag een reservering maken voor het concert: ${event.title} op ${this.appDatePipe.transform(event.date)} voor [aantal personen] personen.\n\nMet vriendelijke groet,\n[Je naam]`;
-        return `mailto:bergharenklassiek@outlook.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      })
+      map(event => this.reservationLinkService.formatReservationLink(event))
     );
 
     // this.meta.updateTag({ name: 'description', content: this.event?.summary });
