@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 import { ISbRichtext, renderRichText, storyblokInit } from '@storyblok/js';
 
 @Component({
@@ -8,12 +8,16 @@ import { ISbRichtext, renderRichText, storyblokInit } from '@storyblok/js';
     styleUrls: ['./rich-text.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class RichTextComponent implements OnInit {
+export class RichTextComponent implements OnChanges {
   @Input() richText?: ISbRichtext;
   richTextFormatted?: string;
 
-  ngOnInit(): void {
+  constructor() {
     storyblokInit({ accessToken: 'acu9a7B7tQrUQ6dr0rQTqgtt' });
+  }
+
+  // Re-render on every input change, the host component may be reused for different content (e.g. navigating between events)
+  ngOnChanges(): void {
     this.richTextFormatted = renderRichText(this.richText);
   }
 }
