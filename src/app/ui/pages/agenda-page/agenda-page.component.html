@@ -9,24 +9,7 @@
         } 
         @else {
             @for (story of events; track $index) {
-                <a [routerLink]="['/agenda', story.slug ]" routerLinkActive="active">
-                    <div class="app-agenda-page__item">
-                        <img 
-                            [src]="story.content.images.length ? (story.content.images[0] | storyBlokImage : 200 : 80) : '/full-logo-BK.png'" 
-                            [alt]="story.content.images.length ? story.content.images[0].alt : 'Logo of Bergharen Klassiek'" 
-                            loading="lazy"
-                        />                
-                        @if (story.content.images.length) {
-                        } 
-                        @else {
-
-                        }
-                        <div class="app-agenda-page__item__text">
-                            <span>{{ story.content.date | appDate : 'year' }}</span>
-                            <strong class="app-agenda-page__item__text__title">{{ story.content.title }}</strong>
-                        </div>
-                    </div>
-                </a>
+                <app-event-list-item class="app-agenda-page__item" [story]="story"></app-event-list-item>
             }
         }
     }

@@ -1,18 +1,16 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
-import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
-import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
 import { ContentState } from '../../../core/store/content.reducer';
 import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
+import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
 @Component({
     selector: 'app-agenda-page',
     standalone: true,
-    imports: [StoryBlokImagePipe, AppDatePipe, RouterModule, AsyncPipe, NgClass],
+    imports: [EventListItemComponent, AsyncPipe, NgClass],
     templateUrl: './agenda-page.component.html',
     styleUrl: './agenda-page.component.scss'
 })

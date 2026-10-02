@@ -15,7 +15,12 @@ export const selectContentPage = (slug: string) => createSelector(
 
 export const selectEvents = (pastEvents: boolean) => createSelector(
     selectContent,
-    (state) => state.events.filter(e => pastEvents ? Date.parse(e.content.date) < Date.now() : Date.parse(e.content.date) >= Date.now())
+    (state) => state.events
+        .filter(e => pastEvents ? Date.parse(e.content.date) < Date.now() : Date.parse(e.content.date) >= Date.now())
+        // Events can enter the store in any order (single event pages, earlier events), so sort here: past newest first, upcoming soonest first
+        .sort((a, b) => pastEvents
+            ? Date.parse(b.content.date) - Date.parse(a.content.date)
+            : Date.parse(a.content.date) - Date.parse(b.content.date))
 );
 
 export const selectEvent = (eventSlug: string) => createSelector(
@@ -25,3 +30,17 @@ export const selectEvent = (eventSlug: string) => createSelector(
 
 export const selectDisplayPastEvents = createSelector(selectContent, (state) => state.displayPastEvents);
 export const selectEventsLoaded = (pastEvents: boolean) => createSelector(selectContent, (state) => pastEvents ? state.eventsLoaded.past : state.eventsLoaded.future);
+
+export const selectEarlierEventsByArtists = (eventSlug: string) => createSelector(
+    selectContent,
+    (state) => {
+        const event = state.events.find(e => e.slug === eventSlug)?.content;
+        if (!event?.artists?.length) {
+            return [];
+        }
+        return state.events
+            .filter(e => Date.parse(e.content.date) < Date.parse(event.date))
+            .filter(e => e.content.artists?.some(artist => event.artists.includes(artist)))
+            .sort((a, b) => Date.parse(b.content.date) - Date.parse(a.content.date));
+    }
+);

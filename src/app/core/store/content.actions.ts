@@ -20,5 +20,6 @@ export const loadEventsSuccess = createAction('[Content] Load events success', p
 export const removeEvents = createAction('[Content] Remove events');
 export const loadEvent = createAction('[Content] Load event', props<{ eventSlug: string }>());
 export const loadEventSuccess = createAction('[Content] Load event success', props<{ event: Story<Event> }>());
+export const loadEarlierEventsSuccess = createAction('[Content] Load earlier events success', props<{ events: Story<Event>[] }>());
 
 export const displayPastEvents = createAction('[Content] Display past events', props<{ displayPastEvents: boolean }>());
