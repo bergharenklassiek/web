@@ -53,5 +53,15 @@
         <div class="app-event-page__description">
             <app-rich-text [richText]="event.description"></app-rich-text>
         </div>
+        @if (earlierEvents$ | async; as earlierEvents) {
+            @if (earlierEvents.length) {
+                <div class="app-event-page__earlier-events">
+                    <h3>Eerder bij Bergharen Klassiek</h3>
+                    @for (story of earlierEvents; track story.id) {
+                        <app-event-list-item [story]="story"></app-event-list-item>
+                    }
+                </div>
+            }
+        }
     }
 </div>

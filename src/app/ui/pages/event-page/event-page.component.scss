@@ -57,4 +57,17 @@
             padding: 0 vars.$space-default-mobile;
         }
     }
+
+    &__earlier-events {
+        display: grid;
+        gap: vars.$space-default-mobile;
+        padding: 0 20% vars.$space-default;
+        @media (width <= 800px) {
+            padding: 0 vars.$space-default-mobile vars.$space-default-mobile;
+        }
+
+        h3 {
+            margin: 0;
+        }
+    }
 }

@@ -73,6 +73,14 @@ export class ContentService {
       );
   }
 
-  eventsResource = httpResource<{ stories: Story<Event>[] }>(() => `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:asc&filter_query[date][gt_date]=${new Date().toISOString().split('T')[0]}&${this.token}`);
+  loadEarlierEventsByArtists(artists: string[], beforeDate: string): Observable<Story<Event>[]> {
+    const url = `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:desc&filter_query[artists][any_in_array]=${artists.join(',')}&filter_query[date][lt_date]=${encodeURIComponent(beforeDate)}&${this.token}`;
+
+    return this.http
+      .get<{ stories: Story<Event>[] }>(url)
+      .pipe(map((response) => response.stories));
+  }
+
+  eventsResource =httpResource<{ stories: Story<Event>[] }>(() => `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:asc&filter_query[date][gt_date]=${new Date().toISOString().split('T')[0]}&${this.token}`);
   events = computed(() => this.eventsResource.value()?.stories);
 }

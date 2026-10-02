@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Event } from "../models/event";
-import { displayPastEvents, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
+import { displayPastEvents, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEarlierEventsSuccess, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
 import { Story } from "../models/story";
 import { HomePage } from "../models/home-page";
 import { ContactItem } from "../models/contact-item";
@@ -61,6 +61,10 @@ export const contentReducer = createReducer(
         events: state.events.map(e => e.id).findIndex(e => e === event.id) > -1
             ? state.events.map(e => e.id === event.id ? event : e)
             : state.events.concat(event) 
+    })),
+    on(loadEarlierEventsSuccess, (state, { events }) => ({
+        ...state,
+        events: state.events.concat(events.filter(e => state.events.findIndex(storedEvent => storedEvent.id === e.id) === -1))
     })),
     on(displayPastEvents, (state, { displayPastEvents}) => ({ ...state, displayPastEvents }))
 )
