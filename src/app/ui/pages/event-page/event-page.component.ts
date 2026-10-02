@@ -41,6 +41,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   event?: Event;
   event$?: Observable<Event | undefined>;
   reservationLink$?: Observable<string>;
+  isPast$?: Observable<boolean>;
   earlierEvents$?: Observable<Story<Event>[]>;
   
   constructor(
@@ -60,6 +61,10 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     this.reservationLink$ = this.event$.pipe(
       filter((event): event is Event => !!event),
       map(event => this.reservationLinkService.formatReservationLink(event))
+    );
+    this.isPast$ = this.event$.pipe(
+      filter((event): event is Event => !!event),
+      map(event => Date.parse(event.date) < Date.now())
     );
 
     // this.meta.updateTag({ name: 'description', content: this.event?.summary });
