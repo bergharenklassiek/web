@@ -33,3 +33,32 @@ $font-variations: (
         font-display: swap;
     }
 }
+
+// Local fonts scaled to match Comfortaa's metrics, so text doesn't reflow (layout shift) when the web font swaps in.
+// Values are measured against real site copy: size-adjust = Comfortaa width / fallback width, overrides = Comfortaa metric / size-adjust.
+$fallback-fonts: (
+  'Comfortaa Fallback': (
+    400: (src: (local('Arial'), local('ArialMT')), size-adjust: 115.82%, ascent: 75.98%, descent: 19.86%),
+    700: (src: (local('Arial Bold'), local('Arial-BoldMT')), size-adjust: 109.26%, ascent: 80.54%, descent: 21.05%),
+  ),
+  // Android doesn't ship Arial
+  'Comfortaa Fallback Roboto': (
+    400: (src: (local('Roboto'), local('Roboto-Regular')), size-adjust: 128.18%, ascent: 68.65%, descent: 17.94%),
+    700: (src: (local('Roboto Bold'), local('Roboto-Bold')), size-adjust: 121.86%, ascent: 72.21%, descent: 18.87%),
+  ),
+);
+
+@each $family, $weights in $fallback-fonts {
+    @each $weight, $properties in $weights {
+        @font-face {
+            font-family: $family;
+            font-style: normal;
+            font-weight: $weight;
+            src: map.get($properties, src);
+            size-adjust: map.get($properties, size-adjust);
+            ascent-override: map.get($properties, ascent);
+            descent-override: map.get($properties, descent);
+            line-gap-override: 0%;
+        }
+    }
+}
