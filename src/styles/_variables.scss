@@ -1,9 +1,13 @@
 // colors
 $primaryBlue: #01056e;
 $primaryRed: #ff0048;
-$secondaryPink: #fae6e6;
-$secondaryYellow: #fcf4eb;
-$secondaryGrey: #eeeeee;
+// backgrounds are light mauve tints, between $primaryBlue and $primaryRed
+$backgroundPage: #fbf9fb;
+$backgroundSurface: #ffffff;
+$backgroundTint: #f3eef5;
+$borderColor: #e9e2ec;
+$textSecondary: #5b4f8a;
+$shadowSoft: 0 2px 8px rgba(70, 20, 80, 0.05);
 
 // spacing
 $space-default: 40px;

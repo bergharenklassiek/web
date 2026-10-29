@@ -5,14 +5,14 @@
     grid-template-columns: 15% 1fr 15%;
     font-weight: 700;
     font-size: 22px;
-    background-color: white;
+    background-color: vars.$backgroundSurface;
     color: vars.$primaryBlue;
     align-items: center;
     justify-content: center;
     position: sticky;
     top: 0px;
     z-index: 5;
-    box-shadow: 0 -6px 10px 5px rgba(162, 162, 162, 0.3);
+    box-shadow: 0 -6px 10px 5px rgba(70, 20, 80, 0.08);
 
     &__menu-button {
         text-align: center;

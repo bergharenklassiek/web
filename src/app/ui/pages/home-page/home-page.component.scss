@@ -44,12 +44,14 @@
         overflow-y: hidden;
         display: flex;
         gap: vars.$space-default;
-        padding: 0 vars.$space-default;
+        // Room for the card shadows, which the overflow would otherwise clip; the negative margin keeps the layout unchanged
+        padding: 10px vars.$space-default;
+        margin: -10px 0;
         min-height: 365px;
 
         @media (width <= 600px) {
             gap: vars.$space-default-mobile;
-            padding: 0 vars.$space-default-mobile;
+            padding: 10px vars.$space-default-mobile;
             min-height: 340px;
         }
         
@@ -89,7 +91,7 @@
         padding: vars.$space-default;
         border-radius: vars.$space-default;
         text-align: center;
-        background-color: vars.$secondaryYellow;
+        background-color: vars.$backgroundTint;
         min-height: 92px;
         @media (width <= 600px) {
             margin: 0 vars.$space-default-mobile;
