@@ -7,7 +7,7 @@ a {
 
 .app-event-card {
     border-radius: 20px;
-    background-color: vars.$secondaryPink;
+    background-color: vars.$backgroundSurface;
     width: 300px;
     display: flex;
     flex-flow: column;
@@ -15,7 +15,8 @@ a {
     height: 100%;
     text-wrap: balance;
     overflow: hidden;
-    border: 1px white solid;
+    border: 1px vars.$borderColor solid;
+    box-shadow: vars.$shadowSoft;
     
     &__image {
         width: 100%;
@@ -41,6 +42,10 @@ a {
             text-wrap: wrap;
             color: vars.$primaryBlue;
     
+            &__date {
+                color: vars.$textSecondary;
+            }
+
             &__title {
                 font-weight: bold;
                 font-size: 20px;

@@ -89,7 +89,7 @@
         padding: vars.$space-default;
         border-radius: vars.$space-default;
         text-align: center;
-        background-color: vars.$secondaryYellow;
+        background-color: vars.$backgroundTint;
         min-height: 92px;
         @media (width <= 600px) {
             margin: 0 vars.$space-default-mobile;

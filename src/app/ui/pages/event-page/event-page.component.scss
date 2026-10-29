@@ -1,44 +1,75 @@
 @use 'variables' as vars;
 
-.app-event-page {
-    &__images {
-        padding: vars.$space-default 200px;
-        @media (width <= 800px) {
-            padding: vars.$space-default-mobile;
-        }
+$panel-width: 680px;
 
-        &--single {
-            max-width: 600px;
-        }
-        
+.app-event-page {
+    display: grid;
+    justify-items: center;
+    gap: vars.$space-default;
+    padding: vars.$space-default vars.$space-default-mobile;
+
+    @media (width <= 800px) {
+        gap: vars.$space-default-mobile;
+        padding: vars.$space-default-mobile 10px;
+    }
+
+    // White column holding the photos, title and description at one width
+    &__panel {
+        width: 100%;
+        max-width: $panel-width;
+        background-color: vars.$backgroundSurface;
+        border: 1px solid vars.$borderColor;
+        border-radius: 24px;
+        box-shadow: vars.$shadowSoft;
+        overflow: hidden;
+    }
+
+    &__images {
+        display: block;
+        width: 100%;
+
         &__image {
-            border-radius: vars.$space-default;
-            overflow: hidden;
+            display: block;
             object-fit: cover;
             height: 300px;
             width: 100%;
+
+            @media (width <= 800px) {
+                height: 220px;
+            }
+        }
+    }
+
+    &__content {
+        display: grid;
+        gap: vars.$space-default-mobile;
+        padding: 32px;
+
+        @media (width <= 800px) {
+            padding: vars.$space-default-mobile;
         }
     }
 
     &__title {
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: vars.$space-default;
-        padding: 0px 20%;
+        gap: vars.$space-default-mobile;
 
         @media (width <= 800px) {
             grid-template-columns: auto;
-            padding: 0 vars.$space-default-mobile;
         }
         
         h2 {
-            margin: 0;
+            margin: 0 0 4px;
+        }
+
+        &__date {
+            color: vars.$textSecondary;
         }
         
         &__reservation-button {
             height: min-content;
-            color: red;
-            padding: 10px;
+            padding: 10px 18px;
             background-color: vars.$primaryRed;
             border-radius: vars.$space-default;
             color: white;
@@ -46,25 +77,15 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 8px 12px #83838326, 0 0 4px #8383834f;
-            color: white;
             text-decoration: none;
         }
     }
 
-    &__description {
-        padding: 0 20% vars.$space-default;
-        @media (width <= 800px) {
-            padding: 0 vars.$space-default-mobile;
-        }
-    }
-
     &__earlier-events {
+        width: 100%;
+        max-width: $panel-width;
         display: grid;
         gap: vars.$space-default-mobile;
-        padding: 0 20% vars.$space-default;
-        @media (width <= 800px) {
-            padding: 0 vars.$space-default-mobile vars.$space-default-mobile;
-        }
 
         h3 {
             margin: 0;

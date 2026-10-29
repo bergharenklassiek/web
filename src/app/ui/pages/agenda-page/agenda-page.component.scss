@@ -10,12 +10,12 @@
         grid-template-columns: 1fr 1fr;
         gap: 10px;
         text-align: center;
-        border-bottom: 2px solid #eeeeee;
+        border-bottom: 2px solid vars.$borderColor;
         padding-bottom: 20px;
 
         &__button {
             padding: 10px;
-            background-color: vars.$secondaryPink;
+            background-color: vars.$backgroundTint;
             color: vars.$primaryBlue;
             border-radius: 20px;
             text-align: center;

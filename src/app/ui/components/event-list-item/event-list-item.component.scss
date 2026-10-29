@@ -7,7 +7,10 @@ a {
 
 .app-event-list-item {
     height: 80px;
-    background-color: vars.$secondaryPink;
+    box-sizing: border-box;
+    background-color: vars.$backgroundSurface;
+    border: 1px solid vars.$borderColor;
+    box-shadow: vars.$shadowSoft;
     border-radius: 20px;
     overflow: hidden;
     display: grid;
@@ -34,6 +37,10 @@ a {
         grid-template-columns: 1fr;
         padding: 0 10px;
         align-content: space-evenly;
+
+        &__date {
+            color: vars.$textSecondary;
+        }
 
         &__title {
             @supports (-webkit-line-clamp: 2) {
