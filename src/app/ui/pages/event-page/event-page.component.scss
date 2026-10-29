@@ -6,11 +6,11 @@ $panel-width: 680px;
     display: grid;
     justify-items: center;
     gap: vars.$space-default;
-    padding: vars.$space-default vars.$space-default-mobile;
+    padding: vars.$space-default;
 
     @media (width <= 800px) {
         gap: vars.$space-default-mobile;
-        padding: vars.$space-default-mobile 10px;
+        padding: vars.$space-default-mobile;
     }
 
     // White column holding the photos, title and description at one width

@@ -13,6 +13,7 @@ a {
     flex-flow: column;
     grid-template-columns: 1fr;
     height: 100%;
+    box-sizing: border-box;
     text-wrap: balance;
     overflow: hidden;
     border: 1px vars.$borderColor solid;
