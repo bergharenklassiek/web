@@ -2,6 +2,7 @@
 import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map, Observable, switchMap } from 'rxjs';
@@ -13,6 +14,8 @@ import { loadEvent } from '../../../core/store/content.actions';
 import { selectEarlierEventsByArtists, selectEvent } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { ReservationLinkService } from '../../../core/services/reservation-link.service';
+import { ReservationService } from '../../../core/services/reservation.service';
+import { ReservationDialogComponent, ReservationDialogData, reservationDialogConfig } from '../../components/reservation-dialog/reservation-dialog.component';
 import { Story } from '../../../core/models/story';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
@@ -28,6 +31,8 @@ import { EventListItemComponent } from '../../components/event-list-item/event-l
 export class EventPageComponent implements OnInit, AfterViewInit {
   reservationLinkService = inject(ReservationLinkService);
   private destroyRef = inject(DestroyRef);
+  private dialog = inject(MatDialog);
+  readonly reservationsEnabled = inject(ReservationService).enabled;
 
   @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
   swiperConfig: SwiperOptions = {
@@ -70,6 +75,13 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     // this.meta.updateTag({ name: 'description', content: this.event?.summary });
   }
   
+  openReservation(event: Event): void {
+    const data: ReservationDialogData = {
+      event: { slug: this.route.snapshot.paramMap.get('event-slug')!, title: event.title, date: event.date },
+    };
+    this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
+  }
+
   ngAfterViewInit(): void {
     if (this.swiperRef?.nativeElement) {
       Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);

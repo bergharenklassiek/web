@@ -12,6 +12,13 @@ body {
     background-color: vars.$backgroundPage;
 }
 
+html {
+    // Same rounding as the event page panel
+    @include mat.dialog-overrides((
+        container-shape: 24px,
+    ));
+}
+
 // Server-rendered HTML is painted before Swiper's custom elements are registered. Lay it out like the initialised
 // carousel (a centered block showing only the first slide), otherwise the slides stack and the content below jumps.
 swiper-container:not(:defined) {

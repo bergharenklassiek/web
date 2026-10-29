@@ -74,10 +74,12 @@ $panel-width: 680px;
             border-radius: vars.$space-default;
             color: white;
             text-align: center;
-            font-weight: bold;
             cursor: pointer;
             box-shadow: 0 8px 12px #83838326, 0 0 4px #8383834f;
             text-decoration: none;
+            border: 0;
+            font: inherit;
+            font-weight: bold;
         }
     }
 
