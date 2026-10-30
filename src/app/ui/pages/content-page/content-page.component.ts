@@ -1,6 +1,6 @@
 // import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, tap, withLatestFrom } from 'rxjs';
@@ -18,6 +18,7 @@ import { RichTextComponent } from '../../components/rich-text/rich-text.componen
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [RichTextComponent, StoryBlokImagePipe, AsyncPipe],
     templateUrl: './content-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './content-page.component.scss'
 })
 export class ContentPageComponent implements OnInit, AfterViewInit {

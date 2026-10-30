@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import { filter, tap } from 'rxjs';
     standalone: true,
     imports: [FaIconComponent, RouterModule],
     templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {

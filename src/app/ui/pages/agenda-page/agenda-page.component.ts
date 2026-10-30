@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
@@ -12,6 +12,7 @@ import { EventListItemComponent } from '../../components/event-list-item/event-l
     standalone: true,
     imports: [EventListItemComponent, AsyncPipe],
     templateUrl: './agenda-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {
