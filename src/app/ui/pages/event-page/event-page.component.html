@@ -2,7 +2,6 @@
     @if (event) {
         <article class="app-event-page__panel">
             <swiper-container #swiperRef
-                style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
                 class="app-event-page__images"
                 [config]="swiperConfig"
             >
@@ -33,7 +32,6 @@
     @if (event$ | async; as event) {
         <article class="app-event-page__panel">
             <swiper-container #swiperRef
-                style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
                 class="app-event-page__images"
                 [config]="swiperConfig"
             >

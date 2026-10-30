@@ -6,26 +6,72 @@
     gap: 20px;
 
     &__buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        text-align: center;
         border-bottom: 2px solid vars.$borderColor;
         padding-bottom: 20px;
+    }
+
+    // Segmented control: a red pill slides behind the selected option
+    &__toggle {
+        $padding: 4px;
+        $duration: 0.35s;
+        $easing: cubic-bezier(0.65, 0, 0.35, 1);
+
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: $padding;
+        border-radius: 999px;
+        background-color: vars.$backgroundTint;
+
+        &__indicator {
+            position: absolute;
+            top: $padding;
+            bottom: $padding;
+            left: $padding;
+            width: calc(50% - #{$padding});
+            border-radius: 999px;
+            background-color: vars.$primaryRed;
+            box-shadow: 0 4px 10px rgba(255, 0, 72, 0.25);
+            opacity: 0;
+            transition: transform $duration $easing, opacity 0.2s;
+        }
+
+        &--past &__indicator {
+            opacity: 1;
+        }
+
+        &--upcoming &__indicator {
+            opacity: 1;
+            transform: translateX(100%);
+        }
 
         &__button {
+            position: relative; // above the indicator
             padding: 10px;
-            background-color: vars.$backgroundTint;
-            color: vars.$primaryBlue;
-            border-radius: 20px;
-            text-align: center;
+            border: 0;
+            border-radius: 999px;
+            background: none;
+            font: inherit;
             font-weight: bold;
+            color: vars.$primaryBlue;
+            text-align: center;
             cursor: pointer;
-            align-content: center;
-            
+            transition: color $duration $easing;
+
             &--checked {
                 color: white;
-                background-color: vars.$primaryRed;
+            }
+
+            &:focus-visible {
+                outline: 2px solid vars.$primaryBlue;
+                outline-offset: 2px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &__indicator,
+            &__button {
+                transition: none;
             }
         }
     }
