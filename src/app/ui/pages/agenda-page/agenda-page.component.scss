@@ -36,11 +36,11 @@
             transition: transform $duration $easing, opacity 0.2s;
         }
 
-        &--upcoming &__indicator {
+        &--past &__indicator {
             opacity: 1;
         }
 
-        &--past &__indicator {
+        &--upcoming &__indicator {
             opacity: 1;
             transform: translateX(100%);
         }
