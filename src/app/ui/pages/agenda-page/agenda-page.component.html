@@ -12,17 +12,17 @@
             <button
                 type="button"
                 class="app-agenda-page__toggle__button"
-                [class.app-agenda-page__toggle__button--checked]="showPast === true"
-                [attr.aria-pressed]="showPast === true"
-                (click)="onClick(true)"
-            >Concert historie</button>
-            <button
-                type="button"
-                class="app-agenda-page__toggle__button"
                 [class.app-agenda-page__toggle__button--checked]="showPast === false"
                 [attr.aria-pressed]="showPast === false"
                 (click)="onClick(false)"
-            >Aankomende concerten</button>
+            >Binnenkort</button>
+            <button
+                type="button"
+                class="app-agenda-page__toggle__button"
+                [class.app-agenda-page__toggle__button--checked]="showPast === true"
+                [attr.aria-pressed]="showPast === true"
+                (click)="onClick(true)"
+            >Eerder</button>
         </div>
     </div>
     @if (events$ | async; as events) {
