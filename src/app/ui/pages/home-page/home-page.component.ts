@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EventCardComponent } from '../../components/event-card/event-card.component';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { ContentService } from '../../../core/services/content.service';
@@ -11,6 +11,7 @@ import { ReservationButtonComponent } from '../../components/reservation-button/
     selector: 'app-home-page',
     imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent],
     templateUrl: './home-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {

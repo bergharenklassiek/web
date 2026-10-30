@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { ISbRichtext, renderRichText, storyblokInit } from '@storyblok/js';
 
 @Component({
@@ -6,6 +6,7 @@ import { ISbRichtext, renderRichText, storyblokInit } from '@storyblok/js';
     standalone: true,
     templateUrl: './rich-text.component.html',
     styleUrls: ['./rich-text.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     encapsulation: ViewEncapsulation.None
 })
 export class RichTextComponent implements OnChanges {

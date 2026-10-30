@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, afterNextRender, inject, DOCUMENT } from '@angular/core';
+import { Component, Inject, OnInit, afterNextRender, inject, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { HeaderComponent } from './ui/components/header/header.component';
@@ -16,6 +16,7 @@ import { AppDatePipe } from './core/pipes/app-date.pipe';
     imports: [RouterOutlet, HeaderComponent, FooterComponent],
     providers: [AppDatePipe],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {

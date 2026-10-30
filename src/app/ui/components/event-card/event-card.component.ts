@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Event } from '../../../core/models/event';
 import { Story } from '../../../core/models/story';
@@ -11,6 +11,7 @@ import { NgOptimizedImage } from "@angular/common";
     standalone: true,
     imports: [StoryBlokImagePipe, RouterModule, AppDatePipe, NgOptimizedImage],
     templateUrl: './event-card.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './event-card.component.scss'
 })
 export class EventCardComponent {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Event } from '../../../core/models/event';
 import { Story } from '../../../core/models/story';
@@ -10,6 +10,7 @@ import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
     standalone: true,
     imports: [StoryBlokImagePipe, AppDatePipe, RouterModule],
     templateUrl: './event-list-item.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './event-list-item.component.scss'
 })
 export class EventListItemComponent {

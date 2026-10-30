@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { Event } from '../../../../core/models/event';
 import { Story } from '../../../../core/models/story';
 import { StoryBlokImagePipe } from "../../../../core/pipes/story-blok-image.pipe";
@@ -9,6 +9,7 @@ import { ReservationLinkService } from '../../../../core/services/reservation-li
   selector: 'app-reservation-dialog-row',
   imports: [StoryBlokImagePipe, AppDatePipe],
   templateUrl: './reservation-dialog-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './reservation-dialog-row.component.scss',
 })
 export class ReservationDialogRowComponent {
