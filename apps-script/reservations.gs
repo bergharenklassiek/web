@@ -11,7 +11,8 @@ const CONCERTS_SHEET = 'Concerten';
 const RESERVATION_COLUMNS = ['Ontvangen', 'Concert', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen', 'Event ID'];
 const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Event ID'];
 const SENDER_NAME = 'Bergharen Klassiek';
-// Replies to the confirmation email go here instead of to the Google account that sends it
+// Replies to the confirmation email go here instead of to the Google account that sends it.
+// Keep in sync with reservationEmail in src/app/core/config/reservation.config.ts
 const REPLY_TO = 'bergharenklassiek@outlook.com';
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet

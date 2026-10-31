@@ -13,7 +13,7 @@
     "sheet:deploy": "npm run sheet:push && cd apps-script && clasp update-deployment \"$npm_package_config_sheetDeploymentId\" --description \"$(git rev-parse --short HEAD)\""
   },
   "config": {
-    "sheetDeploymentId": ""
+    "sheetDeploymentId": "AKfycbyM_jRhpMN9KbW0FtKUOd-d7X0nEbyvEmJxU3XQsO73r61OJkbYmj-R3qbUnbFxDknA"
   },
   "private": true,
   "dependencies": {

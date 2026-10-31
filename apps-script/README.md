@@ -1,6 +1,11 @@
 # Reservations (Google Sheet)
 
-Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation. Replies to that email go to bergharenklassiek@outlook.com.
+Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation. Replies to that email go to the address in `REPLY_TO` at the top of the script.
+
+The foundation's email address is in two places. Change both when it changes:
+
+- `REPLY_TO` in `apps-script/reservations.gs`: where replies to confirmation emails go. Deploy the script afterwards with `npm run sheet:deploy`.
+- `reservationEmail` in `src/app/core/config/reservation.config.ts`: the "reserve by email" link on the website.
 
 ## Setup
 
