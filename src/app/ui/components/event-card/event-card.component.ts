@@ -11,7 +11,7 @@ import { NgOptimizedImage } from "@angular/common";
     standalone: true,
     imports: [StoryBlokImagePipe, RouterModule, AppDatePipe, NgOptimizedImage],
     templateUrl: './event-card.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './event-card.component.scss'
 })
 export class EventCardComponent {

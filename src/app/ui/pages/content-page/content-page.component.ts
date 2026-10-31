@@ -18,7 +18,7 @@ import { RichTextComponent } from '../../components/rich-text/rich-text.componen
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [RichTextComponent, StoryBlokImagePipe, AsyncPipe],
     templateUrl: './content-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './content-page.component.scss'
 })
 export class ContentPageComponent implements OnInit, AfterViewInit {

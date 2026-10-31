@@ -9,7 +9,7 @@ import { filter, tap } from 'rxjs';
     standalone: true,
     imports: [FaIconComponent, RouterModule],
     templateUrl: './header.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {

@@ -6,7 +6,7 @@ import { ContactDetailsComponent } from '../../components/contact-details/contac
     standalone: true,
     imports: [ContactDetailsComponent],
     templateUrl: './contact-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './contact-page.component.scss'
 })
 export class ContactPageComponent {

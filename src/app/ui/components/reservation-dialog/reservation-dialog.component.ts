@@ -7,7 +7,7 @@ import { ReservationDialogRowComponent } from './reservation-dialog-row/reservat
   selector: 'app-reservation-dialog',
   imports: [MatDialogContent, MatDialogTitle, MatDialogActions, MatDialogClose, ReservationDialogRowComponent],
   templateUrl: './reservation-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-dialog.component.scss',
 })
 export class ReservationDialogComponent {

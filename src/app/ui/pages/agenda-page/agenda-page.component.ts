@@ -12,7 +12,7 @@ import { EventListItemComponent } from '../../components/event-list-item/event-l
     standalone: true,
     imports: [EventListItemComponent, AsyncPipe],
     templateUrl: './agenda-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {

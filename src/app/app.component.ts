@@ -16,7 +16,7 @@ import { AppDatePipe } from './core/pipes/app-date.pipe';
     imports: [RouterOutlet, HeaderComponent, FooterComponent],
     providers: [AppDatePipe],
     templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {

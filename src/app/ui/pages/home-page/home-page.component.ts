@@ -11,7 +11,7 @@ import { ReservationButtonComponent } from '../../components/reservation-button/
     selector: 'app-home-page',
     imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent],
     templateUrl: './home-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
