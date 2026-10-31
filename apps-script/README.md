@@ -4,18 +4,40 @@ Reservations made on the website are stored in a Google Sheet by the script in `
 
 ## Setup
 
+The script is deployed from this repository with [clasp](https://github.com/google/clasp), Google's command-line tool for Apps Script. The Dutch menu names are in brackets.
+
+### 1. Create the Sheet and the web app (once)
+
 1. Create a new Google Sheet with the Google account that should send the confirmation emails, for example `Reserveringen Bergharen Klassiek`.
-2. In the Sheet, open **Extensions → Apps Script**.
-3. Replace the contents of `Code.gs` with the contents of `reservations.gs` and save.
-4. Click **Deploy → New deployment**, choose type **Web app** and set:
-   - **Execute as:** Me
-   - **Who has access:** Anyone
-5. Click **Deploy** and allow the permissions it asks for (the script needs to edit the Sheet and send email as you).
-6. Copy the **Web app URL** (it ends in `/exec`) into `reservationEndpoint` in `src/app/core/config/reservation.config.ts`.
+2. In the Sheet, open **Extensions → Apps Script** (*Extensies → Apps Script*).
+3. Click **Deploy → New deployment** (*Implementeren → Nieuwe implementatie*), choose type **Web app** and set:
+   - **Execute as** (*Uitvoeren als*): Me
+   - **Who has access** (*Wie heeft toegang*): Anyone (*Iedereen*)
+4. Click **Deploy** and allow the permissions it asks for. The script needs to edit the Sheet and send email as you.
+
+If you already deployed the script by hand, skip this step and use that deployment below. Later deploys from this repository keep these settings, because they're also in `appsscript.json`.
+
+### 2. Connect this repository (once per computer)
+
+1. Turn on the **Google Apps Script API** for your Google account at <https://script.google.com/home/usersettings>.
+2. Run `npx clasp login` and log in with the same Google account in the browser.
+3. In the Apps Script editor, open **Project Settings** (*Projectinstellingen*, gear icon) and copy the **Script ID** into `scriptId` in `apps-script/.clasp.json`.
+4. Open **Deploy → Manage deployments** (*Implementeren → Implementaties beheren*) and copy the **Deployment ID** (*Implementatie-ID*) into `config.sheetDeploymentId` in `package.json`.
+5. Put the web app URL, `https://script.google.com/macros/s/<Deployment ID>/exec`, into `reservationEndpoint` in `src/app/core/config/reservation.config.ts`.
+
+Until the Script ID is filled in, `npm run sheet:push` stops with "Project settings not found". Until `reservationEndpoint` is filled in, the website keeps using the old "reserve by email" link.
+
+### 3. Deploy
+
+```sh
+npm run sheet:deploy
+```
+
+This uploads `reservations.gs` and `appsscript.json` (`npm run sheet:push`) and publishes them as a new version of the existing deployment, so the web app URL stays the same. The deployment description is the current git commit, so you can see which code is live under **Manage deployments**.
+
+The first push replaces the code in the Apps Script project, including any `Code.gs` you pasted in by hand. From then on this repository is the source: change the script here, not in the online editor, or the next deploy overwrites your change.
 
 To check the deployment, open the web app URL in a browser. It should show `{"status":"ok"}`.
-
-Until `reservationEndpoint` is filled in, the website keeps using the old "reserve by email" link.
 
 ## Using the Sheet
 
@@ -34,9 +56,9 @@ To cancel a reservation, delete its row in **Reserveringen**. The seats become a
 
 ## Changing the script
 
-After editing the script in Apps Script, deploy it again via **Deploy → Manage deployments → edit (pencil) → Version: New version**. This keeps the same URL. A *new* deployment gets a new URL, which would then also need changing on the website.
+Edit `reservations.gs` in this repository and run `npm run sheet:deploy`. Use `npm run sheet:push` to upload without publishing, for example to try a change in the Apps Script editor first.
 
-Keep `reservations.gs` in this repository in sync with what is deployed.
+Don't create a *new* deployment for a change: it gets a new URL, which would then also need changing on the website.
 
 ## Limits
 
