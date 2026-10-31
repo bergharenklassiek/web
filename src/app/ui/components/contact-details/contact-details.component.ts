@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faSignature, faFileLines, faEuroSign, faAt, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { ContentService } from '../../../core/services/content.service';
@@ -15,6 +15,7 @@ import { AsyncPipe } from '@angular/common';
     standalone: true,
     imports: [FaIconComponent, AsyncPipe],
     templateUrl: './contact-details.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './contact-details.component.scss'
 })
 export class ContactDetailsComponent {

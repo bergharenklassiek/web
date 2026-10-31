@@ -5,7 +5,7 @@
             <img src="/full-logo-BK.png" alt="Logo of Bergharen Klassiek" width="230" height="46">
         </a>
     </div>
-    <div class="app-header__menu" [class.app-header__menu--open]="menuOpen" [class.app-header__menu--closed]="!menuOpen">
+    <div class="app-header__menu" [class.app-header__menu--open]="menuOpen()" [class.app-header__menu--closed]="!menuOpen()">
         <div class="app-header__menu__close-button" (click)="onClose()">
             <fa-icon [icon]="closeIcon" size="xl"></fa-icon>
         </div>

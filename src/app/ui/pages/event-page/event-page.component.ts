@@ -38,7 +38,9 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   swiperConfig: SwiperOptions = {
     autoplay: true,
     observer: true,
-    navigation: true,
+    pagination: { clickable: true },
+    // Hides the dots when there's only one photo
+    watchOverflow: true,
     slidesPerView: 1,
     spaceBetween: 15,
   } 

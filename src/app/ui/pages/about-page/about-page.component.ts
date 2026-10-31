@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { select, Store } from '@ngrx/store';
 import { loadAboutPage } from '../../../core/store/content.actions';
@@ -13,6 +13,7 @@ import { AsyncPipe } from '@angular/common';
     standalone: true,
     imports: [RichTextComponent, AsyncPipe],
     templateUrl: './about-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './about-page.component.scss'
 })
 export class AboutPageComponent implements OnInit {

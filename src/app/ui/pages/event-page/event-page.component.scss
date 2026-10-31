@@ -28,6 +28,14 @@ $panel-width: 680px;
         display: block;
         width: 100%;
 
+        // Dots on top of the photo: red for the current one, white for the others
+        --swiper-pagination-color: #{vars.$primaryRed};
+        --swiper-pagination-bullet-inactive-color: white;
+        --swiper-pagination-bullet-inactive-opacity: 0.7;
+        --swiper-pagination-bullet-size: 8px;
+        --swiper-pagination-bullet-horizontal-gap: 3px;
+        --swiper-pagination-bottom: 12px;
+
         &__image {
             display: block;
             object-fit: cover;

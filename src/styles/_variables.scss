@@ -1,21 +1,19 @@
 // colors
 $primaryBlue: #01056e;
 $primaryRed: #ff0048;
-// backgrounds are light mauve tints, between $primaryBlue and $primaryRed
-$backgroundPage: #fbf9fb;
+// backgrounds are warm greys with a hint of rose ("baksteen")
+$backgroundPage: #fbfaf9;
 $backgroundSurface: #ffffff;
-$backgroundTint: #f3eef5;
-$borderColor: #e9e2ec;
-$textSecondary: #5b4f8a;
-$shadowSoft: 0 2px 8px rgba(70, 20, 80, 0.05);
+$backgroundTint: #f5f1ef;
+$backgroundFooter: #f2edea;
+$borderColor: #ebe6e3;
+$textSecondary: #5a5478;
+$shadowSoft: 0 2px 8px rgba(80, 50, 45, 0.07);
 
 // spacing
 $space-default: 40px;
 $space-default-mobile: 20px;
 
 $font-family: 'Comfortaa', 'Comfortaa Fallback', 'Comfortaa Fallback Roboto', 'Noto Sans', 'Arial', sans-serif;
-$font-weight-light: 300;
 $font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
 $font-weight-bold: 700;

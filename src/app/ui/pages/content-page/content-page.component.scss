@@ -26,6 +26,14 @@
         @media (width <= 800px) {
             padding: 0 vars.$space-default-mobile 0;
         }
+
+        // Pages without photos start with the title
+        &:first-child {
+            padding-top: vars.$space-default;
+            @media (width <= 800px) {
+                padding-top: vars.$space-default-mobile;
+            }
+        }
     }
 
     &__description {

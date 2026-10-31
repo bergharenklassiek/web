@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { Event } from '../../../core/models/event';
 import { ReservationEvent } from '../../../core/models/reservation';
@@ -21,6 +21,7 @@ export const reservationDialogConfig = {
   selector: 'app-reservation-dialog',
   imports: [MatDialogContent, MatDialogTitle, MatDialogActions, MatDialogClose, ReservationDialogRowComponent, ReservationFormComponent],
   templateUrl: './reservation-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-dialog.component.scss',
 })
 export class ReservationDialogComponent {

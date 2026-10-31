@@ -1,5 +1,5 @@
-import { AsyncPipe, NgClass } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
@@ -10,8 +10,9 @@ import { EventListItemComponent } from '../../components/event-list-item/event-l
 @Component({
     selector: 'app-agenda-page',
     standalone: true,
-    imports: [EventListItemComponent, AsyncPipe, NgClass],
+    imports: [EventListItemComponent, AsyncPipe],
     templateUrl: './agenda-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {
@@ -20,7 +21,7 @@ export class AgendaPageComponent {
     mergeMap(displayPastEvents => this.store.select(selectEvents(displayPastEvents)))
   );
 
-  constructor(private store: Store<ContentState>, private cdRef: ChangeDetectorRef) {}
+  constructor(private store: Store<ContentState>) {}
   
   onClick(showPastEvents: boolean) {
     this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));

@@ -19,6 +19,12 @@ html {
     ));
 }
 
+// Links use the surrounding text colour instead of the browser's blue/purple; the underline marks them as links
+a {
+    color: inherit;
+    text-underline-offset: 2px;
+}
+
 // Server-rendered HTML is painted before Swiper's custom elements are registered. Lay it out like the initialised
 // carousel (a centered block showing only the first slide), otherwise the slides stack and the content below jumps.
 swiper-container:not(:defined) {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationDialogComponent, reservationDialogConfig } from '../reservation-dialog/reservation-dialog.component';
 
@@ -6,6 +6,7 @@ import { ReservationDialogComponent, reservationDialogConfig } from '../reservat
   selector: 'app-reservation-button',
   imports: [],
   templateUrl: './reservation-button.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-button.component.scss',
 })
 export class ReservationButtonComponent {
