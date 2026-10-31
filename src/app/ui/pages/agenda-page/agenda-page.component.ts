@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
@@ -21,7 +21,7 @@ export class AgendaPageComponent {
     mergeMap(displayPastEvents => this.store.select(selectEvents(displayPastEvents)))
   );
 
-  constructor(private store: Store<ContentState>, private cdRef: ChangeDetectorRef) {}
+  constructor(private store: Store<ContentState>) {}
   
   onClick(showPastEvents: boolean) {
     this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));
