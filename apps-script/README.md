@@ -21,8 +21,12 @@ Until `reservationEndpoint` is filled in, the website keeps using the old "reser
 
 The script creates two tabs on the first reservation:
 
-- **Reserveringen:** one row per reservation, with the time received, concert, name, email address and number of people.
-- **Concerten:** one row per concert, with its **Capaciteit** and the total number of reserved seats. Every concert gets a capacity of 100 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 100. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
+- **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people and **Event ID**.
+- **Concerten:** one row per concert, with its **Capaciteit**, the total number of reserved seats and its **Event ID**. Every concert gets a capacity of 100 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 100. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
+
+All counting is done by **Event ID**, the Storyblok ID of the concert. Unlike the title or the web address, it never changes, so renaming a concert in Storyblok doesn't affect its count. Don't edit the Event ID cells.
+
+The script finds columns by their header, so you can reorder or add columns. Don't rename the headers. If a column is missing, for example in a spreadsheet made with an older version of the script, the script adds it at the end. Reservations made before the Event ID column existed have no ID and aren't counted.
 
 The **Gereserveerd** totals are written by the script, not by a formula. They update after every reservation and whenever the spreadsheet is opened. You can also update them from the **Reserveringen → Aantallen bijwerken** menu. That menu appears a few seconds after the spreadsheet opens.
 

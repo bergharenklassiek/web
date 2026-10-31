@@ -10,8 +10,6 @@ const CONCERTS_SHEET = 'Concerten';
 // Columns are found by their header, so they can be moved around in the spreadsheet. Missing columns are added at the end.
 const RESERVATION_COLUMNS = ['Ontvangen', 'Concert', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen', 'Event ID'];
 const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Event ID'];
-// Storyblok IDs are long numbers, which Sheets would otherwise show as e.g. 1.29413E+14
-const TEXT_COLUMNS = ['Event ID'];
 const SENDER_NAME = 'Bergharen Klassiek';
 // Replies to the confirmation email go here instead of to the Google account that sends it
 const REPLY_TO = 'bergharenklassiek@outlook.com';
@@ -74,7 +72,7 @@ function doPost(e) {
       'Naam': safeCell(reservation.name),
       'E-mail': safeCell(reservation.email),
       'Aantal personen': reservation.seats,
-      'Event ID': reservation.id,
+      'Event ID': asText(reservation.id),
     });
     updateReservedTotals(spreadsheet);
     SpreadsheetApp.flush();
@@ -145,7 +143,7 @@ function getCapacity(concerts, reservation) {
     'Datum concert': safeCell(reservation.dateLabel || reservation.date),
     'Capaciteit': DEFAULT_CAPACITY,
     'Gereserveerd': 0,
-    'Event ID': reservation.id,
+    'Event ID': asText(reservation.id),
   });
   return DEFAULT_CAPACITY;
 }
@@ -217,9 +215,6 @@ function getOrCreateSheet(spreadsheet, name, headers) {
   for (const header of headers) {
     if (!columns[header]) {
       sheet.getRange(1, next).setValue(header).setFontWeight('bold');
-      if (TEXT_COLUMNS.includes(header)) {
-        sheet.getRange(1, next, sheet.getMaxRows(), 1).setNumberFormat('@');
-      }
       columns[header] = next++;
     }
   }
@@ -239,6 +234,11 @@ function appendRow(target, values) {
 
 function clean(value, maxLength) {
   return String(value ?? '').trim().slice(0, maxLength);
+}
+
+// Storyblok IDs are long numbers, which Sheets would otherwise show as e.g. 1.29413E+14. The apostrophe isn't displayed.
+function asText(value) {
+  return `'${value}`;
 }
 
 // Stops input such as "=IMPORTXML(...)" from being run as a spreadsheet formula
