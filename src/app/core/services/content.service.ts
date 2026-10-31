@@ -6,10 +6,14 @@ import { Story } from '../models/story';
 import { ContactItem } from '../models/contact-item';
 import { AboutPage } from '../models/about-page';
 import { ContentPage } from '../models/content-page';
-import { forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
+import { concat, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 
 // Fixed key (unlike the request URL, which contains today's date) so a prerendered page can hand its events to the browser
 const UPCOMING_EVENTS_KEY = makeStateKey<Story<Event>[]>('upcomingEvents');
+const AGENDA_EVENTS_KEYS = {
+  upcoming: makeStateKey<Story<Event>[]>('agendaUpcomingEvents'),
+  past: makeStateKey<Story<Event>[]>('agendaPastEvents'),
+};
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +64,8 @@ export class ContentService {
     const perPage = 100;
     const url = (page: number) => `${this.storyblokBaseUrl}/stories?content_type=Event&sort_by=content.date:${past ? 'desc' : 'asc'}&filter_query[date][${ past ? 'lt_date' : 'gt_date' }]=${new Date().toISOString().split('T')[0]}&per_page=${perPage}&page=${page}&${this.token}`;
 
-    return this.http
+    const key = past ? AGENDA_EVENTS_KEYS.past : AGENDA_EVENTS_KEYS.upcoming;
+    const fresh$ = this.http
       .get<{ stories: Story<Event>[] }>(url(1), { observe: 'response' })
       .pipe(
         mergeMap((response) => {
@@ -73,8 +78,14 @@ export class ContentService {
             this.http.get<{ stories: Story<Event>[] }>(url(i + 2)).pipe(map((r) => r.stories))
           );
           return forkJoin(remaining).pipe(map((rest) => stories.concat(...rest)));
-        })
+        }),
+        tap((stories) => this.transferState.set(key, stories))
       );
+
+    // Like the home page: in the browser, first emit the list rendered on the server (its request URL contains the
+    // date of the build, so the HTTP transfer cache misses on later days), then the fresh list
+    const rendered = this.transferState.get(key, undefined);
+    return rendered ? concat(of(rendered), fresh$) : fresh$;
   }
 
   loadEarlierEventsByArtists(artists: string[], beforeDate: string): Observable<Story<Event>[]> {
