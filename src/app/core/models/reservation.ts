@@ -1,5 +1,6 @@
 export interface ReservationEvent {
-    slug: string;
+    // Storyblok story ID: unlike the slug it never changes, so the Sheet counts reservations by it
+    id: string;
     title: string;
     date: string;
 }

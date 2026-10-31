@@ -7,6 +7,11 @@
 
 const RESERVATIONS_SHEET = 'Reserveringen';
 const CONCERTS_SHEET = 'Concerten';
+// Columns are found by their header, so they can be moved around in the spreadsheet. Missing columns are added at the end.
+const RESERVATION_COLUMNS = ['Ontvangen', 'Concert', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen', 'Event ID'];
+const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Event ID'];
+// Storyblok IDs are long numbers, which Sheets would otherwise show as e.g. 1.29413E+14
+const TEXT_COLUMNS = ['Event ID'];
 const SENDER_NAME = 'Bergharen Klassiek';
 // Replies to the confirmation email go here instead of to the Google account that sends it
 const REPLY_TO = 'bergharenklassiek@outlook.com';
@@ -28,7 +33,8 @@ function doPost(e) {
   }
 
   const reservation = {
-    slug: clean(data.slug, 200),
+    // Storyblok story ID: unlike the URL slug it never changes, so all counting is done by it
+    id: clean(data.id, 50),
     title: clean(data.title, 200),
     date: clean(data.date, 50),
     dateLabel: clean(data.dateLabel, 100),
@@ -37,7 +43,7 @@ function doPost(e) {
     seats: Number(data.seats),
   };
 
-  const isValid = reservation.slug
+  const isValid = /^\d+$/.test(reservation.id)
     && reservation.title
     && reservation.name
     && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reservation.email)
@@ -53,23 +59,23 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const reservations = getOrCreateSheet(spreadsheet, RESERVATIONS_SHEET, ['Ontvangen', 'Concert', 'Slug', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen']);
-    const concerts = getOrCreateSheet(spreadsheet, CONCERTS_SHEET, ['Slug', 'Concert', 'Capaciteit', 'Gereserveerd']);
+    const reservations = getOrCreateSheet(spreadsheet, RESERVATIONS_SHEET, RESERVATION_COLUMNS);
+    const concerts = getOrCreateSheet(spreadsheet, CONCERTS_SHEET, CONCERT_COLUMNS);
 
-    const remaining = getCapacity(concerts, reservation) - (reservedSeatsPerConcert(reservations)[reservation.slug] || 0);
+    const remaining = getCapacity(concerts, reservation) - (reservedSeatsPerConcert(reservations)[reservation.id] || 0);
     if (reservation.seats > remaining) {
       return respond({ status: 'full', remaining: Math.max(0, remaining) });
     }
 
-    reservations.appendRow([
-      new Date(),
-      safeCell(reservation.title),
-      safeCell(reservation.slug),
-      safeCell(reservation.dateLabel || reservation.date),
-      safeCell(reservation.name),
-      safeCell(reservation.email),
-      reservation.seats,
-    ]);
+    appendRow(reservations, {
+      'Ontvangen': new Date(),
+      'Concert': safeCell(reservation.title),
+      'Datum concert': safeCell(reservation.dateLabel || reservation.date),
+      'Naam': safeCell(reservation.name),
+      'E-mail': safeCell(reservation.email),
+      'Aantal personen': reservation.seats,
+      'Event ID': reservation.id,
+    });
     updateReservedTotals(spreadsheet);
     SpreadsheetApp.flush();
   } finally {
@@ -103,16 +109,20 @@ function refreshReservedTotals() {
  * The script writes plain numbers instead of a formula, because formula syntax depends on the spreadsheet's language.
  */
 function updateReservedTotals(spreadsheet) {
-  const reservations = spreadsheet.getSheetByName(RESERVATIONS_SHEET);
-  const concerts = spreadsheet.getSheetByName(CONCERTS_SHEET);
-  if (!reservations || !concerts || concerts.getLastRow() < 2) {
+  const reservationsSheet = spreadsheet.getSheetByName(RESERVATIONS_SHEET);
+  const concertsSheet = spreadsheet.getSheetByName(CONCERTS_SHEET);
+  if (!reservationsSheet || !concertsSheet || concertsSheet.getLastRow() < 2) {
     return;
   }
 
+  const reservations = getOrCreateSheet(spreadsheet, RESERVATIONS_SHEET, RESERVATION_COLUMNS);
+  const concerts = getOrCreateSheet(spreadsheet, CONCERTS_SHEET, CONCERT_COLUMNS);
   const totals = reservedSeatsPerConcert(reservations);
-  const rowCount = concerts.getLastRow() - 1;
-  const slugs = concerts.getRange(2, 1, rowCount, 1).getValues();
-  concerts.getRange(2, 4, rowCount, 1).setValues(slugs.map(([slug]) => [totals[slug] || 0]));
+  const rowCount = concerts.sheet.getLastRow() - 1;
+  const ids = concerts.sheet.getRange(2, concerts.columns['Event ID'], rowCount, 1).getValues();
+  concerts.sheet
+    .getRange(2, concerts.columns['Gereserveerd'], rowCount, 1)
+    .setValues(ids.map(([id]) => [totals[String(id)] || 0]));
 }
 
 /**
@@ -120,25 +130,37 @@ function updateReservedTotals(spreadsheet) {
  * A concert that isn't listed yet is added with the default capacity, which you can change there.
  */
 function getCapacity(concerts, reservation) {
-  const rows = concerts.getDataRange().getValues();
+  const rows = concerts.sheet.getDataRange().getValues();
+  const idIndex = concerts.columns['Event ID'] - 1;
+  const capacityIndex = concerts.columns['Capaciteit'] - 1;
   for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0] === reservation.slug) {
-      const capacity = Number(rows[i][2]);
-      return rows[i][2] === '' || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
+    if (String(rows[i][idIndex]) === reservation.id) {
+      const capacity = Number(rows[i][capacityIndex]);
+      return rows[i][capacityIndex] === '' || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
     }
   }
 
-  concerts.appendRow([safeCell(reservation.slug), safeCell(reservation.title), DEFAULT_CAPACITY, 0]);
+  appendRow(concerts, {
+    'Concert': safeCell(reservation.title),
+    'Datum concert': safeCell(reservation.dateLabel || reservation.date),
+    'Capaciteit': DEFAULT_CAPACITY,
+    'Gereserveerd': 0,
+    'Event ID': reservation.id,
+  });
   return DEFAULT_CAPACITY;
 }
 
-// Total reserved seats per concert slug, counted from the Reserveringen sheet
+// Total reserved seats per event ID, counted from the Reserveringen sheet. Rows without an event ID are skipped.
 function reservedSeatsPerConcert(reservations) {
-  const rows = reservations.getDataRange().getValues();
+  const rows = reservations.sheet.getDataRange().getValues();
+  const idIndex = reservations.columns['Event ID'] - 1;
+  const seatsIndex = reservations.columns['Aantal personen'] - 1;
   const totals = {};
   for (let i = 1; i < rows.length; i++) {
-    const slug = rows[i][2];
-    totals[slug] = (totals[slug] || 0) + (Number(rows[i][6]) || 0);
+    const id = String(rows[i][idIndex]);
+    if (id) {
+      totals[id] = (totals[id] || 0) + (Number(rows[i][seatsIndex]) || 0);
+    }
   }
   return totals;
 }
@@ -171,15 +193,48 @@ function sendConfirmation(reservation) {
   });
 }
 
+/**
+ * Returns the sheet and the position (1-based) of each column, found by its header.
+ * Creates the sheet if needed, and adds any missing columns at the end, so older spreadsheets keep working.
+ */
 function getOrCreateSheet(spreadsheet, name, headers) {
   let sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
     sheet = spreadsheet.insertSheet(name);
-    sheet.appendRow(headers);
     sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
-  return sheet;
+
+  const lastColumn = sheet.getLastColumn();
+  const existing = lastColumn ? sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(String) : [];
+  const columns = {};
+  existing.forEach((header, i) => {
+    if (header) {
+      columns[header] = i + 1;
+    }
+  });
+
+  let next = existing.length + 1;
+  for (const header of headers) {
+    if (!columns[header]) {
+      sheet.getRange(1, next).setValue(header).setFontWeight('bold');
+      if (TEXT_COLUMNS.includes(header)) {
+        sheet.getRange(1, next, sheet.getMaxRows(), 1).setNumberFormat('@');
+      }
+      columns[header] = next++;
+    }
+  }
+
+  return { sheet, columns };
+}
+
+// Appends a row with the given values, each placed in the column with that header
+function appendRow(target, values) {
+  const width = Math.max(...Object.values(target.columns));
+  const row = new Array(width).fill('');
+  for (const [header, value] of Object.entries(values)) {
+    row[target.columns[header] - 1] = value;
+  }
+  target.sheet.appendRow(row);
 }
 
 function clean(value, maxLength) {

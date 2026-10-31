@@ -5,13 +5,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { filter, map, Observable, switchMap } from 'rxjs';
+import { filter, map, Observable, switchMap, take } from 'rxjs';
 import { SwiperOptions } from 'swiper/types';
 import { Event } from '../../../core/models/event';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
 import { loadEvent } from '../../../core/store/content.actions';
-import { selectEarlierEventsByArtists, selectEvent } from '../../../core/store/content.selectors';
+import { selectEarlierEventsByArtists, selectEvent, selectEventId } from '../../../core/store/content.selectors';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { ReservationLinkService } from '../../../core/services/reservation-link.service';
 import { ReservationService } from '../../../core/services/reservation.service';
@@ -78,10 +78,13 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   }
   
   openReservation(event: Event): void {
-    const data: ReservationDialogData = {
-      event: { slug: this.route.snapshot.paramMap.get('event-slug')!, title: event.title, date: event.date },
-    };
-    this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
+    const slug = this.route.snapshot.paramMap.get('event-slug')!;
+    this.store.select(selectEventId(slug)).pipe(take(1)).subscribe(id => {
+      const data: ReservationDialogData = {
+        event: { id: String(id), title: event.title, date: event.date },
+      };
+      this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
+    });
   }
 
   ngAfterViewInit(): void {

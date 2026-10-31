@@ -10,7 +10,7 @@ describe('ReservationFormComponent', () => {
   let fixture: ComponentFixture<ReservationFormComponent>;
   let reserve: jest.Mock;
 
-  const event = { slug: 'strijkkwartet', title: 'Strijkkwartet Aurelia', date: '2026-11-16 15:00' };
+  const event = { id: '129413000010395', title: 'Strijkkwartet Aurelia', date: '2026-11-16 15:00' };
 
   beforeEach(async () => {
     reserve = jest.fn();

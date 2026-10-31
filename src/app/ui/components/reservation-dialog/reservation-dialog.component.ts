@@ -33,6 +33,6 @@ export class ReservationDialogComponent {
   selectedEvent = signal<ReservationEvent | undefined>(this.data?.event);
 
   select(story: Story<Event>): void {
-    this.selectedEvent.set({ slug: story.slug, title: story.content.title, date: story.content.date });
+    this.selectedEvent.set({ id: String(story.id), title: story.content.title, date: story.content.date });
   }
 }
