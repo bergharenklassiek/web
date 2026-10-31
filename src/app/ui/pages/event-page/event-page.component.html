@@ -53,7 +53,12 @@
                         <div class="app-event-page__title__date">{{ event.date | appDate }}</div>
                     </span>
                     @if ((isPast$ | async) === false) {
-                        <a class="app-event-page__title__reservation-button" [href]="reservationLink$ | async">Reserveer nu</a>
+                        @if (reservationsEnabled) {
+                            <button type="button" class="app-event-page__title__reservation-button" (click)="openReservation(event)">Reserveer nu</button>
+                        }
+                        @else {
+                            <a class="app-event-page__title__reservation-button" [href]="reservationLink$ | async">Reserveer nu</a>
+                        }
                     }
                 </div>
                 <div class="app-event-page__description">

@@ -1,8 +1,14 @@
 <h2 mat-dialog-title>Reserveer</h2>
 <mat-dialog-content>
-    @if (events()) {
+    @if (selectedEvent(); as event) {
+        @if (!openedForEvent) {
+            <button type="button" class="reservation-dialog__back-button" (click)="selectedEvent.set(undefined)">‹ Alle concerten</button>
+        }
+        <app-reservation-form [event]="event" />
+    }
+    @else if (events()) {
         @for (story of events()!; track story.id) {
-            <app-reservation-dialog-row [story]="story" />
+            <app-reservation-dialog-row [story]="story" (selected)="select(story)" />
         }
     }
 </mat-dialog-content>

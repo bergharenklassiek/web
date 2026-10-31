@@ -28,6 +28,11 @@ export const selectEvent = (eventSlug: string) => createSelector(
     (state) => state.events.find(e => e.slug === eventSlug)?.content
 );
 
+export const selectEventId = (eventSlug: string) => createSelector(
+    selectContent,
+    (state) => state.events.find(e => e.slug === eventSlug)?.id
+);
+
 export const selectDisplayPastEvents = createSelector(selectContent, (state) => state.displayPastEvents);
 export const selectEventsLoaded = (pastEvents: boolean) => createSelector(selectContent, (state) => pastEvents ? state.eventsLoaded.past : state.eventsLoaded.future);
 
