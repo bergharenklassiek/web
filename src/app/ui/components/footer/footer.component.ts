@@ -6,7 +6,7 @@ import { ContactDetailsComponent } from '../contact-details/contact-details.comp
     standalone: true,
     imports: [ContactDetailsComponent],
     templateUrl: './footer.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './footer.component.scss'
 })
 export class FooterComponent {}

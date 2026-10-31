@@ -6,7 +6,7 @@ import { ISbRichtext, renderRichText, storyblokInit } from '@storyblok/js';
     standalone: true,
     templateUrl: './rich-text.component.html',
     styleUrls: ['./rich-text.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
 export class RichTextComponent implements OnChanges {

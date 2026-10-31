@@ -6,7 +6,7 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
   selector: 'app-reservation-button',
   imports: [],
   templateUrl: './reservation-button.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-button.component.scss',
 })
 export class ReservationButtonComponent {

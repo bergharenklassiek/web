@@ -10,7 +10,7 @@ import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
     standalone: true,
     imports: [StoryBlokImagePipe, AppDatePipe, RouterModule],
     templateUrl: './event-list-item.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './event-list-item.component.scss'
 })
 export class EventListItemComponent {

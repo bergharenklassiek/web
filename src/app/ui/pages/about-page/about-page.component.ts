@@ -13,7 +13,7 @@ import { AsyncPipe } from '@angular/common';
     standalone: true,
     imports: [RichTextComponent, AsyncPipe],
     templateUrl: './about-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './about-page.component.scss'
 })
 export class AboutPageComponent implements OnInit {

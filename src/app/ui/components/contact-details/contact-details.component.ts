@@ -15,7 +15,7 @@ import { AsyncPipe } from '@angular/common';
     standalone: true,
     imports: [FaIconComponent, AsyncPipe],
     templateUrl: './contact-details.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './contact-details.component.scss'
 })
 export class ContactDetailsComponent {

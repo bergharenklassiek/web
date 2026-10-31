@@ -9,7 +9,7 @@ import { ReservationLinkService } from '../../../../core/services/reservation-li
   selector: 'app-reservation-dialog-row',
   imports: [StoryBlokImagePipe, AppDatePipe],
   templateUrl: './reservation-dialog-row.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-dialog-row.component.scss',
 })
 export class ReservationDialogRowComponent {
