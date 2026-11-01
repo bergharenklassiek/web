@@ -1,0 +1,109 @@
+@use 'variables' as vars;
+
+:host {
+    display: grid;
+    gap: vars.$space-default-mobile;
+    color: vars.$primaryBlue;
+}
+
+.reservation-form {
+    display: grid;
+    gap: 16px;
+
+    &__event {
+        display: grid;
+        gap: 4px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background-color: vars.$backgroundTint;
+
+        &__date {
+            color: vars.$textSecondary;
+            font-size: 14px;
+        }
+    }
+
+    &__field {
+        display: grid;
+        gap: 6px;
+        font-weight: bold;
+        font-size: 14px;
+
+        input, select {
+            font: inherit;
+            font-weight: normal;
+            font-size: 16px; // 16px stops iOS from zooming in on focus
+            color: vars.$primaryBlue;
+            padding: 10px 14px;
+            border: 1px solid vars.$borderColor;
+            border-radius: 12px;
+            background-color: vars.$backgroundSurface;
+
+            &:focus-visible {
+                outline: 2px solid vars.$primaryBlue;
+                outline-offset: 1px;
+            }
+
+            &[aria-invalid="true"] {
+                border-color: vars.$primaryRed;
+            }
+        }
+
+        &__error {
+            color: vars.$primaryRed;
+            font-weight: normal;
+        }
+    }
+
+    &__honeypot {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    &__message {
+        margin: 0;
+        color: vars.$primaryRed;
+        font-weight: bold;
+
+        a {
+            color: inherit;
+        }
+    }
+
+    &__submit {
+        justify-self: start;
+        border: 0;
+        font: inherit;
+        background-color: vars.$primaryRed;
+        color: white;
+        padding: 10px 24px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 8px 12px rgba(131, 131, 131, 0.1490196078), 0 0 4px rgba(131, 131, 131, 0.3098039216);
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        &:focus-visible {
+            outline: 2px solid vars.$primaryBlue;
+            outline-offset: 2px;
+        }
+    }
+
+    &__success {
+        p {
+            margin: 8px 0 0;
+        }
+
+        &__hint {
+            color: vars.$textSecondary;
+            font-size: 14px;
+        }
+    }
+}

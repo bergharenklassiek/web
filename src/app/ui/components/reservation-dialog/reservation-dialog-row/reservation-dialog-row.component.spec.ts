@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ReservationDialogRowComponent } from './reservation-dialog-row.component';
 import { Story } from '../../../../core/models/story';
@@ -26,7 +28,8 @@ describe('ReservationDialogRowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReservationDialogRowComponent]
+      imports: [ReservationDialogRowComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
 

@@ -1,4 +1,15 @@
-<a class="reservation-dialog-row" [href]="reservationLink(story().content)">
+@if (reservationsEnabled) {
+    <button type="button" class="reservation-dialog-row" (click)="selected.emit()">
+        <ng-container *ngTemplateOutlet="content" />
+    </button>
+}
+@else {
+    <a class="reservation-dialog-row" [href]="reservationLink(story().content)">
+        <ng-container *ngTemplateOutlet="content" />
+    </a>
+}
+
+<ng-template #content>
     <div class="reservation-dialog-row__content">
         <img 
             [src]="story().content.images.length ? (story().content.images[0] | storyBlokImage : 200 : 80) : '/full-logo-BK.png'" 
@@ -11,4 +22,4 @@
             <div><strong>{{ story().content.title }}</strong></div>
         </div>
     </div>
-</a>
+</ng-template>

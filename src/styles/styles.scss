@@ -12,6 +12,13 @@ body {
     background-color: vars.$backgroundPage;
 }
 
+html {
+    // Same rounding as the event page panel
+    @include mat.dialog-overrides((
+        container-shape: 24px,
+    ));
+}
+
 // Links use the surrounding text colour instead of the browser's blue/purple; the underline marks them as links
 a {
     color: inherit;
