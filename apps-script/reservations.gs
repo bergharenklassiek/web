@@ -9,14 +9,16 @@ const RESERVATIONS_SHEET = 'Reserveringen';
 const CONCERTS_SHEET = 'Concerten';
 // Columns are found by their header, so they can be moved around in the spreadsheet. Missing columns are added at the end.
 const RESERVATION_COLUMNS = ['Ontvangen', 'Concert', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen', 'Event ID'];
-const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Event ID'];
+const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Beschikbaar', 'Event ID'];
 const SENDER_NAME = 'Bergharen Klassiek';
-// Replies to the confirmation email go here instead of to the Google account that sends it.
+// The confirmation email is sent from this address, and replies go here instead of to the Google account that sends it.
+// Gmail can only send from it once it's added under "Send mail as" (see apps-script/README.md). Until then the email
+// comes from the Google account's own address, with replies still going here.
 // Keep in sync with reservationEmail in src/app/core/config/reservation.config.ts
-const REPLY_TO = 'bergharenklassiek@outlook.com';
+const SENDER_EMAIL = 'bergharenklassiek@outlook.com';
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet
-const DEFAULT_CAPACITY = 100;
+const DEFAULT_CAPACITY = 120;
 
 function doPost(e) {
   let data;
@@ -37,6 +39,7 @@ function doPost(e) {
     title: clean(data.title, 200),
     date: clean(data.date, 50),
     dateLabel: clean(data.dateLabel, 100),
+    location: clean(data.location, 200),
     name: clean(data.name, 100),
     email: clean(data.email, 200),
     seats: Number(data.seats),
@@ -99,12 +102,20 @@ function onOpen() {
   refreshReservedTotals();
 }
 
+// Runs when someone edits the spreadsheet, so a changed capacity or reservation shows up in the totals straight away
+function onEdit(e) {
+  const name = e.range.getSheet().getName();
+  if (name === RESERVATIONS_SHEET || name === CONCERTS_SHEET) {
+    refreshReservedTotals();
+  }
+}
+
 function refreshReservedTotals() {
   updateReservedTotals(SpreadsheetApp.getActiveSpreadsheet());
 }
 
 /**
- * Writes the number of reserved seats per concert into the Gereserveerd column of the Concerten sheet.
+ * Writes the number of reserved and available seats per concert into the Gereserveerd and Beschikbaar columns of the Concerten sheet.
  * The script writes plain numbers instead of a formula, because formula syntax depends on the spreadsheet's language.
  */
 function updateReservedTotals(spreadsheet) {
@@ -119,9 +130,14 @@ function updateReservedTotals(spreadsheet) {
   const totals = reservedSeatsPerConcert(reservations);
   const rowCount = concerts.sheet.getLastRow() - 1;
   const ids = concerts.sheet.getRange(2, concerts.columns['Event ID'], rowCount, 1).getValues();
+  const capacities = concerts.sheet.getRange(2, concerts.columns['Capaciteit'], rowCount, 1).getValues();
+  const reserved = ids.map(([id]) => totals[String(id)] || 0);
   concerts.sheet
     .getRange(2, concerts.columns['Gereserveerd'], rowCount, 1)
-    .setValues(ids.map(([id]) => [totals[String(id)] || 0]));
+    .setValues(reserved.map(seats => [seats]));
+  concerts.sheet
+    .getRange(2, concerts.columns['Beschikbaar'], rowCount, 1)
+    .setValues(reserved.map((seats, i) => [Math.max(0, toCapacity(capacities[i][0]) - seats)]));
 }
 
 /**
@@ -134,8 +150,7 @@ function getCapacity(concerts, reservation) {
   const capacityIndex = concerts.columns['Capaciteit'] - 1;
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][idIndex]) === reservation.id) {
-      const capacity = Number(rows[i][capacityIndex]);
-      return rows[i][capacityIndex] === '' || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
+      return toCapacity(rows[i][capacityIndex]);
     }
   }
 
@@ -144,9 +159,16 @@ function getCapacity(concerts, reservation) {
     'Datum concert': safeCell(reservation.dateLabel || reservation.date),
     'Capaciteit': DEFAULT_CAPACITY,
     'Gereserveerd': 0,
+    'Beschikbaar': DEFAULT_CAPACITY,
     'Event ID': asText(reservation.id),
   });
   return DEFAULT_CAPACITY;
+}
+
+// The capacity in a Capaciteit cell, or DEFAULT_CAPACITY when it's empty or not a number
+function toCapacity(value) {
+  const capacity = Number(value);
+  return value === '' || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
 }
 
 // Total reserved seats per event ID, counted from the Reserveringen sheet. Rows without an event ID are skipped.
@@ -166,6 +188,9 @@ function reservedSeatsPerConcert(reservations) {
 
 function sendConfirmation(reservation) {
   const persons = reservation.seats === 1 ? '1 persoon' : `${reservation.seats} personen`;
+  // Storyblok dates look like "2026-11-15 20:00" and may be marked as UTC, but the time is already the local time.
+  // So it's read from the text as-is, without converting time zones.
+  const time = (reservation.date.match(/\b(\d{1,2}:\d{2})/) || [])[1];
   const body = [
     `Beste ${reservation.name},`,
     '',
@@ -173,6 +198,8 @@ function sendConfirmation(reservation) {
     '',
     `Concert: ${reservation.title}`,
     `Datum: ${reservation.dateLabel || reservation.date}`,
+    ...(time ? [`Tijd: ${time} uur`] : []),
+    ...(reservation.location ? [`Locatie: ${reservation.location}`] : []),
     `Aantal: ${persons}`,
     '',
     'Wil je je reservering wijzigen of annuleren? Beantwoord dan deze e-mail.',
@@ -183,13 +210,11 @@ function sendConfirmation(reservation) {
     'Bergharen Klassiek',
   ].join('\n');
 
-  MailApp.sendEmail({
-    to: reservation.email,
-    subject: `Bevestiging reservering: ${reservation.title}`,
-    body: body,
-    name: SENDER_NAME,
-    replyTo: REPLY_TO,
-  });
+  const options = { name: SENDER_NAME, replyTo: SENDER_EMAIL };
+  if (GmailApp.getAliases().includes(SENDER_EMAIL)) {
+    options.from = SENDER_EMAIL;
+  }
+  GmailApp.sendEmail(reservation.email, `Bevestiging reservering: ${reservation.title}`, body, options);
 }
 
 /**

@@ -3,6 +3,7 @@ export interface ReservationEvent {
     id: string;
     title: string;
     date: string;
+    location: string;
 }
 
 export interface ReservationGuest {

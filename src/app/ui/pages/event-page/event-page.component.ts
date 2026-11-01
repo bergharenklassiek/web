@@ -81,7 +81,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     const slug = this.route.snapshot.paramMap.get('event-slug')!;
     this.store.select(selectEventId(slug)).pipe(take(1)).subscribe(id => {
       const data: ReservationDialogData = {
-        event: { id: String(id), title: event.title, date: event.date },
+        event: { id: String(id), title: event.title, date: event.date, location: event.location },
       };
       this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
     });

@@ -1,10 +1,12 @@
 # Reservations (Google Sheet)
 
-Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation. Replies to that email go to the address in `REPLY_TO` at the top of the script.
+Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location.
+
+The Sheet and the script belong to the Google account `bergharen.klassiek.2021@gmail.com`, which also sends the confirmation emails. Guests see them as coming from the foundation's address, `bergharenklassiek@outlook.com`, once that's set up in Gmail (see [Sender address](#sender-address)).
 
 The foundation's email address is in two places. Change both when it changes:
 
-- `REPLY_TO` in `apps-script/reservations.gs`: where replies to confirmation emails go. Deploy the script afterwards with `npm run sheet:deploy`.
+- `SENDER_EMAIL` in `apps-script/reservations.gs`: the sender of confirmation emails, and where replies go. Deploy the script afterwards with `npm run sheet:deploy`.
 - `reservationEmail` in `src/app/core/config/reservation.config.ts`: the "reserve by email" link on the website.
 
 ## Setup
@@ -13,7 +15,7 @@ The script is deployed from this repository with [clasp](https://github.com/goog
 
 ### 1. Create the Sheet and the web app (once)
 
-1. Create a new Google Sheet with the Google account that should send the confirmation emails, for example `Reserveringen Bergharen Klassiek`.
+1. Create a new Google Sheet with the Google account `bergharen.klassiek.2021@gmail.com`, for example `Reserveringen Bergharen Klassiek`.
 2. In the Sheet, open **Extensions → Apps Script** (*Extensies → Apps Script*).
 3. Click **Deploy → New deployment** (*Implementeren → Nieuwe implementatie*), choose type **Web app** and set:
    - **Execute as** (*Uitvoeren als*): Me
@@ -49,21 +51,34 @@ To check the deployment, open the web app URL in a browser. It should show `{"st
 The script creates two tabs on the first reservation:
 
 - **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people and **Event ID**.
-- **Concerten:** one row per concert, with its **Capaciteit**, the total number of reserved seats and its **Event ID**. Every concert gets a capacity of 100 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 100. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
+- **Concerten:** one row per concert, with its **Capaciteit**, the number of reserved seats (**Gereserveerd**), the number of seats still available (**Beschikbaar**) and its **Event ID**. Every concert gets a capacity of 120 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 120. Concerts added before the default changed keep the capacity they were given, so check those. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
 
 All counting is done by **Event ID**, the Storyblok ID of the concert. Unlike the title or the web address, it never changes, so renaming a concert in Storyblok doesn't affect its count. Don't edit the Event ID cells.
 
 The script finds columns by their header, so you can reorder or add columns. Don't rename the headers. If a column is missing, for example in a spreadsheet made with an older version of the script, the script adds it at the end. Reservations made before the Event ID column existed have no ID and aren't counted.
 
-The **Gereserveerd** totals are written by the script, not by a formula. They update after every reservation and whenever the spreadsheet is opened. You can also update them from the **Reserveringen → Aantallen bijwerken** menu. That menu appears a few seconds after the spreadsheet opens.
+The **Gereserveerd** and **Beschikbaar** totals are written by the script, not by a formula. They update after every reservation, whenever you edit a cell in either tab, and whenever the spreadsheet is opened. You can also update them from the **Reserveringen → Aantallen bijwerken** menu. That menu appears a few seconds after the spreadsheet opens.
 
-To cancel a reservation, delete its row in **Reserveringen**. The seats become available on the website straight away, because the script counts the rows on every reservation. To see the new total in **Concerten**, use **Reserveringen → Aantallen bijwerken**.
+To cancel a reservation, delete its row in **Reserveringen**. The seats become available on the website straight away, because the script counts the rows on every reservation. Deleting a row doesn't count as an edit, so to see the new totals in **Concerten**, use **Reserveringen → Aantallen bijwerken**.
 
 ## Changing the script
 
 Edit `reservations.gs` in this repository and run `npm run sheet:deploy`. Use `npm run sheet:push` to upload without publishing, for example to try a change in the Apps Script editor first.
 
+When a change needs a new permission, for example to use Gmail, the web app stops sending emails until you allow it. Open the Apps Script editor, select `doGet` in the toolbar, click **Run** (*Uitvoeren*) and allow the permissions it asks for.
+
 Don't create a *new* deployment for a change: it gets a new URL, which would then also need changing on the website.
+
+## Sender address
+
+Gmail only sends from another address after you prove you own it. Until then, confirmation emails come from `bergharen.klassiek.2021@gmail.com`, and replies still go to `SENDER_EMAIL`. To send them from `bergharenklassiek@outlook.com`:
+
+1. Log in to Gmail as `bergharen.klassiek.2021@gmail.com` and open **Settings → See all settings → Accounts and Import** (*Instellingen → Alle instellingen bekijken → Accounts en import*).
+2. Under **Send mail as** (*Mail verzenden als*), click **Add another email address** (*Nog een e-mailadres toevoegen*) and enter `Bergharen Klassiek` and `bergharenklassiek@outlook.com`.
+3. Gmail asks for the Outlook mail server: `smtp-mail.outlook.com`, port 587, TLS, with the Outlook address and its password. If the Outlook account uses two-step verification, use an [app password](https://account.live.com/proofs/AppPassword) instead.
+4. Open the confirmation email Gmail sends to the Outlook inbox and confirm.
+
+The script checks for the address on every email, so this takes effect without a new deploy.
 
 ## Limits
 
