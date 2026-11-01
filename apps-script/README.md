@@ -20,7 +20,7 @@ The script is deployed from this repository with [clasp](https://github.com/goog
 3. Click **Deploy → New deployment** (*Implementeren → Nieuwe implementatie*), choose type **Web app** and set:
    - **Execute as** (*Uitvoeren als*): Me
    - **Who has access** (*Wie heeft toegang*): Anyone (*Iedereen*)
-4. Click **Deploy** and allow the permissions it asks for. The script needs to edit the Sheet and send email as you.
+4. Click **Deploy** and allow the permissions it asks for. The script needs to edit the Sheet and send email as you. See [Allowing permissions](#allowing-permissions).
 
 If you already deployed the script by hand, skip this step and use that deployment below. Later deploys from this repository keep these settings, because they're also in `appsscript.json`.
 
@@ -65,7 +65,14 @@ To cancel a reservation, delete its row in **Reserveringen**. The seats become a
 
 Edit `reservations.gs` in this repository and run `npm run sheet:deploy`. Use `npm run sheet:push` to upload without publishing, for example to try a change in the Apps Script editor first.
 
-When a change needs a new permission, for example to use Gmail, the web app stops sending emails until you allow it. Open the Apps Script editor, select `doGet` in the toolbar, click **Run** (*Uitvoeren*) and allow the permissions it asks for.
+When a change needs a new permission, for example to use Gmail, the web app stops sending emails until you allow it. Open the Apps Script editor, select `doGet` in the toolbar, click **Run** (*Uitvoeren*) and allow the permissions it asks for (see [Allowing permissions](#allowing-permissions)).
+
+Reservations are still saved when the email fails, and the guest still sees the thank-you message. The failure shows up as **Failed** under **Executions** (*Uitvoeringen*), usually without details. To see the error, run a function that sends an email from the editor.
+
+### Allowing permissions
+
+1. Google warns that **Google hasn't verified this app**. That's normal for your own script: click **Advanced** (*Geavanceerd*) and then **Go to <project name> (unsafe)** (*Ga naar <projectnaam> (onveilig)*).
+2. Tick every permission, or **Select all** (*Alles selecteren*), and click **Continue** (*Doorgaan*). If Gmail stays unticked, confirmation emails fail with "The script does not have permission to perform that action".
 
 Don't create a *new* deployment for a change: it gets a new URL, which would then also need changing on the website.
 

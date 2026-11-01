@@ -5,17 +5,32 @@
  * Setup instructions are in apps-script/README.md.
  */
 
-const RESERVATIONS_SHEET = 'Reserveringen';
-const CONCERTS_SHEET = 'Concerten';
+const RESERVATIONS_SHEET = "Reserveringen";
+const CONCERTS_SHEET = "Concerten";
 // Columns are found by their header, so they can be moved around in the spreadsheet. Missing columns are added at the end.
-const RESERVATION_COLUMNS = ['Ontvangen', 'Concert', 'Datum concert', 'Naam', 'E-mail', 'Aantal personen', 'Event ID'];
-const CONCERT_COLUMNS = ['Concert', 'Datum concert', 'Capaciteit', 'Gereserveerd', 'Beschikbaar', 'Event ID'];
-const SENDER_NAME = 'Bergharen Klassiek';
+const RESERVATION_COLUMNS = [
+  "Ontvangen",
+  "Concert",
+  "Datum concert",
+  "Naam",
+  "E-mail",
+  "Aantal personen",
+  "Event ID",
+];
+const CONCERT_COLUMNS = [
+  "Concert",
+  "Datum concert",
+  "Capaciteit",
+  "Gereserveerd",
+  "Beschikbaar",
+  "Event ID",
+];
+const SENDER_NAME = "Bergharen Klassiek";
 // The confirmation email is sent from this address, and replies go here instead of to the Google account that sends it.
 // Gmail can only send from it once it's added under "Send mail as" (see apps-script/README.md). Until then the email
 // comes from the Google account's own address, with replies still going here.
 // Keep in sync with reservationEmail in src/app/core/config/reservation.config.ts
-const SENDER_EMAIL = 'bergharenklassiek@outlook.com';
+const SENDER_EMAIL = "bergharenklassiek@outlook.com";
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet
 const DEFAULT_CAPACITY = 120;
@@ -25,12 +40,12 @@ function doPost(e) {
   try {
     data = JSON.parse(e.postData.contents);
   } catch (err) {
-    return respond({ status: 'invalid' });
+    return respond({ status: "invalid" });
   }
 
   // Honeypot: people never fill in this hidden field, bots do. Pretend it worked so they don't retry.
   if (data.website) {
-    return respond({ status: 'ok' });
+    return respond({ status: "ok" });
   }
 
   const reservation = {
@@ -45,15 +60,16 @@ function doPost(e) {
     seats: Number(data.seats),
   };
 
-  const isValid = /^\d+$/.test(reservation.id)
-    && reservation.title
-    && reservation.name
-    && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reservation.email)
-    && Number.isInteger(reservation.seats)
-    && reservation.seats >= 1
-    && reservation.seats <= MAX_SEATS_PER_RESERVATION;
+  const isValid =
+    /^\d+$/.test(reservation.id) &&
+    reservation.title &&
+    reservation.name &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reservation.email) &&
+    Number.isInteger(reservation.seats) &&
+    reservation.seats >= 1 &&
+    reservation.seats <= MAX_SEATS_PER_RESERVATION;
   if (!isValid) {
-    return respond({ status: 'invalid' });
+    return respond({ status: "invalid" });
   }
 
   // Only one reservation at a time, so two guests can't both take the last seats
@@ -61,22 +77,32 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const reservations = getOrCreateSheet(spreadsheet, RESERVATIONS_SHEET, RESERVATION_COLUMNS);
-    const concerts = getOrCreateSheet(spreadsheet, CONCERTS_SHEET, CONCERT_COLUMNS);
+    const reservations = getOrCreateSheet(
+      spreadsheet,
+      RESERVATIONS_SHEET,
+      RESERVATION_COLUMNS,
+    );
+    const concerts = getOrCreateSheet(
+      spreadsheet,
+      CONCERTS_SHEET,
+      CONCERT_COLUMNS,
+    );
 
-    const remaining = getCapacity(concerts, reservation) - (reservedSeatsPerConcert(reservations)[reservation.id] || 0);
+    const remaining =
+      getCapacity(concerts, reservation) -
+      (reservedSeatsPerConcert(reservations)[reservation.id] || 0);
     if (reservation.seats > remaining) {
-      return respond({ status: 'full', remaining: Math.max(0, remaining) });
+      return respond({ status: "full", remaining: Math.max(0, remaining) });
     }
 
     appendRow(reservations, {
-      'Ontvangen': new Date(),
-      'Concert': safeCell(reservation.title),
-      'Datum concert': safeCell(reservation.dateLabel || reservation.date),
-      'Naam': safeCell(reservation.name),
-      'E-mail': safeCell(reservation.email),
-      'Aantal personen': reservation.seats,
-      'Event ID': asText(reservation.id),
+      Ontvangen: new Date(),
+      Concert: safeCell(reservation.title),
+      "Datum concert": safeCell(reservation.dateLabel || reservation.date),
+      Naam: safeCell(reservation.name),
+      "E-mail": safeCell(reservation.email),
+      "Aantal personen": reservation.seats,
+      "Event ID": asText(reservation.id),
     });
     updateReservedTotals(spreadsheet);
     SpreadsheetApp.flush();
@@ -84,20 +110,26 @@ function doPost(e) {
     lock.releaseLock();
   }
 
-  sendConfirmation(reservation);
-  return respond({ status: 'ok' });
+  // The reservation is already saved, so a failed email mustn't make the guest think it failed and reserve again.
+  // The error shows up under Executions in the Apps Script editor.
+  try {
+    sendConfirmation(reservation);
+  } catch (err) {
+    console.error(`Confirmation email to ${reservation.email} failed: ${err}`);
+  }
+  return respond({ status: "ok" });
 }
 
 // Lets you check the deployment by opening its URL in a browser
 function doGet() {
-  return respond({ status: 'ok' });
+  return respond({ status: "ok" });
 }
 
 // Runs when the spreadsheet is opened: adds a menu to refresh the totals, and refreshes them straight away
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('Reserveringen')
-    .addItem('Aantallen bijwerken', 'refreshReservedTotals')
+    .createMenu("Reserveringen")
+    .addItem("Aantallen bijwerken", "refreshReservedTotals")
     .addToUi();
   refreshReservedTotals();
 }
@@ -125,19 +157,35 @@ function updateReservedTotals(spreadsheet) {
     return;
   }
 
-  const reservations = getOrCreateSheet(spreadsheet, RESERVATIONS_SHEET, RESERVATION_COLUMNS);
-  const concerts = getOrCreateSheet(spreadsheet, CONCERTS_SHEET, CONCERT_COLUMNS);
+  const reservations = getOrCreateSheet(
+    spreadsheet,
+    RESERVATIONS_SHEET,
+    RESERVATION_COLUMNS,
+  );
+  const concerts = getOrCreateSheet(
+    spreadsheet,
+    CONCERTS_SHEET,
+    CONCERT_COLUMNS,
+  );
   const totals = reservedSeatsPerConcert(reservations);
   const rowCount = concerts.sheet.getLastRow() - 1;
-  const ids = concerts.sheet.getRange(2, concerts.columns['Event ID'], rowCount, 1).getValues();
-  const capacities = concerts.sheet.getRange(2, concerts.columns['Capaciteit'], rowCount, 1).getValues();
+  const ids = concerts.sheet
+    .getRange(2, concerts.columns["Event ID"], rowCount, 1)
+    .getValues();
+  const capacities = concerts.sheet
+    .getRange(2, concerts.columns["Capaciteit"], rowCount, 1)
+    .getValues();
   const reserved = ids.map(([id]) => totals[String(id)] || 0);
   concerts.sheet
-    .getRange(2, concerts.columns['Gereserveerd'], rowCount, 1)
-    .setValues(reserved.map(seats => [seats]));
+    .getRange(2, concerts.columns["Gereserveerd"], rowCount, 1)
+    .setValues(reserved.map((seats) => [seats]));
   concerts.sheet
-    .getRange(2, concerts.columns['Beschikbaar'], rowCount, 1)
-    .setValues(reserved.map((seats, i) => [Math.max(0, toCapacity(capacities[i][0]) - seats)]));
+    .getRange(2, concerts.columns["Beschikbaar"], rowCount, 1)
+    .setValues(
+      reserved.map((seats, i) => [
+        Math.max(0, toCapacity(capacities[i][0]) - seats),
+      ]),
+    );
 }
 
 /**
@@ -146,8 +194,8 @@ function updateReservedTotals(spreadsheet) {
  */
 function getCapacity(concerts, reservation) {
   const rows = concerts.sheet.getDataRange().getValues();
-  const idIndex = concerts.columns['Event ID'] - 1;
-  const capacityIndex = concerts.columns['Capaciteit'] - 1;
+  const idIndex = concerts.columns["Event ID"] - 1;
+  const capacityIndex = concerts.columns["Capaciteit"] - 1;
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][idIndex]) === reservation.id) {
       return toCapacity(rows[i][capacityIndex]);
@@ -155,12 +203,12 @@ function getCapacity(concerts, reservation) {
   }
 
   appendRow(concerts, {
-    'Concert': safeCell(reservation.title),
-    'Datum concert': safeCell(reservation.dateLabel || reservation.date),
-    'Capaciteit': DEFAULT_CAPACITY,
-    'Gereserveerd': 0,
-    'Beschikbaar': DEFAULT_CAPACITY,
-    'Event ID': asText(reservation.id),
+    Concert: safeCell(reservation.title),
+    "Datum concert": safeCell(reservation.dateLabel || reservation.date),
+    Capaciteit: DEFAULT_CAPACITY,
+    Gereserveerd: 0,
+    Beschikbaar: DEFAULT_CAPACITY,
+    "Event ID": asText(reservation.id),
   });
   return DEFAULT_CAPACITY;
 }
@@ -168,14 +216,14 @@ function getCapacity(concerts, reservation) {
 // The capacity in a Capaciteit cell, or DEFAULT_CAPACITY when it's empty or not a number
 function toCapacity(value) {
   const capacity = Number(value);
-  return value === '' || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
+  return value === "" || isNaN(capacity) ? DEFAULT_CAPACITY : capacity;
 }
 
 // Total reserved seats per event ID, counted from the Reserveringen sheet. Rows without an event ID are skipped.
 function reservedSeatsPerConcert(reservations) {
   const rows = reservations.sheet.getDataRange().getValues();
-  const idIndex = reservations.columns['Event ID'] - 1;
-  const seatsIndex = reservations.columns['Aantal personen'] - 1;
+  const idIndex = reservations.columns["Event ID"] - 1;
+  const seatsIndex = reservations.columns["Aantal personen"] - 1;
   const totals = {};
   for (let i = 1; i < rows.length; i++) {
     const id = String(rows[i][idIndex]);
@@ -187,34 +235,40 @@ function reservedSeatsPerConcert(reservations) {
 }
 
 function sendConfirmation(reservation) {
-  const persons = reservation.seats === 1 ? '1 persoon' : `${reservation.seats} personen`;
+  const persons =
+    reservation.seats === 1 ? "1 persoon" : `${reservation.seats} personen`;
   // Storyblok dates look like "2026-11-15 20:00" and may be marked as UTC, but the time is already the local time.
   // So it's read from the text as-is, without converting time zones.
   const time = (reservation.date.match(/\b(\d{1,2}:\d{2})/) || [])[1];
   const body = [
     `Beste ${reservation.name},`,
-    '',
-    'Bedankt voor je reservering. We hebben het volgende voor je genoteerd:',
-    '',
+    "",
+    "Bedankt voor je reservering. We hebben het volgende voor je genoteerd:",
+    "",
     `Concert: ${reservation.title}`,
     `Datum: ${reservation.dateLabel || reservation.date}`,
     ...(time ? [`Tijd: ${time} uur`] : []),
     ...(reservation.location ? [`Locatie: ${reservation.location}`] : []),
     `Aantal: ${persons}`,
-    '',
-    'Wil je je reservering wijzigen of annuleren? Beantwoord dan deze e-mail.',
-    '',
-    'Tot ziens bij het concert!',
-    '',
-    'Met vriendelijke groet,',
-    'Bergharen Klassiek',
-  ].join('\n');
+    "",
+    "Wil je je reservering wijzigen of annuleren? Beantwoord dan deze e-mail.",
+    "",
+    "Tot ziens bij het concert!",
+    "",
+    "Met vriendelijke groet,",
+    "Bergharen Klassiek",
+  ].join("\n");
 
   const options = { name: SENDER_NAME, replyTo: SENDER_EMAIL };
   if (GmailApp.getAliases().includes(SENDER_EMAIL)) {
     options.from = SENDER_EMAIL;
   }
-  GmailApp.sendEmail(reservation.email, `Bevestiging reservering: ${reservation.title}`, body, options);
+  GmailApp.sendEmail(
+    reservation.email,
+    `Bevestiging reservering: ${reservation.title}`,
+    body,
+    options,
+  );
 }
 
 /**
@@ -229,7 +283,9 @@ function getOrCreateSheet(spreadsheet, name, headers) {
   }
 
   const lastColumn = sheet.getLastColumn();
-  const existing = lastColumn ? sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(String) : [];
+  const existing = lastColumn
+    ? sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(String)
+    : [];
   const columns = {};
   existing.forEach((header, i) => {
     if (header) {
@@ -240,7 +296,7 @@ function getOrCreateSheet(spreadsheet, name, headers) {
   let next = existing.length + 1;
   for (const header of headers) {
     if (!columns[header]) {
-      sheet.getRange(1, next).setValue(header).setFontWeight('bold');
+      sheet.getRange(1, next).setValue(header).setFontWeight("bold");
       columns[header] = next++;
     }
   }
@@ -251,7 +307,7 @@ function getOrCreateSheet(spreadsheet, name, headers) {
 // Appends a row with the given values, each placed in the column with that header
 function appendRow(target, values) {
   const width = Math.max(...Object.values(target.columns));
-  const row = new Array(width).fill('');
+  const row = new Array(width).fill("");
   for (const [header, value] of Object.entries(values)) {
     row[target.columns[header] - 1] = value;
   }
@@ -259,7 +315,9 @@ function appendRow(target, values) {
 }
 
 function clean(value, maxLength) {
-  return String(value ?? '').trim().slice(0, maxLength);
+  return String(value ?? "")
+    .trim()
+    .slice(0, maxLength);
 }
 
 // Storyblok IDs are long numbers, which Sheets would otherwise show as e.g. 1.29413E+14. The apostrophe isn't displayed.
@@ -273,5 +331,7 @@ function safeCell(value) {
 }
 
 function respond(result) {
-  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(
+    ContentService.MimeType.JSON,
+  );
 }
