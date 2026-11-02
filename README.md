@@ -30,7 +30,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Fixes
 
-- [ ] Swiper: `npm audit` reports a critical issue. The fix needs a major upgrade to version 14.
+- [x] Swiper: `npm audit` reports a critical issue. The fix needs a major upgrade to version 14.
 - [x] Homepage video: it loads from `tube.rvere.com`, not YouTube. Find out who runs it, and replace it if it isn't ours.
 - [x] "Reserveer hier" button: it's a clickable `div`, so keyboard users can't reach it.
 - [x] Event page photos: every photo reuses the first photo's alt text.
