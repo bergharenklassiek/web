@@ -1,14 +1,13 @@
 import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Dispatcher } from '@ngrx/signals/events';
-import { SwiperOptions } from 'swiper/types';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
 import { richTextToDescription } from '../../../core/seo/page-seo';
 import { SeoService } from '../../../core/seo/seo.service';
 import { loadContentPage } from '../../../core/store/content.events';
 import { ContentStore } from '../../../core/store/content.store';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
-import { carouselAutoplay, SwiperDirective } from '../../directives/swiper.directive';
+import { photoCarouselOptions, SwiperDirective } from '../../directives/swiper.directive';
 
 @Component({
     selector: 'app-content-page',
@@ -20,13 +19,7 @@ import { carouselAutoplay, SwiperDirective } from '../../directives/swiper.direc
     styleUrl: './content-page.component.scss'
 })
 export class ContentPageComponent implements OnInit {
-  swiperConfig: SwiperOptions = {
-    autoplay: carouselAutoplay,
-    navigation: true,
-    slidesPerView: 1,
-    spaceBetween: 15,
-  } 
-
+  carouselOptions = photoCarouselOptions;
   private readonly store = inject(ContentStore);
   private readonly dispatcher = inject(Dispatcher);
   private readonly seo = inject(SeoService);

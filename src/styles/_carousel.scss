@@ -1,0 +1,25 @@
+@use 'variables' as vars;
+
+// The photo carousel on concert pages and content pages. Set a width on the element itself.
+@mixin carousel {
+    display: block;
+
+    // Dots on top of the photo: red for the current one, white for the others
+    --swiper-pagination-color: #{vars.$primaryRed};
+    --swiper-pagination-bullet-inactive-color: white;
+    --swiper-pagination-bullet-inactive-opacity: 0.7;
+    --swiper-pagination-bullet-size: 8px;
+    --swiper-pagination-bullet-horizontal-gap: 3px;
+    --swiper-pagination-bottom: 12px;
+}
+
+@mixin carousel-photo {
+    display: block;
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+
+    @media (width <= 800px) {
+        height: 220px;
+    }
+}
