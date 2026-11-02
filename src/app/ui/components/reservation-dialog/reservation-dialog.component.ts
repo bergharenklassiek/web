@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
 import { Event } from '../../../core/models/event';
 import { ReservationEvent } from '../../../core/models/reservation';
 import { Story } from '../../../core/models/story';
-import { ContentService } from '../../../core/services/content.service';
+import { ContentStore } from '../../../core/store/content.store';
 import { ReservationFormComponent } from '../reservation-form/reservation-form.component';
 import { ReservationDialogRowComponent } from './reservation-dialog-row/reservation-dialog-row.component';
 
@@ -25,10 +25,9 @@ export const reservationDialogConfig = {
   styleUrl: './reservation-dialog.component.scss',
 })
 export class ReservationDialogComponent {
-  private readonly contentService = inject(ContentService);
   private readonly data = inject<ReservationDialogData | null>(MAT_DIALOG_DATA, { optional: true });
 
-  events = this.contentService.events;
+  events = inject(ContentStore).upcomingEventsWhenLoaded;
   readonly openedForEvent = !!this.data?.event;
   selectedEvent = signal<ReservationEvent | undefined>(this.data?.event);
 
