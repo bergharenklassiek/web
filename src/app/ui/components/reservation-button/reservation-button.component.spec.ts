@@ -19,4 +19,15 @@ describe('ReservationButtonComponent', () => {
     expect(open.mock.calls[0][0]).toBe(ReservationDialogComponent);
     expect(open.mock.calls[0][1].data).toBeUndefined();
   });
+
+  it('should be a real button, so keyboard users can reach it', () => {
+    TestBed.configureTestingModule({
+      imports: [ReservationButtonComponent],
+      providers: [{ provide: MatDialog, useValue: { open: vi.fn() } }],
+    });
+    const fixture = TestBed.createComponent(ReservationButtonComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('button.reservation-button').getAttribute('type')).toBe('button');
+  });
 });
