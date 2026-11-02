@@ -15,7 +15,7 @@ export class ContactPageComponent {
     inject(SeoService).update({
       title: 'Contact',
       description: 'Contactgegevens van Stichting Bergharen Klassiek en het adres van de Protestantse Kerk te Bergharen.',
-      path: '/contact',
+      path: '/contact/',
     });
   }
 }

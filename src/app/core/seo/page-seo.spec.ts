@@ -24,6 +24,13 @@ describe('page SEO', () => {
       expect(seo.path).toBe('/agenda/pianorecital');
     });
 
+    it('should percent-encode the slug in its URLs', () => {
+      const seo = eventSeo('pianorecital-nicolò', event);
+
+      expect(seo.path).toBe('/agenda/pianorecital-nicol%C3%B2');
+      expect((seo.jsonLd as any).url).toBe('https://bergharenklassiek.nl/agenda/pianorecital-nicol%C3%B2');
+    });
+
     it('should use a resized first photo, with the title when it has no alt text', () => {
       expect(eventSeo('pianorecital', event).image).toEqual({
         url: 'https://a2.storyblok.com/f/1/photo.jpg/m/1200x630',

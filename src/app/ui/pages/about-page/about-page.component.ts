@@ -32,7 +32,7 @@ export class AboutPageComponent implements OnInit {
     this.aboutPage$.pipe(filter((page) => !!page), takeUntilDestroyed(this.destroyRef)).subscribe((page) => this.seo.update({
       title: page.content.title,
       description: richTextToDescription(page.content.description),
-      path: '/over-ons',
+      path: '/over-ons/',
     }));
   }
 }

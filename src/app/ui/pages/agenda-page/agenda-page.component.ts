@@ -26,7 +26,7 @@ export class AgendaPageComponent {
     inject(SeoService).update({
       title: 'Agenda',
       description: 'De agenda van Bergharen Klassiek: alle komende en eerdere concerten in de Protestantse Kerk te Bergharen.',
-      path: '/agenda',
+      path: '/agenda/',
     });
   }
   

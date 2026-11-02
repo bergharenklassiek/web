@@ -47,7 +47,7 @@ export class ContentPageComponent implements OnInit, AfterViewInit {
     this.contentPage$.pipe(filter((page) => !!page), takeUntilDestroyed(this.destroyRef)).subscribe((page) => this.seo.update({
       title: page.content.title,
       description: richTextToDescription(page.content.description),
-      path: `/${slug}`,
+      path: `/${slug}/`,
     }));
   }
 
