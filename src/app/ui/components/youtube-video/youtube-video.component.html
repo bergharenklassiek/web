@@ -1,0 +1,14 @@
+@if (playing()) {
+    <iframe
+        [src]="playerUrl()"
+        [title]="videoTitle()"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+}
+@else {
+    <button type="button" class="youtube-video__play" [attr.aria-label]="'Video afspelen: ' + videoTitle()" (click)="play()">
+        <img class="youtube-video__thumbnail" [src]="thumbnailUrl()" alt="" width="640" height="360" loading="lazy" />
+        <span class="youtube-video__icon" aria-hidden="true"></span>
+    </button>
+}
