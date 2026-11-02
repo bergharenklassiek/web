@@ -15,4 +15,6 @@ export const venue = {
   streetAddress: 'Veldsestraat 12',
   addressLocality: 'Bergharen',
   addressCountry: 'NL',
+  // Shown with the location of a concert when filled in. Keep in sync with PARKING_INFO in apps-script/reservations.gs
+  parking: '',
 };

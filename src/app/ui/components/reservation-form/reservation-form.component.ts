@@ -5,10 +5,11 @@ import { ReservationEvent, ReservationStatus } from '../../../core/models/reserv
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { ReservationLinkService } from '../../../core/services/reservation-link.service';
 import { ReservationService } from '../../../core/services/reservation.service';
+import { ConcertLinksComponent } from '../concert-links/concert-links.component';
 
 @Component({
   selector: 'app-reservation-form',
-  imports: [ReactiveFormsModule, AppDatePipe],
+  imports: [ReactiveFormsModule, AppDatePipe, ConcertLinksComponent],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

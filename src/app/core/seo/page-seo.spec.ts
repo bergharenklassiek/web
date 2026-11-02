@@ -2,7 +2,8 @@ import { registerLocaleData } from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
 import { ISbRichtext } from '@storyblok/js';
 import { Event } from '../models/event';
-import { eventSeo, richTextToDescription, toIsoWithOffset } from './page-seo';
+import { toIsoWithOffset } from '../utils/event-date';
+import { eventSeo, richTextToDescription } from './page-seo';
 
 registerLocaleData(localeNl);
 

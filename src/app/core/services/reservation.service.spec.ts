@@ -9,7 +9,7 @@ describe('ReservationService', () => {
   let service: ReservationService;
   let http: HttpTestingController;
 
-  const event = { id: '129413000010395', title: 'Strijkkwartet', date: '2026-11-16 15:00', location: 'Kerk Bergharen' };
+  const event = { id: '129413000010395', slug: 'strijkkwartet', title: 'Strijkkwartet', date: '2026-11-16 15:00', location: 'Kerk Bergharen' };
   const guest = { name: 'Anna', email: 'anna@example.com', seats: 2, website: '' };
 
   beforeEach(() => {

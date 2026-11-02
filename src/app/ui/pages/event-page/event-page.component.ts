@@ -19,13 +19,15 @@ import { ReservationDialogComponent, ReservationDialogData, reservationDialogCon
 import { Story } from '../../../core/models/story';
 import { eventSeo } from '../../../core/seo/page-seo';
 import { SeoService } from '../../../core/seo/seo.service';
+import { CalendarEvent } from '../../../core/calendar/calendar';
+import { ConcertLinksComponent } from '../../components/concert-links/concert-links.component';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
 @Component({
     selector: 'app-event-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RichTextComponent, EventListItemComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe, RouterLink],
+    imports: [RichTextComponent, EventListItemComponent, StoryBlokImagePipe, AppDatePipe, AsyncPipe, RouterLink, ConcertLinksComponent],
     templateUrl: './event-page.component.html',
     styleUrl: './event-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -56,6 +58,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   isPast$?: Observable<boolean>;
   earlierEvents$?: Observable<Story<Event>[]>;
   notFound$?: Observable<boolean>;
+  calendarEvent$?: Observable<CalendarEvent | undefined>;
   
   constructor(
     private route: ActivatedRoute, 
@@ -74,6 +77,12 @@ export class EventPageComponent implements OnInit, AfterViewInit {
       filter((event): event is Event => !!event),
       map(event => this.reservationLinkService.formatReservationLink(event))
     );
+    this.calendarEvent$ = slug$.pipe(switchMap(slug => this.store.pipe(
+      select(selectEvent(slug)),
+      map(event => event && Date.parse(event.date) >= Date.now()
+        ? { slug, title: event.title, date: event.date, location: event.location, summary: event.summary }
+        : undefined)
+    )));
     this.isPast$ = this.event$.pipe(
       filter((event): event is Event => !!event),
       map(event => Date.parse(event.date) < Date.now())
@@ -101,7 +110,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
     const slug = this.route.snapshot.paramMap.get('event-slug')!;
     this.store.select(selectEventId(slug)).pipe(take(1)).subscribe(id => {
       const data: ReservationDialogData = {
-        event: { id: String(id), title: event.title, date: event.date, location: event.location },
+        event: { id: String(id), slug, title: event.title, date: event.date, location: event.location },
       };
       this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
     });
