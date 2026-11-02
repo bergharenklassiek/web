@@ -21,6 +21,10 @@ import { CalendarEvent } from '../../../core/calendar/calendar';
 import { ConcertLinksComponent } from '../../components/concert-links/concert-links.component';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
+// A new deploy clears Netlify's cache. Without one, edits in Storyblok show up within these times. After 5 minutes, the
+// next visitor still gets the cached page while it's refreshed in the background.
+const CDN_CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=3600';
+
 @Component({
     selector: 'app-event-page',
     standalone: true,
@@ -84,6 +88,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
       const event = this.event();
       if (event) {
         this.seo.update(eventSeo(this.slug(), event));
+        this.allowCdnCaching();
       }
     });
     effect(() => {
@@ -94,6 +99,15 @@ export class EventPageComponent implements OnInit, AfterViewInit {
         this.seo.update({ title: 'Concert niet gevonden', noindex: true });
       }
     });
+  }
+
+  // Only for a loaded concert, so a 404 or a failed request to Storyblok doesn't get cached as if it were the page
+  private allowCdnCaching(): void {
+    if (this.responseInit) {
+      const headers = new Headers(this.responseInit.headers);
+      headers.set('Netlify-CDN-Cache-Control', CDN_CACHE_CONTROL);
+      this.responseInit.headers = headers;
+    }
   }
 
   ngOnInit(): void {
