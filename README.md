@@ -24,9 +24,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Tests and CI
 
-- [ ] Make `npm test` work: the specs and `tsconfig.spec.json` expect Jest, but it isn't in `package.json`.
-- [ ] Add CI that runs the build and tests on every PR.
-- [ ] Update the build and test instructions in this README, which still describe Karma and Angular CLI defaults.
+- [x] Make `npm test` work, using Vitest.
+- [x] Add CI that runs the build and tests on every PR.
+- [x] Update the test instructions in this README, which still described Karma.
 
 ### Fixes
 
@@ -35,6 +35,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] "Reserveer hier" button: it's a clickable `div`, so keyboard users can't reach it.
 - [ ] Event page photos: every photo reuses the first photo's alt text.
 - [ ] Add security headers, such as a Content Security Policy. Only HSTS is set now.
+- [ ] Unknown URLs such as `/bestaat-niet` get a plain-text "Not found" instead of the site's own page.
+- [ ] Carousels don't autoplay, although `swiperConfig` asks for it. Decide whether they should, then fix or remove the setting.
+- [ ] Remove the `console.log` in `ContentService.homePage()`.
+- [ ] `home-page.component.scss` is 99 bytes over its 2 kB budget.
 - [ ] `site.webmanifest`: `name` and `short_name` are empty.
 - [x] Event page template: remove the unused `@if (event)` block.
 
@@ -62,7 +66,17 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Tests run with [Vitest](https://vitest.dev), through Angular's unit test builder.
+
+- `npm test`: run all tests once.
+- `npm run test:watch`: run tests again when files change.
+- `npm run test:coverage`: run all tests with a coverage report, in the terminal and in `coverage/`. This fails when coverage drops below the thresholds in `angular.json`.
+
+`src/apps-script.spec.ts` tests the reservation script in `apps-script/reservations.gs` against a fake Sheet and Gmail. It can't show how Google's own services behave, so try a real reservation after deploying the script.
+
+## Continuous integration
+
+`.github/workflows/ci.yml` runs the tests with coverage thresholds and the build on every pull request and on `main`. The coverage table is shown in the run's summary, and the full report is attached to the run.
 
 ## Running end-to-end tests
 

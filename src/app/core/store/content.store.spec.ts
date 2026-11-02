@@ -18,19 +18,19 @@ describe('ContentStore', () => {
     content: { component: 'Event', title, date, artists } as unknown as Event,
   });
 
-  let contentService: { [key: string]: jest.Mock };
+  let contentService: { [key: string]: ReturnType<typeof vi.fn> };
   let store: InstanceType<typeof ContentStore>;
   let dispatcher: Dispatcher;
 
   beforeEach(() => {
     contentService = {
-      homePage: jest.fn(),
-      loadAboutPage: jest.fn(() => of({ id: 'a', slug: 'about', content: { title: 'Over ons' } })),
-      loadContentPage: jest.fn((slug: string) => of({ id: slug, slug, content: { title: slug } })),
-      loadContactItems: jest.fn(() => of([{ id: 'c', slug: 'c', content: {} }])),
-      loadEvents: jest.fn(() => of([story('1')])),
-      loadEvent: jest.fn((slug: string) => of(story(slug.replace('event-', '')))),
-      loadEarlierEventsByArtists: jest.fn(() => of([])),
+      homePage: vi.fn(),
+      loadAboutPage: vi.fn(() => of({ id: 'a', slug: 'about', content: { title: 'Over ons' } })),
+      loadContentPage: vi.fn((slug: string) => of({ id: slug, slug, content: { title: slug } })),
+      loadContactItems: vi.fn(() => of([{ id: 'c', slug: 'c', content: {} }])),
+      loadEvents: vi.fn(() => of([story('1')])),
+      loadEvent: vi.fn((slug: string) => of(story(slug.replace('event-', '')))),
+      loadEarlierEventsByArtists: vi.fn(() => of([])),
     };
     TestBed.configureTestingModule({ providers: [{ provide: ContentService, useValue: contentService }] });
     store = TestBed.inject(ContentStore);

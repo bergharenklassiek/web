@@ -83,6 +83,23 @@
           },
           "defaultConfiguration": "development"
         },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "bergharen_klassiek:build:development",
+            "setupFiles": ["src/test-setup.ts"],
+            "isolate": true,
+            "coverageInclude": ["src/app/**/*.ts"],
+            "coverageExclude": ["src/app/**/*.spec.ts", "src/app/app.config*.ts", "src/app/core/models/**"],
+            "coverageReporters": ["text", "html"],
+            "coverageThresholds": {
+              "statements": 95,
+              "branches": 90,
+              "functions": 95,
+              "lines": 95
+            }
+          }
+        },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {

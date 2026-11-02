@@ -8,12 +8,12 @@ import { ReservationResponse } from '../../../core/models/reservation';
 describe('ReservationFormComponent', () => {
   let component: ReservationFormComponent;
   let fixture: ComponentFixture<ReservationFormComponent>;
-  let reserve: jest.Mock;
+  let reserve: ReturnType<typeof vi.fn>;
 
   const event = { id: '129413000010395', slug: 'strijkkwartet-aurelia', title: 'Strijkkwartet Aurelia', date: '2026-11-16 15:00', location: 'Kerk Bergharen' };
 
   beforeEach(async () => {
-    reserve = jest.fn();
+    reserve = vi.fn();
     await TestBed.configureTestingModule({
       imports: [ReservationFormComponent],
       providers: [{ provide: ReservationService, useValue: { enabled: true, reserve } }],
