@@ -1,12 +1,15 @@
 // import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, DestroyRef, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, Observable, tap, withLatestFrom } from 'rxjs';
 import { SwiperOptions } from 'swiper/types';
 import { ContentPage } from '../../../core/models/content-page';
 import { Story } from '../../../core/models/story';
+import { richTextToDescription } from '../../../core/seo/page-seo';
+import { SeoService } from '../../../core/seo/seo.service';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
 import { loadContentPage } from '../../../core/store/content.actions';
 import { selectContentPage } from '../../../core/store/content.selectors';
@@ -33,11 +36,19 @@ export class ContentPageComponent implements OnInit, AfterViewInit {
   slug = this.router.url.replace('/','');
   contentPage$: Observable<Story<ContentPage> | undefined> = this.store.pipe(select(selectContentPage(this.slug)));;
 
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly seo = inject(SeoService);
+
   constructor(private store: Store, private router: Router) {}
   
   ngOnInit(): void {
     const slug = this.router.url.replace('/','');
     this.store.dispatch(loadContentPage({ contentPageSlug: slug }));
+    this.contentPage$.pipe(filter((page) => !!page), takeUntilDestroyed(this.destroyRef)).subscribe((page) => this.seo.update({
+      title: page.content.title,
+      description: richTextToDescription(page.content.description),
+      path: `/${slug}`,
+    }));
   }
 
   ngAfterViewInit(): void {

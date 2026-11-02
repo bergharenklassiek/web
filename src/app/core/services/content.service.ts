@@ -6,6 +6,7 @@ import { Story } from '../models/story';
 import { ContactItem } from '../models/contact-item';
 import { AboutPage } from '../models/about-page';
 import { ContentPage } from '../models/content-page';
+import { storyblokBaseUrl, storyblokToken } from '../config/storyblok.config';
 import { concat, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 
 // Fixed key (unlike the request URL, which contains today's date) so a prerendered page can hand its events to the browser
@@ -22,8 +23,8 @@ export class ContentService {
   private readonly http = inject(HttpClient);
   private readonly transferState = inject(TransferState);
 
-  private storyblokBaseUrl = 'https://api.storyblok.com/v2/cdn';
-  private token = 'token=acu9a7B7tQrUQ6dr0rQTqgtt';
+  private storyblokBaseUrl = storyblokBaseUrl;
+  private token = `token=${storyblokToken}`;
 
   // homePageResource = httpResource<{ story: Story<HomePage> }>(() => `${this.storyblokBaseUrl}/stories/home?${this.token}`);
   // homePage = computed(() => this.homePageResource.value()?.story);

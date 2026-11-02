@@ -1,10 +1,11 @@
 import { inject } from "@angular/core";
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { filter, map, mergeMap, take, } from "rxjs";
+import { HttpErrorResponse } from "@angular/common/http";
+import { catchError, filter, map, mergeMap, of, take, throwError } from "rxjs";
 import { concatLatestFrom } from '@ngrx/operators';
 import { ContentService } from "../services/content.service";
-import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEarlierEventsSuccess, loadEvent, loadEvents, loadEventsSuccess, loadEventSuccess } from "./content.actions";
+import { loadAboutPage, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEarlierEventsSuccess, loadEvent, loadEvents, loadEventNotFound, loadEventsSuccess, loadEventSuccess } from "./content.actions";
 import { selectAboutPage, selectContentPage, selectEvent, selectEventsLoaded } from "./content.selectors";
 
 export const loadAboutPageEffect = createEffect(
@@ -70,7 +71,12 @@ export const loadEventEffect = createEffect(
             mergeMap((action) => store.select(selectEvent(action.eventSlug)).pipe(
                 filter(event => !event),
                 mergeMap(() => contentService.loadEvent(action.eventSlug).pipe(
-                    map((event) => loadEventSuccess({ event }))
+                    map((event) => event.content.component === 'Event'
+                        ? loadEventSuccess({ event })
+                        : loadEventNotFound({ eventSlug: action.eventSlug })),
+                    catchError((error: unknown) => error instanceof HttpErrorResponse && error.status === 404
+                        ? of(loadEventNotFound({ eventSlug: action.eventSlug }))
+                        : throwError(() => error))
                 ))
             ))
         )

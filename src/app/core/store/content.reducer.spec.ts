@@ -1,6 +1,6 @@
 import { Event } from '../models/event';
 import { Story } from '../models/story';
-import { displayPastEvents, loadEventSuccess } from './content.actions';
+import { displayPastEvents, loadEventNotFound, loadEventSuccess } from './content.actions';
 import * as fromReducer from './content.reducer';
 
 describe('ContentReducer', () => {
@@ -108,6 +108,15 @@ describe('ContentReducer', () => {
             const action = displayPastEvents({ displayPastEvents: true });
             const state = fromReducer.contentReducer(initialState, action);
             expect(state.displayPastEvents).toEqual(true);
+        });
+    });
+
+    describe('loadEventNotFound action', () => {
+        it('should remember the slug once', () => {
+            const state = [loadEventNotFound({ eventSlug: 'missing' }), loadEventNotFound({ eventSlug: 'missing' })]
+                .reduce(fromReducer.contentReducer, fromReducer.initialState);
+
+            expect(state.missingEventSlugs).toEqual(['missing']);
         });
     });
 });

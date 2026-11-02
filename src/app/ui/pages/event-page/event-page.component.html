@@ -29,6 +29,11 @@
             </div>
         </article>
     }
+    @if (notFound$ | async) {
+        <p class="app-event-page__not-found">
+            Dit concert konden we niet vinden. Kijk in de <a routerLink="/agenda">agenda</a> voor alle concerten.
+        </p>
+    }
     @if (event$ | async; as event) {
         <article class="app-event-page__panel">
             <swiper-container #swiperRef

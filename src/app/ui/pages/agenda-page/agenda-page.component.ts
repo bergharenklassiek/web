@@ -1,10 +1,11 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { mergeMap } from 'rxjs';
 import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
 import { ContentState } from '../../../core/store/content.reducer';
 import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
+import { SeoService } from '../../../core/seo/seo.service';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
 @Component({
@@ -21,7 +22,13 @@ export class AgendaPageComponent {
     mergeMap(displayPastEvents => this.store.select(selectEvents(displayPastEvents)))
   );
 
-  constructor(private store: Store<ContentState>) {}
+  constructor(private store: Store<ContentState>) {
+    inject(SeoService).update({
+      title: 'Agenda',
+      description: 'De agenda van Bergharen Klassiek: alle komende en eerdere concerten in de Protestantse Kerk te Bergharen.',
+      path: '/agenda',
+    });
+  }
   
   onClick(showPastEvents: boolean) {
     this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));

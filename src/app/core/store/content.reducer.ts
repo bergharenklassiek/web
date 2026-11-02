@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Event } from "../models/event";
-import { displayPastEvents, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEarlierEventsSuccess, loadEventsSuccess, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
+import { displayPastEvents, loadAboutPageSuccess, loadContactItemsSuccess, loadContentPage, loadContentPageSuccess, loadEvents, loadEarlierEventsSuccess, loadEventsSuccess, loadEventNotFound, loadEventSuccess, loadHomePageSuccess, removeEvents } from "./content.actions";
 import { Story } from "../models/story";
 import { HomePage } from "../models/home-page";
 import { ContactItem } from "../models/contact-item";
@@ -11,6 +11,7 @@ export interface ContentState {
     isLoading: boolean;
     displayPastEvents: boolean;
     events: Story<Event>[];
+    missingEventSlugs: string[];
     eventsLoaded: {
         past: boolean;
         future: boolean;
@@ -25,6 +26,7 @@ export const initialState: ContentState = {
     isLoading: false,
     displayPastEvents: false,
     events: [],
+    missingEventSlugs: [],
     eventsLoaded: {
         past: false,
         future: false
@@ -61,6 +63,10 @@ export const contentReducer = createReducer(
         events: state.events.map(e => e.id).findIndex(e => e === event.id) > -1
             ? state.events.map(e => e.id === event.id ? event : e)
             : state.events.concat(event) 
+    })),
+    on(loadEventNotFound, (state, { eventSlug }) => ({
+        ...state,
+        missingEventSlugs: state.missingEventSlugs.includes(eventSlug) ? state.missingEventSlugs : state.missingEventSlugs.concat(eventSlug)
     })),
     on(loadEarlierEventsSuccess, (state, { events }) => ({
         ...state,

@@ -24,6 +24,11 @@ $panel-width: 680px;
         overflow: hidden;
     }
 
+    &__not-found {
+        max-width: $panel-width;
+        margin: 0;
+    }
+
     &__images {
         display: block;
         width: 100%;
