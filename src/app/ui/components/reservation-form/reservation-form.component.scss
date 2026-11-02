@@ -50,7 +50,7 @@
         }
 
         &__error {
-            color: vars.$primaryRed;
+            color: vars.$primaryRedText;
             font-weight: normal;
         }
     }
@@ -65,7 +65,7 @@
 
     &__message {
         margin: 0;
-        color: vars.$primaryRed;
+        color: vars.$primaryRedText;
         font-weight: bold;
 
         a {
@@ -77,7 +77,7 @@
         justify-self: start;
         border: 0;
         font: inherit;
-        background-color: vars.$primaryRed;
+        background-color: vars.$primaryRedText;
         color: white;
         padding: 10px 24px;
         border-radius: 20px;

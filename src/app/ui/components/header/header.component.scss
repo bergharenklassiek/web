@@ -15,6 +15,11 @@
     box-shadow: 0 -6px 10px 5px rgba(80, 50, 45, 0.08);
 
     &__menu-button {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
         text-align: center;
         color: vars.$primaryRed;
         cursor: pointer;
@@ -50,13 +55,18 @@
             width: 50%;
         }
     
-        &--close {
+        // Also keeps the links of a closed menu out of the keyboard's tab order
+        &--closed {
             width: 0%;
+            visibility: hidden;
         }
 
         &__close-button {
-            padding-top: 10px;
-            padding-left: 30px;
+            display: block;
+            padding: 10px 0 0 30px;
+            border: 0;
+            background: none;
+            font: inherit;
             color: vars.$primaryRed;
             cursor: pointer;
         }

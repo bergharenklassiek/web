@@ -42,7 +42,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] `site.webmanifest`: `name` and `short_name` are empty.
 - [x] Event page template: remove the unused `@if (event)` block.
 - [x] Gebouw page only shows first photo
-- [ ] Try to improve accessibility score
+- [x] Try to improve accessibility score
 
 ### Performance
 

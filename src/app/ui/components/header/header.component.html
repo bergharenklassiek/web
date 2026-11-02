@@ -1,14 +1,16 @@
 <div class="app-header">
-    <app-icon class="app-header__menu-button" [icon]="menuIcon" size="lg" (click)="onClickMenuIcon()" />
+    <button type="button" class="app-header__menu-button" aria-label="Menu openen" [attr.aria-expanded]="menuOpen()" (click)="onClickMenuIcon()">
+        <app-icon [icon]="menuIcon" size="lg" />
+    </button>
     <div class="app-header__title">
-        <a routerLink="/" routerLinkActive="active" aria-label="Logo of Bergharen Klassiek">
-            <img src="/full-logo-BK.png" alt="Logo of Bergharen Klassiek" width="230" height="46">
+        <a routerLink="/" routerLinkActive="active" aria-label="Bergharen Klassiek, naar de homepagina">
+            <img src="/full-logo-BK.png" alt="Logo van Bergharen Klassiek" width="230" height="46">
         </a>
     </div>
     <div class="app-header__menu" [class.app-header__menu--open]="menuOpen()" [class.app-header__menu--closed]="!menuOpen()">
-        <div class="app-header__menu__close-button" (click)="onClose()">
+        <button type="button" class="app-header__menu__close-button" aria-label="Menu sluiten" (click)="onClose()">
             <app-icon [icon]="closeIcon" size="xl" />
-        </div>
+        </button>
         <div class="app-header__menu__content">
             @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Concerten in de regio', 'ANBI', 'Contact']; track option) {
                 <a 

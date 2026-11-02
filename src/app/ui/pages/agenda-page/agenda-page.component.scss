@@ -30,7 +30,7 @@
             left: $padding;
             width: calc(50% - #{$padding});
             border-radius: 999px;
-            background-color: vars.$primaryRed;
+            background-color: vars.$primaryRedText;
             box-shadow: 0 4px 10px rgba(255, 0, 72, 0.25);
             opacity: 0;
             transition: transform $duration $easing, opacity 0.2s;

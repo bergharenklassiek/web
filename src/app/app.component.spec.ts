@@ -23,4 +23,16 @@ describe('AppComponent', () => {
     expect(TestBed.inject(ContentStore).eventsLoaded().upcoming).toBe(true);
     expect(fixture.nativeElement.querySelector('app-footer').textContent).toContain('Stichting');
   });
+
+  it('should mark the page content as the main landmark', () => {
+    TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [provideRouter([]), { provide: ContentService, useValue: { loadEvents: () => of([]), loadContactItems: () => of([]) } }],
+    });
+
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('main router-outlet')).not.toBeNull();
+  });
 });
