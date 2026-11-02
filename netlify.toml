@@ -15,3 +15,15 @@
     from = "/*"
     to = "/index.html"
     status = 200
+
+# 'unsafe-inline' for scripts is needed for the small inline scripts Angular adds to rendered pages (event replay and
+# loading the stylesheet). Hashes would break the site without warning whenever Angular changes those scripts.
+# When adding an external service, add it here too: the browser blocks anything that isn't listed.
+[[headers]]
+    for = "/*"
+    [headers.values]
+        Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://a.storyblok.com https://a2.storyblok.com https://i.ytimg.com; font-src 'self'; connect-src 'self' https://api.storyblok.com https://script.google.com https://script.googleusercontent.com; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        X-Content-Type-Options = "nosniff"
+        X-Frame-Options = "DENY"
+        Referrer-Policy = "strict-origin-when-cross-origin"
+        Permissions-Policy = "camera=(), microphone=(), geolocation=()"
