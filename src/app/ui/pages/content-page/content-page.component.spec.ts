@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ContentService } from '../../../core/services/content.service';
+import { photoCarouselOptions } from '../../directives/swiper.directive';
 import { ContentPageComponent } from './content-page.component';
 
 describe('ContentPageComponent', () => {
@@ -32,6 +33,10 @@ describe('ContentPageComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     element = fixture.nativeElement;
+  });
+
+  it('should use the same carousel as concert pages', () => {
+    expect(fixture.componentInstance.carouselOptions).toBe(photoCarouselOptions);
   });
 
   it('should load the page for the current URL', () => {

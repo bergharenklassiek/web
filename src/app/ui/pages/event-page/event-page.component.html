@@ -9,7 +9,7 @@
             <swiper-container
                 init="false"
                 class="app-event-page__images"
-                [appSwiper]="swiperConfig"
+                [appSwiper]="carouselOptions"
             >
                 @for (image of event.images; track $index) {
                     <swiper-slide class="app-event-page__images__image">

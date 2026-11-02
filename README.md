@@ -43,6 +43,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] Event page template: remove the unused `@if (event)` block.
 - [x] Gebouw page only shows first photo
 - [x] Try to improve accessibility score
+- [x] Align non event pages with event page, with regards to image carousel
 
 ### Performance
 

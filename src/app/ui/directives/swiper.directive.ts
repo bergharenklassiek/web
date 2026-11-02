@@ -2,10 +2,19 @@ import { afterNextRender, DestroyRef, Directive, ElementRef, inject, input } fro
 import { SwiperOptions } from 'swiper/types';
 import { loadSwiper } from '../../core/utils/load-swiper';
 
-export const carouselAutoplay: SwiperOptions['autoplay'] = {
-  delay: 5000,
-  disableOnInteraction: true,
-  pauseOnMouseEnter: true,
+// The photo carousel on concert pages and content pages. See also _carousel.scss.
+export const photoCarouselOptions: SwiperOptions = {
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: true,
+    pauseOnMouseEnter: true,
+  },
+  observer: true,
+  pagination: { clickable: true },
+  // Hides the dots when there's only one photo
+  watchOverflow: true,
+  slidesPerView: 1,
+  spaceBetween: 15,
 };
 
 type SwiperElement = HTMLElement & SwiperOptions & { initialize?: () => void };

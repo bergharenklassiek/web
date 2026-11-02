@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Dispatcher } from '@ngrx/signals/events';
 import { map } from 'rxjs';
-import { SwiperOptions } from 'swiper/types';
 import { Event } from '../../../core/models/event';
 import { AppDatePipe } from '../../../core/pipes/app-date.pipe';
 import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
@@ -19,7 +18,7 @@ import { SeoService } from '../../../core/seo/seo.service';
 import { CalendarEvent } from '../../../core/calendar/calendar';
 import { ConcertLinksComponent } from '../../components/concert-links/concert-links.component';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
-import { carouselAutoplay, SwiperDirective } from '../../directives/swiper.directive';
+import { photoCarouselOptions, SwiperDirective } from '../../directives/swiper.directive';
 
 // A new deploy clears Netlify's cache. Without one, edits in Storyblok show up within these times. After 5 minutes, the
 // next visitor still gets the cached page while it's refreshed in the background.
@@ -46,16 +45,7 @@ export class EventPageComponent implements OnInit {
   private readonly responseInit = inject(RESPONSE_INIT, { optional: true });
   readonly reservationsEnabled = inject(ReservationService).enabled;
 
-  swiperConfig: SwiperOptions = {
-    autoplay: carouselAutoplay,
-    observer: true,
-    pagination: { clickable: true },
-    // Hides the dots when there's only one photo
-    watchOverflow: true,
-    slidesPerView: 1,
-    spaceBetween: 15,
-  } 
-
+  carouselOptions = photoCarouselOptions;
   // The component is reused when navigating between events, so follow slug changes instead of reading the snapshot
   private readonly slug$ = this.route.paramMap.pipe(map(params => params.get('event-slug')!));
   private readonly slug = toSignal(this.slug$, { requireSync: true });
