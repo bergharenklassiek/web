@@ -33,7 +33,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Swiper: `npm audit` reports a critical issue. The fix needs a major upgrade to version 14.
 - [x] Homepage video: it loads from `tube.rvere.com`, not YouTube. Find out who runs it, and replace it if it isn't ours.
 - [ ] "Reserveer hier" button: it's a clickable `div`, so keyboard users can't reach it.
-- [ ] Event page photos: every photo reuses the first photo's alt text.
+- [x] Event page photos: every photo reuses the first photo's alt text.
 - [ ] Add security headers, such as a Content Security Policy. Only HSTS is set now.
 - [ ] Unknown URLs such as `/bestaat-niet` get a plain-text "Not found" instead of the site's own page.
 - [x] Carousels don't autoplay, although `swiperConfig` asks for it. Decide whether they should, then fix or remove the setting.

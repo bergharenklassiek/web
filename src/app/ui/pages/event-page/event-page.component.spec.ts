@@ -115,6 +115,20 @@ describe('EventPageComponent', () => {
     expect(document.title).toBe('Oud concert | Bergharen Klassiek');
   });
 
+  it('should describe each photo with its own alt text, or else the concert title', async () => {
+    stories['fotos'] = story('fotos', '2999-01-01 16:00', 'Concert met fotos');
+    stories['fotos'].content.images = [
+      { filename: 'https://a.storyblok.com/f/1/een.jpg', alt: 'De pianist' },
+      { filename: 'https://a.storyblok.com/f/1/twee.jpg', alt: 'De zaal' },
+      { filename: 'https://a.storyblok.com/f/1/drie.jpg', alt: '' },
+    ];
+
+    await render('fotos');
+
+    const alts = [...element.querySelectorAll('swiper-slide img')].map((img) => img.getAttribute('alt'));
+    expect(alts).toEqual(['De pianist', 'De zaal', 'Concert met fotos']);
+  });
+
   it('should open the reservation dialog for this concert', async () => {
     await render('nieuw');
 
