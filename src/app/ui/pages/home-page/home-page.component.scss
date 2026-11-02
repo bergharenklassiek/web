@@ -59,15 +59,6 @@
             justify-content: center;
         }
         
-        &__items {
-            padding: 0 vars.$space-default;
-            gap: vars.$space-default;
-            @media (width <= 600px) {
-                gap: vars.$space-default-mobile;
-                padding: 0 vars.$space-default-mobile;
-            }
-        }
-
         &__no-events-message {
             text-align: center;
             margin: 0 20%;

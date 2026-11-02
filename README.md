@@ -38,7 +38,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Unknown URLs such as `/bestaat-niet` get a plain-text "Not found" instead of the site's own page.
 - [x] Carousels don't autoplay, although `swiperConfig` asks for it. Decide whether they should, then fix or remove the setting.
 - [x] Remove the `console.log` in `ContentService.homePage()`.
-- [ ] `home-page.component.scss` is 99 bytes over its 2 kB budget.
+- [x] `home-page.component.scss` is 99 bytes over its 2 kB budget.
 - [ ] `site.webmanifest`: `name` and `short_name` are empty.
 - [x] Event page template: remove the unused `@if (event)` block.
 - [x] Gebouw page only shows first photoo
