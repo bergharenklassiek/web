@@ -36,14 +36,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Event page photos: every photo reuses the first photo's alt text.
 - [ ] Add security headers, such as a Content Security Policy. Only HSTS is set now.
 - [ ] `site.webmanifest`: `name` and `short_name` are empty.
-- [ ] Event page template: remove the unused `@if (event)` block.
+- [x] Event page template: remove the unused `@if (event)` block.
 
 ### Performance
 
 - [ ] Reduce the first load (745 kB, over the 500 kB budget).
   - [x] Load Swiper only on the pages that use it, not in `main.ts`.
   - [x] Remove NgRx DevTools from the production build.
-  - [ ] Move to one state library, instead of both NgRx Store and NgRx Signals.
+  - [x] Move to one state library (NgRx Signals), instead of both NgRx Store and NgRx Signals.
 - [ ] Reduce the homepage HTML (140 kB, including 78 kB of inline CSS and 47 kB of embedded data).
 - [ ] Cache server-rendered concert pages on the CDN.
 

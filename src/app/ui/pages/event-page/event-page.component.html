@@ -1,40 +1,10 @@
 <div class="app-event-page">
-    @if (event) {
-        <article class="app-event-page__panel">
-            <swiper-container #swiperRef
-                class="app-event-page__images"
-                [config]="swiperConfig"
-            >
-            @for (image of event.images; track $index) {
-                <swiper-slide class="app-event-page__images__image">
-                    <img
-                        class="app-event-page__images__image"
-                        src="{{ image | storyBlokImage : 680 : 300 }}"
-                        loading="{{ $index < 2 ? 'eager' : 'lazy' }}"
-                        alt="{{ event.images[0].alt }}"
-                    />
-                </swiper-slide>
-            }
-            </swiper-container>
-            <div class="app-event-page__content">
-                <div class="app-event-page__title">
-                    <span class="app-event-page__title__text">
-                        <h2>{{ event.title }}</h2>
-                        <div class="app-event-page__title__date">{{ event.date | appDate }}</div>
-                    </span>
-                </div>
-                <div class="app-event-page__description">
-                    <app-rich-text [richText]="event.description"></app-rich-text>
-                </div>
-            </div>
-        </article>
-    }
-    @if (notFound$ | async) {
+    @if (notFound()) {
         <p class="app-event-page__not-found">
             Dit concert konden we niet vinden. Kijk in de <a routerLink="/agenda">agenda</a> voor alle concerten.
         </p>
     }
-    @if (event$ | async; as event) {
+    @if (event(); as event) {
         <article class="app-event-page__panel">
             <swiper-container #swiperRef
                 class="app-event-page__images"
@@ -57,16 +27,16 @@
                         <h2>{{ event.title }}</h2>
                         <div class="app-event-page__title__date">{{ event.date | appDate }}</div>
                     </span>
-                    @if ((isPast$ | async) === false) {
+                    @if (!isPast()) {
                         @if (reservationsEnabled) {
                             <button type="button" class="app-event-page__title__reservation-button" (click)="openReservation(event)">Reserveer nu</button>
                         }
                         @else {
-                            <a class="app-event-page__title__reservation-button" [href]="reservationLink$ | async">Reserveer nu</a>
+                            <a class="app-event-page__title__reservation-button" [href]="reservationLink()">Reserveer nu</a>
                         }
                     }
                 </div>
-                @if (calendarEvent$ | async; as calendarEvent) {
+                @if (calendarEvent(); as calendarEvent) {
                     <app-concert-links [event]="calendarEvent" />
                 }
                 <div class="app-event-page__description">
@@ -74,15 +44,13 @@
                 </div>
             </div>
         </article>
-        @if (earlierEvents$ | async; as earlierEvents) {
-            @if (earlierEvents.length) {
-                <div class="app-event-page__earlier-events">
-                    <h3>Eerder bij Bergharen Klassiek</h3>
-                    @for (story of earlierEvents; track story.id) {
-                        <app-event-list-item [story]="story"></app-event-list-item>
-                    }
-                </div>
-            }
+        @if (earlierEvents().length) {
+            <div class="app-event-page__earlier-events">
+                <h3>Eerder bij Bergharen Klassiek</h3>
+                @for (story of earlierEvents(); track story.id) {
+                    <app-event-list-item [story]="story"></app-event-list-item>
+                }
+            </div>
         }
     }
 </div>

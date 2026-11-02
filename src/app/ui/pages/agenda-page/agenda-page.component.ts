@@ -1,38 +1,35 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { mergeMap } from 'rxjs';
-import { displayPastEvents, loadEvents } from '../../../core/store/content.actions';
-import { ContentState } from '../../../core/store/content.reducer';
-import { selectDisplayPastEvents, selectEvents } from '../../../core/store/content.selectors';
+import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
+import { Dispatcher } from '@ngrx/signals/events';
 import { SeoService } from '../../../core/seo/seo.service';
+import { displayPastEvents, loadEvents } from '../../../core/store/content.events';
+import { ContentStore } from '../../../core/store/content.store';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
 
 @Component({
     selector: 'app-agenda-page',
     standalone: true,
-    imports: [EventListItemComponent, AsyncPipe],
+    imports: [EventListItemComponent],
     templateUrl: './agenda-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './agenda-page.component.scss'
 })
 export class AgendaPageComponent {
-  showPastEvents$ = this.store.select(selectDisplayPastEvents);
-  events$ = this.store.select(selectDisplayPastEvents).pipe(
-    mergeMap(displayPastEvents => this.store.select(selectEvents(displayPastEvents)))
-  );
+  private readonly store = inject(ContentStore);
+  private readonly dispatcher = inject(Dispatcher);
 
-  constructor(private store: Store<ContentState>) {
+  showPastEvents = this.store.displayPastEvents;
+  events = computed(() => this.showPastEvents() ? this.store.pastEvents() : this.store.upcomingEvents());
+
+  constructor() {
     inject(SeoService).update({
       title: 'Agenda',
       description: 'De agenda van Bergharen Klassiek: alle komende en eerdere concerten in de Protestantse Kerk te Bergharen.',
       path: '/agenda/',
     });
   }
-  
+
   onClick(showPastEvents: boolean) {
-    this.store.dispatch(displayPastEvents({ displayPastEvents: showPastEvents }));
-    this.store.dispatch(loadEvents({ loadPast: showPastEvents }));
-    this.events$ = this.store.pipe(select(selectEvents(showPastEvents)));
+    this.dispatcher.dispatch(displayPastEvents({ display: showPastEvents }));
+    this.dispatcher.dispatch(loadEvents({ past: showPastEvents }));
   }
 }

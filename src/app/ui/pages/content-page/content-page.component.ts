@@ -1,25 +1,20 @@
 // import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, DestroyRef, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AfterViewInit, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { filter, Observable, tap, withLatestFrom } from 'rxjs';
+import { Dispatcher } from '@ngrx/signals/events';
 import { SwiperOptions } from 'swiper/types';
-import { ContentPage } from '../../../core/models/content-page';
-import { Story } from '../../../core/models/story';
+import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
 import { richTextToDescription } from '../../../core/seo/page-seo';
 import { SeoService } from '../../../core/seo/seo.service';
-import { StoryBlokImagePipe } from '../../../core/pipes/story-blok-image.pipe';
-import { loadContentPage } from '../../../core/store/content.actions';
-import { selectContentPage } from '../../../core/store/content.selectors';
+import { loadContentPage } from '../../../core/store/content.events';
+import { ContentStore } from '../../../core/store/content.store';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 
 @Component({
     selector: 'app-content-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RichTextComponent, StoryBlokImagePipe, AsyncPipe],
+    imports: [RichTextComponent, StoryBlokImagePipe],
     templateUrl: './content-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './content-page.component.scss'
@@ -33,22 +28,28 @@ export class ContentPageComponent implements OnInit, AfterViewInit {
     spaceBetween: 15,
   } 
 
-  slug = this.router.url.replace('/','');
-  contentPage$: Observable<Story<ContentPage> | undefined> = this.store.pipe(select(selectContentPage(this.slug)));;
-
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly store = inject(ContentStore);
+  private readonly dispatcher = inject(Dispatcher);
   private readonly seo = inject(SeoService);
 
-  constructor(private store: Store, private router: Router) {}
-  
+  slug = inject(Router).url.replace('/','');
+  contentPage = computed(() => this.store.contentPageBySlug(this.slug));
+
+  constructor() {
+    effect(() => {
+      const page = this.contentPage();
+      if (page) {
+        this.seo.update({
+          title: page.content.title,
+          description: richTextToDescription(page.content.description),
+          path: `/${this.slug}/`,
+        });
+      }
+    });
+  }
+
   ngOnInit(): void {
-    const slug = this.router.url.replace('/','');
-    this.store.dispatch(loadContentPage({ contentPageSlug: slug }));
-    this.contentPage$.pipe(filter((page) => !!page), takeUntilDestroyed(this.destroyRef)).subscribe((page) => this.seo.update({
-      title: page.content.title,
-      description: richTextToDescription(page.content.description),
-      path: `/${slug}/`,
-    }));
+    this.dispatcher.dispatch(loadContentPage({ slug: this.slug }));
   }
 
   ngAfterViewInit(): void {

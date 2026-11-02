@@ -1,5 +1,5 @@
 <div class="app-about-page">
-    @if (aboutPage$ | async; as aboutPage) {
+    @if (aboutPage(); as aboutPage) {
         <h3 class="app-about-page__title">
             {{ aboutPage.content.title }}
         </h3>
