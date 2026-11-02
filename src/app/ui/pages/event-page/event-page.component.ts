@@ -23,7 +23,7 @@ import { EventListItemComponent } from '../../components/event-list-item/event-l
 
 // A new deploy clears Netlify's cache. Without one, edits in Storyblok show up within these times. After 5 minutes, the
 // next visitor still gets the cached page while it's refreshed in the background.
-const CDN_CACHE_CONTROL = 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600';
+const CDN_CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=3600';
 
 @Component({
     selector: 'app-event-page',
@@ -105,7 +105,7 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   private allowCdnCaching(): void {
     if (this.responseInit) {
       const headers = new Headers(this.responseInit.headers);
-      headers.set('Cache-Control', CDN_CACHE_CONTROL);
+      headers.set('Netlify-CDN-Cache-Control', CDN_CACHE_CONTROL);
       this.responseInit.headers = headers;
     }
   }
