@@ -1,5 +1,6 @@
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr'
 import { getAllowedHosts, getContext, getTrustProxyHeaders } from '@netlify/angular-runtime/app-engine.js'
+import { createSitemapResponse } from './src/app/core/seo/sitemap'
 
 // Netlify-compatible request handler, as documented by @netlify/angular-runtime.
 // getAllowedHosts() lists the site's own domains (production, deploy previews, branch deploys) from Netlify's
@@ -10,6 +11,10 @@ const angularAppEngine = new AngularAppEngine({
 })
 
 export async function netlifyAppEngineHandler(request: Request): Promise<Response> {
+  if (new URL(request.url).pathname === '/sitemap.xml') {
+    return createSitemapResponse()
+  }
+
   const context = getContext()
 
   const result = await angularAppEngine.handle(request, context)

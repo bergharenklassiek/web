@@ -28,6 +28,11 @@ export const selectEvent = (eventSlug: string) => createSelector(
     (state) => state.events.find(e => e.slug === eventSlug)?.content
 );
 
+export const selectEventNotFound = (eventSlug: string) => createSelector(
+    selectContent,
+    (state) => state.missingEventSlugs.includes(eventSlug)
+);
+
 export const selectEventId = (eventSlug: string) => createSelector(
     selectContent,
     (state) => state.events.find(e => e.slug === eventSlug)?.id
