@@ -37,7 +37,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [ ] Add security headers, such as a Content Security Policy. Only HSTS is set now.
 - [ ] Unknown URLs such as `/bestaat-niet` get a plain-text "Not found" instead of the site's own page.
 - [ ] Carousels don't autoplay, although `swiperConfig` asks for it. Decide whether they should, then fix or remove the setting.
-- [ ] Remove the `console.log` in `ContentService.homePage()`.
+- [x] Remove the `console.log` in `ContentService.homePage()`.
 - [ ] `home-page.component.scss` is 99 bytes over its 2 kB budget.
 - [ ] `site.webmanifest`: `name` and `short_name` are empty.
 - [x] Event page template: remove the unused `@if (event)` block.
