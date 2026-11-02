@@ -80,6 +80,13 @@ describe('routes', () => {
       expect(modeOf('events/:event-slug')).toBe(RenderMode.Server);
     });
 
+    it('should render unknown URLs on request, with a 404 status', () => {
+      const wildcard = serverRoutes.find((route) => route.path === '**') as { renderMode: RenderMode; status?: number };
+
+      expect(wildcard?.renderMode).toBe(RenderMode.Server);
+      expect(wildcard?.status).toBe(404);
+    });
+
     it('should prerender the other pages', () => {
       expect(modeOf('')).toBe(RenderMode.Prerender);
       expect(modeOf('agenda')).toBe(RenderMode.Prerender);
