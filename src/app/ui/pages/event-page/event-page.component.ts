@@ -1,5 +1,4 @@
-// import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, DestroyRef, effect, ElementRef, inject, OnInit, RESPONSE_INIT, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, DestroyRef, effect, inject, OnInit, RESPONSE_INIT } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -20,6 +19,7 @@ import { SeoService } from '../../../core/seo/seo.service';
 import { CalendarEvent } from '../../../core/calendar/calendar';
 import { ConcertLinksComponent } from '../../components/concert-links/concert-links.component';
 import { EventListItemComponent } from '../../components/event-list-item/event-list-item.component';
+import { carouselAutoplay, SwiperDirective } from '../../directives/swiper.directive';
 
 // A new deploy clears Netlify's cache. Without one, edits in Storyblok show up within these times. After 5 minutes, the
 // next visitor still gets the cached page while it's refreshed in the background.
@@ -29,12 +29,12 @@ const CDN_CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=3600';
     selector: 'app-event-page',
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RichTextComponent, EventListItemComponent, StoryBlokImagePipe, AppDatePipe, RouterLink, ConcertLinksComponent],
+    imports: [RichTextComponent, EventListItemComponent, StoryBlokImagePipe, AppDatePipe, RouterLink, ConcertLinksComponent, SwiperDirective],
     templateUrl: './event-page.component.html',
     styleUrl: './event-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventPageComponent implements OnInit, AfterViewInit {
+export class EventPageComponent implements OnInit {
   reservationLinkService = inject(ReservationLinkService);
   private readonly route = inject(ActivatedRoute);
   private readonly store = inject(ContentStore);
@@ -46,9 +46,8 @@ export class EventPageComponent implements OnInit, AfterViewInit {
   private readonly responseInit = inject(RESPONSE_INIT, { optional: true });
   readonly reservationsEnabled = inject(ReservationService).enabled;
 
-  @ViewChild('swiperRef') swiperRef: ElementRef | undefined;
   swiperConfig: SwiperOptions = {
-    autoplay: true,
+    autoplay: carouselAutoplay,
     observer: true,
     pagination: { clickable: true },
     // Hides the dots when there's only one photo
@@ -119,17 +118,5 @@ export class EventPageComponent implements OnInit, AfterViewInit {
       event: { id: String(this.story()!.id), slug: this.slug(), title: event.title, date: event.date, location: event.location },
     };
     this.dialog.open(ReservationDialogComponent, { ...reservationDialogConfig, data });
-  }
-
-  ngAfterViewInit(): void {
-    if (this.swiperRef?.nativeElement) {
-      Object.assign(this.swiperRef?.nativeElement, this.swiperConfig);
-      // this.breakpointObserver.observe('(max-width: 900px)').subscribe(state => {
-      //   Object.assign(this.swiperRef?.nativeElement, {
-      //     ...this.swiperConfig, 
-      //     slidesPerView: state.matches ? 1 : (this.event?.images?.length ?? 0) > 1 ? 2 : 1
-      //   })
-      // });
-    }
   }
 }
