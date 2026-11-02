@@ -1,11 +1,12 @@
 <div class="app-content-page">
     @if (contentPage(); as contentPage) {
         @if (contentPage.content.images?.length) {
-            <swiper-container #swiperRef
+            <swiper-container
+                    init="false"
                     style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"
                     class="app-content-page__images"
                     [class.app-content-page__images--single]="swiperConfig.slidesPerView === 1"
-                    [config]="swiperConfig"
+                    [appSwiper]="swiperConfig"
                 >
                 @for (image of contentPage.content.images; track $index) {
                     <swiper-slide class="app-content-page__images__image">

@@ -1,10 +1,5 @@
 import { Routes } from '@angular/router';
-import { loadSwiper } from '../utils/load-swiper';
 import { ROUTE_NAMES } from './route-names';
-
-// For pages with a photo carousel
-const withSwiper = <T>(component: Promise<T>): Promise<T> =>
-    Promise.all([component, loadSwiper()]).then(([loaded]) => loaded);
 
 export const routes: Routes = [
     { 
@@ -24,7 +19,7 @@ export const routes: Routes = [
     },
     { 
         path: `${ROUTE_NAMES.AGENDA}/:event-slug`, 
-        loadComponent: () => withSwiper(import('../../ui/pages/event-page/event-page.component').then(m => m.EventPageComponent)),
+        loadComponent: () => import('../../ui/pages/event-page/event-page.component').then(m => m.EventPageComponent),
         pathMatch: 'full'
     },
     { 
@@ -34,17 +29,17 @@ export const routes: Routes = [
     },
     { 
         path: ROUTE_NAMES.GEBOUW, 
-        loadComponent: () => withSwiper(import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent)),
+        loadComponent: () => import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent),
         pathMatch: 'full'
     },
     { 
         path: ROUTE_NAMES.CONCERTEN_IN_DE_REGIO, 
-        loadComponent: () => withSwiper(import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent)),
+        loadComponent: () => import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent),
         pathMatch: 'full'
     },
     { 
         path: ROUTE_NAMES.ANBI, 
-        loadComponent: () => withSwiper(import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent)),
+        loadComponent: () => import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent),
         pathMatch: 'full'
     },
     { 
