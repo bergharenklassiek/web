@@ -12,6 +12,7 @@
         </p>
         <p class="reservation-form__success__hint">Geen e-mail ontvangen? Kijk dan ook even in je map met ongewenste e-mail of spam.</p>
     </div>
+    <app-concert-links [event]="event()" />
 }
 @else {
     <form class="reservation-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>

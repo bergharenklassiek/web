@@ -1,5 +1,6 @@
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr'
 import { getAllowedHosts, getContext, getTrustProxyHeaders } from '@netlify/angular-runtime/app-engine.js'
+import { createCalendarResponse, isCalendarPath } from './src/app/core/calendar/calendar-response'
 import { createSitemapResponse } from './src/app/core/seo/sitemap'
 
 // Netlify-compatible request handler, as documented by @netlify/angular-runtime.
@@ -11,8 +12,12 @@ const angularAppEngine = new AngularAppEngine({
 })
 
 export async function netlifyAppEngineHandler(request: Request): Promise<Response> {
-  if (new URL(request.url).pathname === '/sitemap.xml') {
+  const { pathname } = new URL(request.url)
+  if (pathname === '/sitemap.xml') {
     return createSitemapResponse()
+  }
+  if (isCalendarPath(pathname)) {
+    return createCalendarResponse(pathname)
   }
 
   const context = getContext()

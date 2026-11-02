@@ -31,6 +31,12 @@ const SENDER_NAME = "Bergharen Klassiek";
 // comes from the Google account's own address, with replies still going here.
 // Keep in sync with reservationEmail in src/app/core/config/reservation.config.ts
 const SENDER_EMAIL = "bergharenklassiek@outlook.com";
+// Keep in sync with siteUrl and venue in src/app/core/config/site.config.ts
+const SITE_URL = "https://bergharenklassiek.nl";
+const VENUE_NAME = "Protestantse Kerk Bergharen";
+const VENUE_ADDRESS = "Veldsestraat 12, Bergharen";
+// Keep in sync with venue.parking in src/app/core/config/site.config.ts
+const PARKING_INFO = "Parkeren: gratis op de parkeerplaatsen bij de kerk.";
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet
 const DEFAULT_CAPACITY = 120;
@@ -51,6 +57,7 @@ function doPost(e) {
   const reservation = {
     // Storyblok story ID: unlike the URL slug it never changes, so all counting is done by it
     id: clean(data.id, 50),
+    slug: clean(data.slug, 200),
     title: clean(data.title, 200),
     date: clean(data.date, 50),
     dateLabel: clean(data.dateLabel, 100),
@@ -248,9 +255,19 @@ function sendConfirmation(reservation) {
     `Concert: ${reservation.title}`,
     `Datum: ${reservation.dateLabel || reservation.date}`,
     ...(time ? [`Tijd: ${time} uur`] : []),
-    ...(reservation.location ? [`Locatie: ${reservation.location}`] : []),
+    ...(reservation.location ? [`Locatie: ${locationLine(reservation)}`] : []),
     `Aantal: ${persons}`,
     "",
+    ...(reservation.location === VENUE_NAME
+      ? [
+          `Route: https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(VENUE_ADDRESS)}`,
+          PARKING_INFO,
+          "",
+        ]
+      : []),
+    ...(calendarLink(reservation)
+      ? [`Zet het concert in je agenda: ${calendarLink(reservation)}`, ""]
+      : []),
     "Wil je je reservering wijzigen of annuleren? Beantwoord dan deze e-mail.",
     "",
     "Tot ziens bij het concert!",
@@ -275,6 +292,19 @@ function sendConfirmation(reservation) {
  * Returns the sheet and the position (1-based) of each column, found by its header.
  * Creates the sheet if needed, and adds any missing columns at the end, so older spreadsheets keep working.
  */
+function locationLine(reservation) {
+  return reservation.location === VENUE_NAME
+    ? `${VENUE_NAME}, ${VENUE_ADDRESS}`
+    : reservation.location;
+}
+
+// Only a real slug ends up in the link, because anyone can post to this script and the email goes to any address
+function calendarLink(reservation) {
+  return /^[\p{L}\p{N}-]+$/u.test(reservation.slug)
+    ? `${SITE_URL}/agenda/${encodeURIComponent(reservation.slug)}.ics`
+    : "";
+}
+
 function getOrCreateSheet(spreadsheet, name, headers) {
   let sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {

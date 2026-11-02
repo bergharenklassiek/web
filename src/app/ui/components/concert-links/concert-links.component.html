@@ -1,0 +1,15 @@
+<div class="concert-links__row">
+    <strong>Locatie</strong>
+    <span>{{ address() }}</span>
+    @if (parking()) {
+        <span>{{ parking() }}</span>
+    }
+    <a [href]="route()" target="_blank" rel="noopener">Route plannen</a>
+</div>
+<div class="concert-links__row">
+    <strong>Zet in je agenda</strong>
+    <span class="concert-links__calendars">
+        <a [href]="googleCalendar()" target="_blank" rel="noopener">Google Agenda</a>
+        <a [href]="ics()">Apple of Outlook</a>
+    </span>
+</div>
