@@ -29,7 +29,6 @@ export class ContentService {
   // homePage = computed(() => this.homePageResource.value()?.story);
 
   homePage(): Observable<Story<HomePage>> {
-    console.log('Loading home page content from Storyblok API');
     return this.http
       .get<{ story: Story<HomePage> }>(`${this.storyblokBaseUrl}/stories/home?${this.token}`)
       .pipe(map((response) => response.story));
