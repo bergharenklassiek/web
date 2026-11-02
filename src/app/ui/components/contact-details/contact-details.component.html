@@ -1,7 +1,7 @@
 <div class="app-contact-details">
     @for (contactItem of contactItems(); track $index) {
         <span class="app-contact-details__item">
-            <fa-icon [icon]="iconsContactTypesMap[contactItem.content.type]" size="lg"></fa-icon>
+            <app-icon [icon]="iconsContactTypesMap[contactItem.content.type]" size="lg" />
             @if (contactItem.content.type === 'email' || contactItem.content.type === 'address') {
                 <a href="{{ contactItem.content.link!.url }}" target="_blank">{{ contactItem.content.displayValue }}</a>                    
             }

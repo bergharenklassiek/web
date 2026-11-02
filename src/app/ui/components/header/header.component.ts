@@ -1,14 +1,14 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 import { filter } from 'rxjs';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [FaIconComponent, RouterModule],
+    imports: [IconComponent, RouterModule],
     templateUrl: './header.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './header.component.scss'

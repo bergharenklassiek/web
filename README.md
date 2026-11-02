@@ -40,10 +40,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Performance
 
-- [ ] Reduce the first load (745 kB, over the 500 kB budget).
+- [x] Reduce the first load (745 kB, over the 500 kB budget).
   - [x] Load Swiper only on the pages that use it, not in `main.ts`.
   - [x] Remove NgRx DevTools from the production build.
   - [x] Move to one state library (NgRx Signals), instead of both NgRx Store and NgRx Signals.
+  - [x] Replace Font Awesome's runtime with a small icon component.
 - [ ] Reduce the homepage HTML (140 kB, including 78 kB of inline CSS and 47 kB of embedded data).
 - [ ] Cache server-rendered concert pages on the CDN.
 
