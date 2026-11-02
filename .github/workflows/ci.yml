@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A new push to a pull request makes its earlier run pointless
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests and coverage
+    runs-on: ubuntu-latest
+    env:
+      NO_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # Keep in sync with NODE_VERSION in netlify.toml
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # Fails when a test fails or coverage drops below the thresholds in angular.json
+      - name: Run tests with coverage
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run test:coverage 2>&1 | tee test-output.txt
+      - name: Add coverage to the summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Coverage'
+            echo '```'
+            grep -E '^(-+\||File |All files| |ERROR: Coverage)' test-output.txt | grep -E '\|' || echo 'No coverage report'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Attach the coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build

@@ -288,10 +288,6 @@ function sendConfirmation(reservation) {
   );
 }
 
-/**
- * Returns the sheet and the position (1-based) of each column, found by its header.
- * Creates the sheet if needed, and adds any missing columns at the end, so older spreadsheets keep working.
- */
 function locationLine(reservation) {
   return reservation.location === VENUE_NAME
     ? `${VENUE_NAME}, ${VENUE_ADDRESS}`
@@ -305,6 +301,10 @@ function calendarLink(reservation) {
     : "";
 }
 
+/**
+ * Returns the sheet and the position (1-based) of each column, found by its header.
+ * Creates the sheet if needed, and adds any missing columns at the end, so older spreadsheets keep working.
+ */
 function getOrCreateSheet(spreadsheet, name, headers) {
   let sheet = spreadsheet.getSheetByName(name);
   if (!sheet) {
