@@ -16,9 +16,8 @@
     to = "/index.html"
     status = 200
 
-# 'unsafe-inline' for scripts is needed for the small inline scripts Angular adds to rendered pages (event replay and
-# loading the stylesheet). Hashes would break the site without warning whenever Angular changes those scripts.
-# When adding an external service, add it here too: the browser blocks anything that isn't listed.
+# For static files. Server-rendered responses get the same headers from src/app/core/config/security-headers.ts, which
+# explains the policy. A test keeps the two the same.
 [[headers]]
     for = "/*"
     [headers.values]
