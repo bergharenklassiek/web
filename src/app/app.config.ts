@@ -6,11 +6,6 @@ import { provideClientHydration, withHttpTransferCacheOptions, withIncrementalHy
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import localeNl from '@angular/common/locales/nl';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import * as contentEffects from '../app/core/store/content.effects';
-import { contentReducer } from './core/store/content.reducer';
-import { storeDevtoolsProviders } from './core/store/store-devtools';
 
 registerLocaleData(localeNl);
 
@@ -35,11 +30,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     { provide: LOCALE_ID, useValue: 'nl' },
     { provide: DatePipe, useClass: DatePipe },
-    provideStore({
-        content: contentReducer
-    }),
-    provideEffects(contentEffects),
-    storeDevtoolsProviders,
 ],
 };
 

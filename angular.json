@@ -50,12 +50,6 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/app/core/store/store-devtools.ts",
-                  "with": "src/app/core/store/store-devtools.prod.ts"
-                }
-              ],
               "budgets": [
                 {
                   "type": "initial",

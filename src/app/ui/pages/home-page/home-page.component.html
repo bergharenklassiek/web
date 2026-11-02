@@ -2,7 +2,7 @@
   @let evts = events();
 
   <div class="app-home-page__header">
-    @if (homePage && homePage()) {
+    @if (homePage()) {
       {{ homePage()!.headerText }}
     }
     @else {
@@ -11,7 +11,7 @@
   </div>
 
   <div class="app-home-page__header-short">
-    @if (homePage && homePage()) {
+    @if (homePage()) {
       {{ homePage()!.headerTextShort }}
     }
     @else {
@@ -40,7 +40,7 @@
   </div>
 
   <div class="app-home-page__about">
-    @if (homePage && homePage()?.aboutTeaser) {
+    @if (homePage()?.aboutTeaser) {
       <app-rich-text [richText]="homePage()!.aboutTeaser"></app-rich-text>
     }
     @else {

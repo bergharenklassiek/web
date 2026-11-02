@@ -5,8 +5,9 @@ import { FooterComponent } from './ui/components/footer/footer.component';
 import { scrollLeftKey } from './app.config';
 
 import { config, dom } from "@fortawesome/fontawesome-svg-core";
-import { Store } from '@ngrx/store';
-import { loadEvents } from './core/store/content.actions';
+import { Dispatcher } from '@ngrx/signals/events';
+import { loadContactItems, loadEvents } from './core/store/content.events';
+import { ContentStore } from './core/store/content.store';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,9 @@ import { loadEvents } from './core/store/content.actions';
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  private readonly store = inject(Store);
+  // Injected so the store exists and reacts to the events below
+  private readonly store = inject(ContentStore);
+  private readonly dispatcher = inject(Dispatcher);
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     afterNextRender(() => localStorage.removeItem(scrollLeftKey));
@@ -30,6 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadEvents({ loadPast: false }));
+    this.dispatcher.dispatch(loadEvents({ past: false }));
+    this.dispatcher.dispatch(loadContactItems());
   }
 }

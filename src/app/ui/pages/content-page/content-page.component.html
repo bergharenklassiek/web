@@ -1,5 +1,5 @@
 <div class="app-content-page">
-    @if (contentPage$ | async; as contentPage) {
+    @if (contentPage(); as contentPage) {
         @if (contentPage.content.images?.length) {
             <swiper-container #swiperRef
                     style="--swiper-navigation-color: rgb(255, 0, 72); --swiper-pagination-color: rgb(255, 0, 72)"

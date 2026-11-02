@@ -3,8 +3,8 @@ import { EventCardComponent } from '../../components/event-card/event-card.compo
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { ContentService } from '../../../core/services/content.service';
 import { Dispatcher } from '@ngrx/signals/events';
-import { ContentStore } from '../../../core/store-v2/content.store';
-import { loadHomePage } from '../../../core/store-v2/content.events';
+import { ContentStore } from '../../../core/store/content.store';
+import { loadHomePage } from '../../../core/store/content.events';
 import { SeoService } from '../../../core/seo/seo.service';
 import { ReservationButtonComponent } from '../../components/reservation-button/reservation-button.component';
 import { YoutubeVideoComponent } from '../../components/youtube-video/youtube-video.component';

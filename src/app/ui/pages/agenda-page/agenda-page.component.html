@@ -1,5 +1,5 @@
 <div class="app-agenda-page">
-    @let showPast = showPastEvents$ | async;
+    @let showPast = showPastEvents();
     <div class="app-agenda-page__buttons">
         <div
             class="app-agenda-page__toggle"
@@ -25,14 +25,12 @@
             >Binnenkort</button>
         </div>
     </div>
-    @if (events$ | async; as events) {
-        @if (events.length === 0 && (showPastEvents$ | async) === false) {
-            We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!
-        } 
-        @else {
-            @for (story of events; track $index) {
-                <app-event-list-item class="app-agenda-page__item" [story]="story"></app-event-list-item>
-            }
+    @if (events().length === 0 && !showPast) {
+        We zijn op dit moment druk bezig met ons programma, hou de website in de gaten!
+    } 
+    @else {
+        @for (story of events(); track $index) {
+            <app-event-list-item class="app-agenda-page__item" [story]="story"></app-event-list-item>
         }
     }
 </div>
