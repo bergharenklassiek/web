@@ -34,7 +34,7 @@
     "@ngrx/signals": "^22.0.1",
     "@storyblok/js": "^3.0.7",
     "rxjs": "~7.8.0",
-    "swiper": "^11.0.7",
+    "swiper": "^14.4.0",
     "ts-node": "^10.9.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.1"
