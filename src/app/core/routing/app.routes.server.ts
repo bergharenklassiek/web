@@ -39,7 +39,9 @@ export const serverRoutes: ServerRoute[] = [
         renderMode: RenderMode.Prerender,
     },
     {
+        // On request, because the URLs aren't known ahead of time. Prerendering gave a plain-text "Not found" on Netlify.
         path: ROUTE_NAMES.WILDCARD,
-        renderMode: RenderMode.Prerender,
+        renderMode: RenderMode.Server,
+        status: 404,
     },
 ];
