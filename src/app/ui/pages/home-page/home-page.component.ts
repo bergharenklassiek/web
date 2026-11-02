@@ -7,10 +7,11 @@ import { ContentStore } from '../../../core/store-v2/content.store';
 import { loadHomePage } from '../../../core/store-v2/content.events';
 import { SeoService } from '../../../core/seo/seo.service';
 import { ReservationButtonComponent } from '../../components/reservation-button/reservation-button.component';
+import { YoutubeVideoComponent } from '../../components/youtube-video/youtube-video.component';
 
 @Component({
     selector: 'app-home-page',
-    imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent],
+    imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent, YoutubeVideoComponent],
     templateUrl: './home-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './home-page.component.scss',

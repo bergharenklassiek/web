@@ -109,26 +109,6 @@
             margin-bottom: vars.$space-default-mobile;
             padding: 0;
         }
-        
-        iframe {
-            width: 100%;
-            display: block;
-            aspect-ratio: 16 / 9;
-            height: auto;
-            border-radius: vars.$space-default-mobile;
-        }
-
-        &--placeholder {
-            min-height: auto;
-        }
-    }
-
-    &__video-skeleton {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        border-radius: vars.$space-default-mobile;
-        background: linear-gradient(90deg, rgba(200, 200, 200, 0.5), rgba(240, 240, 240, 0.8));
-        animation: app-home-page-skeleton-pulse 1.5s ease-in-out infinite;
     }
 
     &__skeleton-line {
