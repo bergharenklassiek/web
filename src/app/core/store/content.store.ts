@@ -62,6 +62,14 @@ function addNewEvents(stored: Story<Event>[], events: Story<Event>[]): Story<Eve
   return stored.concat(events.filter((event) => !stored.some((storedEvent) => storedEvent.id === event.id)));
 }
 
+// A fresh list wins over what's stored, because a prerendered page can hold events from the last deploy. Upcoming events
+// that aren't in a fresh list of upcoming events have been removed from the CMS.
+function mergeEventList(stored: Story<Event>[], events: Story<Event>[], past: boolean): Story<Event>[] {
+  const isListed = (story: Story<Event>) => events.some((event) => event.id === story.id);
+  const isRemoved = (story: Story<Event>) => !past && !isListed(story) && Date.parse(story.content.date) >= Date.now();
+  return stored.filter((story) => !isListed(story) && !isRemoved(story)).concat(events);
+}
+
 function replaceOrAdd<T>(stored: Story<T>[], story: Story<T>): Story<T>[] {
   return stored.some((s) => s.id === story.id)
     ? stored.map((s) => (s.id === story.id ? story : s))
@@ -81,6 +89,10 @@ export const ContentStore = signalStore(
       .filter((e) => Date.parse(e.content.date) < Date.now())
       .sort((a, b) => Date.parse(b.content.date) - Date.parse(a.content.date))),
   })),
+  withComputed(({ eventsLoaded, upcomingEvents }) => ({
+    // Undefined while the first list is loading, to tell that apart from having no upcoming events
+    upcomingEventsWhenLoaded: computed(() => eventsLoaded().upcoming ? upcomingEvents() : undefined),
+  })),
   withMethods(({ events, contentPages, missingEventSlugs }) => ({
     eventBySlug: (slug: string) => events().find((e) => e.slug === slug),
     isEventMissing: (slug: string) => missingEventSlugs().includes(slug),
@@ -99,7 +111,7 @@ export const ContentStore = signalStore(
     on(contactItemsLoaded, ({ payload }) => ({ contactItems: payload.contactItems })),
     on(eventListLoaded, ({ payload }, state) => ({
       eventsLoaded: payload.past ? { ...state.eventsLoaded, past: true } : { ...state.eventsLoaded, upcoming: true },
-      events: addNewEvents(state.events, payload.events),
+      events: mergeEventList(state.events, payload.events, payload.past),
     })),
     on(displayPastEvents, ({ payload }) => ({ displayPastEvents: payload.display })),
     on(eventLoaded, ({ payload }, state) => ({ events: replaceOrAdd(state.events, payload.event) })),

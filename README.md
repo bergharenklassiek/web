@@ -45,7 +45,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
   - [x] Remove NgRx DevTools from the production build.
   - [x] Move to one state library (NgRx Signals), instead of both NgRx Store and NgRx Signals.
   - [x] Replace Font Awesome's runtime with a small icon component.
-- [ ] Reduce the homepage HTML (140 kB, including 78 kB of inline CSS and 47 kB of embedded data).
+- [x] Reduce the homepage HTML (140 kB, including 78 kB of inline CSS and 47 kB of embedded data).
 - [ ] Cache server-rendered concert pages on the CDN.
 
 ## Development server

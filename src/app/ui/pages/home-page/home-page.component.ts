@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EventCardComponent } from '../../components/event-card/event-card.component';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
-import { ContentService } from '../../../core/services/content.service';
 import { Dispatcher } from '@ngrx/signals/events';
 import { ContentStore } from '../../../core/store/content.store';
 import { loadHomePage } from '../../../core/store/content.events';
@@ -19,11 +18,10 @@ import { YoutubeVideoComponent } from '../../components/youtube-video/youtube-vi
 export class HomePageComponent implements OnInit {
   private contentStore = inject(ContentStore);
   private dispatcher = inject(Dispatcher);
-  private readonly contentService = inject(ContentService);
   private readonly seo = inject(SeoService);
   
   homePage = this.contentStore.homePage;
-  events = this.contentService.events;
+  events = this.contentStore.upcomingEventsWhenLoaded;
   
   ngOnInit(): void {
     this.seo.update({ path: '/' });

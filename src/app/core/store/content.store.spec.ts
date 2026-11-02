@@ -52,12 +52,41 @@ describe('ContentStore', () => {
       expect(store.events().map((e) => e.id)).toEqual(['1', '2']);
     });
 
-    it('should not add events from a list twice, and keep the stored version', () => {
+    it('should prefer the version from a fresh list, without adding it twice', () => {
       dispatcher.dispatch(eventLoaded({ event: story('1', FUTURE, [], 'stored') }));
-      dispatcher.dispatch(eventListLoaded({ events: [story('1', FUTURE, [], 'list'), story('2')], past: false }));
+      dispatcher.dispatch(eventListLoaded({ events: [story('1', FUTURE, [], 'fresh'), story('2')], past: false }));
 
-      expect(store.events().map((e) => e.content.title)).toEqual(['stored', '2']);
+      expect(store.events().map((e) => e.content.title)).toEqual(['fresh', '2']);
       expect(store.eventsLoaded()).toEqual({ past: false, upcoming: true });
+    });
+
+    it('should drop upcoming events that are no longer in a fresh upcoming list', () => {
+      dispatcher.dispatch(eventListLoaded({ events: [story('removed'), story('kept')], past: false }));
+      dispatcher.dispatch(eventListLoaded({ events: [story('kept')], past: false }));
+
+      expect(store.upcomingEvents().map((e) => e.id)).toEqual(['kept']);
+    });
+
+    it('should keep past events when a fresh upcoming list arrives', () => {
+      dispatcher.dispatch(eventListLoaded({ events: [story('old', PAST)], past: true }));
+      dispatcher.dispatch(eventListLoaded({ events: [story('soon')], past: false }));
+
+      expect(store.pastEvents().map((e) => e.id)).toEqual(['old']);
+    });
+
+    it('should keep upcoming events when a list of past events arrives', () => {
+      dispatcher.dispatch(eventListLoaded({ events: [story('soon')], past: false }));
+      dispatcher.dispatch(eventListLoaded({ events: [story('old', PAST)], past: true }));
+
+      expect(store.upcomingEvents().map((e) => e.id)).toEqual(['soon']);
+    });
+
+    it('should only offer upcoming events once the list has loaded', () => {
+      expect(store.upcomingEventsWhenLoaded()).toBeUndefined();
+
+      dispatcher.dispatch(eventListLoaded({ events: [], past: false }));
+
+      expect(store.upcomingEventsWhenLoaded()).toEqual([]);
     });
 
     it('should sort upcoming events soonest first and past events newest first', () => {
