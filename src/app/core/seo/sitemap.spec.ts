@@ -6,10 +6,18 @@ describe('sitemap', () => {
       const xml = buildSitemap([{ slug: 'concert', published_at: '2026-10-29T09:08:16.647Z' }]);
 
       expect(xml).toContain('<loc>https://bergharenklassiek.nl/</loc>');
-      expect(xml).toContain('<loc>https://bergharenklassiek.nl/gebouw</loc>');
+      expect(xml).toContain('<loc>https://bergharenklassiek.nl/gebouw/</loc>');
       expect(xml).toContain('<url><loc>https://bergharenklassiek.nl/agenda/concert</loc><lastmod>2026-10-29T09:08:16.647Z</lastmod></url>');
       expect(xml).not.toContain('/events');
       expect(xml).not.toContain('**');
+    });
+
+    it('should use the URLs that Netlify serves without a redirect', () => {
+      const locations = [...buildSitemap([{ slug: 'concert' }]).matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
+      const concert = 'https://bergharenklassiek.nl/agenda/concert';
+
+      expect(locations).toContain(concert);
+      expect(locations.filter((location) => location !== concert).every((location) => location.endsWith('/'))).toBe(true);
     });
 
     it('should escape special characters', () => {

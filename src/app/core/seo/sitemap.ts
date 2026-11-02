@@ -7,6 +7,7 @@ interface EventStory {
   published_at?: string | null;
 }
 
+// Prerendered pages: Netlify redirects these to the URL with a trailing slash, so that's the one to list
 const STATIC_PATHS = [
   ROUTE_NAMES.HOME,
   ROUTE_NAMES.AGENDA,
@@ -37,7 +38,7 @@ export async function createSitemapResponse(fetchFn: typeof fetch = fetch): Prom
 }
 
 export function buildSitemap(events: EventStory[]): string {
-  const staticUrls = STATIC_PATHS.map((path) => urlEntry(path ? `${siteUrl}/${path}` : `${siteUrl}/`));
+  const staticUrls = STATIC_PATHS.map((path) => urlEntry(path ? `${siteUrl}/${path}/` : `${siteUrl}/`));
   const eventUrls = events.map((event) => urlEntry(`${siteUrl}/${ROUTE_NAMES.AGENDA}/${event.slug}`, event.published_at));
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',

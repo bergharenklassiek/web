@@ -13,7 +13,8 @@ export interface PageSeo {
   // Left out on the home page, which is titled by the site name alone
   title?: string;
   description?: string;
-  // Path of the page's preferred URL. Left out for pages that shouldn't be indexed.
+  // Path of the page's preferred URL. Left out for pages that shouldn't be indexed. Prerendered pages need a trailing
+  // slash, because Netlify redirects to that URL. Server-rendered pages (concerts) don't have one.
   path?: string;
   image?: ShareImage;
   type?: 'website' | 'article';
