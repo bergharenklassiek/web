@@ -1,13 +1,12 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faSignature, faFileLines, faEuroSign, faAt, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faSignature, faFileLines, faEuroSign, faAt, faLocationDot, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { IconComponent } from '../icon/icon.component';
 import { ContentStore } from '../../../core/store/content.store';
 
 @Component({
     selector: 'app-contact-details',
     standalone: true,
-    imports: [FaIconComponent],
+    imports: [IconComponent],
     templateUrl: './contact-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './contact-details.component.scss'
