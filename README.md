@@ -39,9 +39,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] Carousels don't autoplay, although `swiperConfig` asks for it. Decide whether they should, then fix or remove the setting.
 - [x] Remove the `console.log` in `ContentService.homePage()`.
 - [x] `home-page.component.scss` is 99 bytes over its 2 kB budget.
-- [ ] `site.webmanifest`: `name` and `short_name` are empty.
+- [x] `site.webmanifest`: `name` and `short_name` are empty.
 - [x] Event page template: remove the unused `@if (event)` block.
-- [x] Gebouw page only shows first photoo
+- [x] Gebouw page only shows first photo
+- [ ] Try to improve accessibility score
 
 ### Performance
 
