@@ -35,8 +35,8 @@ const SENDER_EMAIL = "bergharenklassiek@outlook.com";
 const SITE_URL = "https://bergharenklassiek.nl";
 const VENUE_NAME = "Protestantse Kerk Bergharen";
 const VENUE_ADDRESS = "Veldsestraat 12, Bergharen";
-// Added to the confirmation email when filled in
-const PARKING_INFO = "";
+// Keep in sync with venue.parking in src/app/core/config/site.config.ts
+const PARKING_INFO = "Parkeren: gratis op de parkeerplaatsen bij de kerk.";
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet
 const DEFAULT_CAPACITY = 120;
@@ -261,7 +261,7 @@ function sendConfirmation(reservation) {
     ...(reservation.location === VENUE_NAME
       ? [
           `Route: https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(VENUE_ADDRESS)}`,
-          ...(PARKING_INFO ? [`Parkeren: ${PARKING_INFO}`] : []),
+          PARKING_INFO,
           "",
         ]
       : []),
