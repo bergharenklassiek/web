@@ -39,7 +39,7 @@ export async function createSitemapResponse(fetchFn: typeof fetch = fetch): Prom
 
 export function buildSitemap(events: EventStory[]): string {
   const staticUrls = STATIC_PATHS.map((path) => urlEntry(path ? `${siteUrl}/${path}/` : `${siteUrl}/`));
-  const eventUrls = events.map((event) => urlEntry(`${siteUrl}/${ROUTE_NAMES.AGENDA}/${event.slug}`, event.published_at));
+  const eventUrls = events.map((event) => urlEntry(`${siteUrl}/${ROUTE_NAMES.AGENDA}/${encodeURIComponent(event.slug)}`, event.published_at));
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

@@ -12,7 +12,7 @@ const SHARE_IMAGE_HEIGHT = 630;
 const MAX_DESCRIPTION_LENGTH = 155;
 
 export function eventSeo(slug: string, event: Event): PageSeo {
-  const path = `/${ROUTE_NAMES.AGENDA}/${slug}`;
+  const path = `/${ROUTE_NAMES.AGENDA}/${encodeURIComponent(slug)}`;
   const image = shareImage(event.images?.[0], event.title);
   const when = formatDate(event.date, "EEEE d MMMM y 'om' HH:mm", 'nl-NL');
   const details = [when, event.location].filter(Boolean).join(', ');

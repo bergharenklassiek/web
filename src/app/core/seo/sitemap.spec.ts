@@ -20,8 +20,12 @@ describe('sitemap', () => {
       expect(locations.filter((location) => location !== concert).every((location) => location.endsWith('/'))).toBe(true);
     });
 
-    it('should escape special characters', () => {
-      expect(buildSitemap([{ slug: 'a&b' }])).toContain('/agenda/a&amp;b</loc>');
+    it('should percent-encode slugs', () => {
+      expect(buildSitemap([{ slug: 'pianorecital-nicolò' }])).toContain('/agenda/pianorecital-nicol%C3%B2</loc>');
+    });
+
+    it('should escape special characters in the last modified date', () => {
+      expect(buildSitemap([{ slug: 'concert', published_at: 'a&b' }])).toContain('<lastmod>a&amp;b</lastmod>');
     });
   });
 
