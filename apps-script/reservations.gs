@@ -2,6 +2,7 @@
  * Reservations for Bergharen Klassiek.
  *
  * Receives reservations from the website, stores them in this spreadsheet and sends the guest a confirmation email.
+ * A daily trigger emails guests a reminder a week before their concert.
  * Setup instructions are in apps-script/README.md.
  */
 
@@ -17,6 +18,10 @@ const RESERVATION_COLUMNS = [
   "Aantal personen",
   "Event ID",
   "Annuleercode",
+  "Concertmoment",
+  "Locatie",
+  "Slug",
+  "Herinnering verstuurd",
 ];
 const CONCERT_COLUMNS = [
   "Concert",
@@ -41,6 +46,26 @@ const PARKING_INFO = "Parkeren: gratis op de parkeerplaatsen bij de kerk.";
 const MAX_SEATS_PER_RESERVATION = 8;
 // Used for every concert, unless a different capacity is filled in on the Concerten sheet
 const DEFAULT_CAPACITY = 120;
+const REMINDER_DAYS_BEFORE = 7;
+// A free Google account can send about 100 emails a day. The rest of the day's emails are kept free for confirmations,
+// and any reminders over this limit go out the next day.
+const MAX_REMINDERS_PER_DAY = 80;
+const REMINDER_HOUR = 10;
+// The first three letters of each month, as the website writes it out in "Datum concert"
+const DUTCH_MONTHS = [
+  "jan",
+  "feb",
+  "maa",
+  "apr",
+  "mei",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "okt",
+  "nov",
+  "dec",
+];
 
 function doPost(e) {
   let data;
@@ -118,6 +143,10 @@ function doPost(e) {
       "Aantal personen": reservation.seats,
       "Event ID": asText(reservation.id),
       Annuleercode: reservation.cancelCode,
+      // As text, because Sheets would otherwise turn it into a date in its own time zone
+      Concertmoment: asText(reservation.date),
+      Locatie: safeCell(reservation.location),
+      Slug: safeCell(reservation.slug),
     });
     updateReservedTotals(spreadsheet);
     SpreadsheetApp.flush();
@@ -299,16 +328,183 @@ function reservedSeatsPerConcert(reservations) {
 }
 
 function sendConfirmation(reservation) {
-  const persons =
-    reservation.seats === 1 ? "1 persoon" : `${reservation.seats} personen`;
-  // Storyblok dates look like "2026-11-15 20:00" and may be marked as UTC, but the time is already the local time.
-  // So it's read from the text as-is, without converting time zones.
-  const time = (reservation.date.match(/\b(\d{1,2}:\d{2})/) || [])[1];
   const body = [
     `Beste ${reservation.name},`,
     "",
     "Bedankt voor je reservering. We hebben het volgende voor je genoteerd:",
     "",
+    ...concertDetails(reservation),
+    `Kun je toch niet komen? Annuleer je reservering: ${SITE_URL}/annuleren/${reservation.cancelCode}`,
+    ...emailEnding(),
+  ].join("\n");
+  sendToGuest(reservation, `Bevestiging reservering: ${reservation.title}`, body);
+}
+
+// Run this once from the Apps Script editor. Running it again replaces the trigger, so there's never more than one.
+function installReminderTrigger() {
+  ScriptApp.getProjectTriggers()
+    .filter((trigger) => trigger.getHandlerFunction() === "sendReminders")
+    .forEach((trigger) => ScriptApp.deleteTrigger(trigger));
+  ScriptApp.newTrigger("sendReminders")
+    .timeBased()
+    .everyDays(1)
+    .atHour(REMINDER_HOUR)
+    .create();
+}
+
+function sendReminders() {
+  sendRemindersOn(new Date());
+}
+
+/**
+ * Sends the reminders that are due, up to the daily limit. The next day's run sends the rest, because each row is marked
+ * once it's sent. A failed email stays unmarked, so it's tried again the next day.
+ *
+ * The lock is held for one email at a time, because guests would get an error if a reservation had to wait for the whole
+ * batch. So the rows are read again for each email: a cancellation in between can move them.
+ */
+function sendRemindersOn(now) {
+  const today = dayNumber(now.getFullYear(), now.getMonth(), now.getDate());
+  const failed = new Set();
+  let sent = 0;
+  while (sent < MAX_REMINDERS_PER_DAY) {
+    const lock = LockService.getScriptLock();
+    lock.waitLock(20000);
+    try {
+      const reservations = getOrCreateSheet(
+        SpreadsheetApp.getActiveSpreadsheet(),
+        RESERVATIONS_SHEET,
+        RESERVATION_COLUMNS,
+      );
+      const due = nextDueReminder(reservations, today, failed);
+      if (!due) {
+        return;
+      }
+      try {
+        sendReminder(due.reservation);
+      } catch (err) {
+        console.error(`Reminder to ${due.reservation.email} failed: ${err}`);
+        failed.add(due.key);
+        continue;
+      }
+      reservations.sheet
+        .getRange(due.rowNumber, reservations.columns["Herinnering verstuurd"])
+        .setValue(new Date());
+      SpreadsheetApp.flush();
+      sent++;
+    } finally {
+      lock.releaseLock();
+    }
+  }
+}
+
+// The due reminder for the soonest concert, or null when there are none left
+function nextDueReminder(reservations, today, failed) {
+  const rows = reservations.sheet.getDataRange().getValues();
+  const value = (row, header) => row[reservations.columns[header] - 1] ?? "";
+  let next = null;
+  let nextDaysLeft = Infinity;
+  for (let i = 1; i < rows.length; i++) {
+    const row = rows[i];
+    const key = JSON.stringify(row);
+    // Reservations from before the Concertmoment column only have the date in Dutch
+    const concertDay =
+      toDayNumber(value(row, "Concertmoment")) ??
+      toDayNumber(value(row, "Datum concert"));
+    if (
+      value(row, "Herinnering verstuurd") ||
+      !value(row, "E-mail") ||
+      concertDay === null ||
+      failed.has(key)
+    ) {
+      continue;
+    }
+
+    const daysLeft = concertDay - today;
+    const receivedDay = toDayNumber(value(row, "Ontvangen"));
+    // Someone who books in the final week just got all of this in their confirmation
+    const bookedInFinalWeek =
+      receivedDay !== null && concertDay - receivedDay <= REMINDER_DAYS_BEFORE;
+    if (
+      daysLeft >= 1 &&
+      daysLeft <= REMINDER_DAYS_BEFORE &&
+      !bookedInFinalWeek &&
+      daysLeft < nextDaysLeft
+    ) {
+      nextDaysLeft = daysLeft;
+      next = {
+        key,
+        rowNumber: i + 1,
+        reservation: {
+          title: String(value(row, "Concert")),
+          date: String(value(row, "Concertmoment")),
+          dateLabel: dateLabelFromCell(value(row, "Datum concert")),
+          location: String(value(row, "Locatie")),
+          slug: String(value(row, "Slug")),
+          name: String(value(row, "Naam")),
+          email: String(value(row, "E-mail")),
+          seats: Number(value(row, "Aantal personen")),
+          cancelCode: String(value(row, "Annuleercode")),
+        },
+      };
+    }
+  }
+  return next;
+}
+
+function sendReminder(reservation) {
+  const body = [
+    `Beste ${reservation.name},`,
+    "",
+    "Binnenkort is het zover! Je hebt gereserveerd voor dit concert:",
+    "",
+    ...concertDetails(reservation),
+    // Reservations from before the Annuleercode column have no cancel link
+    reservation.cancelCode
+      ? `Kun je toch niet komen? Annuleer dan je reservering, zodat iemand anders je plek kan krijgen: ${SITE_URL}/annuleren/${reservation.cancelCode}`
+      : "Kun je toch niet komen? Beantwoord dan deze e-mail, zodat iemand anders je plek kan krijgen.",
+    ...emailEnding(),
+  ].join("\n");
+  sendToGuest(reservation, `Herinnering: ${reservation.title}`, body);
+}
+
+// A running count of days, which isn't affected by daylight saving time
+function dayNumber(year, month, day) {
+  return Date.UTC(year, month, day) / 86400000;
+}
+
+// Reads a date cell, "2026-11-22 16:00" or "zo 22 november 2026". Returns null when it isn't a date.
+function toDayNumber(value) {
+  if (Object.prototype.toString.call(value) === "[object Date]") {
+    return isNaN(value)
+      ? null
+      : dayNumber(value.getFullYear(), value.getMonth(), value.getDate());
+  }
+  const iso = String(value).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) {
+    return dayNumber(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+  }
+  const dutch = String(value).match(/(\d{1,2})\s+(\p{L}{3})\p{L}*\s+(\d{4})/u);
+  const month = dutch ? DUTCH_MONTHS.indexOf(dutch[2].toLowerCase()) : -1;
+  return month === -1
+    ? null
+    : dayNumber(Number(dutch[3]), month, Number(dutch[1]));
+}
+
+// Sheets may have turned an edited date cell into a real date
+function dateLabelFromCell(value) {
+  return Object.prototype.toString.call(value) === "[object Date]"
+    ? Utilities.formatDate(value, "Europe/Amsterdam", "d-M-yyyy")
+    : String(value);
+}
+
+function concertDetails(reservation) {
+  const persons =
+    reservation.seats === 1 ? "1 persoon" : `${reservation.seats} personen`;
+  // Storyblok dates look like "2026-11-15 20:00" and may be marked as UTC, but the time is already the local time.
+  // So it's read from the text as-is, without converting time zones.
+  const time = (reservation.date.match(/\b(\d{1,2}:\d{2})/) || [])[1];
+  return [
     `Concert: ${reservation.title}`,
     `Datum: ${reservation.dateLabel || reservation.date}`,
     ...(time ? [`Tijd: ${time} uur`] : []),
@@ -325,25 +521,26 @@ function sendConfirmation(reservation) {
     ...(calendarLink(reservation)
       ? [`Zet het concert in je agenda: ${calendarLink(reservation)}`, ""]
       : []),
-    `Kun je toch niet komen? Annuleer je reservering: ${SITE_URL}/annuleren/${reservation.cancelCode}`,
+  ];
+}
+
+function emailEnding() {
+  return [
     "Wil je je reservering wijzigen? Beantwoord dan deze e-mail.",
     "",
     "Tot ziens bij het concert!",
     "",
     "Met vriendelijke groet,",
     "Bergharen Klassiek",
-  ].join("\n");
+  ];
+}
 
+function sendToGuest(reservation, subject, body) {
   const options = { name: SENDER_NAME, replyTo: SENDER_EMAIL };
   if (GmailApp.getAliases().includes(SENDER_EMAIL)) {
     options.from = SENDER_EMAIL;
   }
-  GmailApp.sendEmail(
-    reservation.email,
-    `Bevestiging reservering: ${reservation.title}`,
-    body,
-    options,
-  );
+  GmailApp.sendEmail(reservation.email, subject, body, options);
 }
 
 function locationLine(reservation) {
