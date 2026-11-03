@@ -345,6 +345,71 @@ describe('reservations script', () => {
     });
   });
 
+  describe('links in the email', () => {
+    const html = () => sendEmail.mock.calls[0][3].htmlBody as string;
+
+    it('should show clickable text in the HTML version', () => {
+      post(valid);
+
+      const code = reservations()[0]['Annuleercode'];
+      expect(html()).toContain(`Kun je toch niet komen? <a href="https://bergharenklassiek.nl/annuleren/${code}">Annuleer je reservering</a>`);
+      expect(html()).toContain('>Zet het concert in je agenda</a>');
+      expect(html()).toContain('>Route</a>');
+      expect(html().replace(/<a href="[^"]*">/g, '')).not.toContain('https://');
+    });
+
+    it('should show the links as one bullet list', () => {
+      post(valid);
+
+      expect(html().match(/<ul>/g)).toHaveLength(1);
+      expect(html().match(/<\/ul>/g)).toHaveLength(1);
+      const items = html().match(/<li>.*?<\/li>/g)!;
+      expect(items).toHaveLength(4);
+      expect(items[0]).toContain('>Route</a>');
+      expect(items[1]).toContain('Parkeren:');
+      expect(items[2]).toContain('>Zet het concert in je agenda</a>');
+      expect(items[3]).toContain('>Annuleer je reservering</a>');
+      expect(html()).toContain('Wil je je reservering wijzigen?');
+      expect(html()).not.toContain('<br><br><ul>');
+    });
+
+    it('should show bullets in the plain text version', () => {
+      post(valid);
+
+      expect(emailBody()).toContain('\n\n- Route: https://');
+      expect(emailBody()).toContain('\n- Parkeren:');
+      expect(emailBody()).toContain('\n- Zet het concert in je agenda: https://');
+      expect(emailBody()).toContain('\n- Kun je toch niet komen? Annuleer je reservering: https://');
+      expect(emailBody()).toContain('\n\nWil je je reservering wijzigen?');
+    });
+
+    it('should keep the full addresses in the plain text version', () => {
+      post(valid);
+
+      expect(emailBody()).toContain(`Annuleer je reservering: https://bergharenklassiek.nl/annuleren/${reservations()[0]['Annuleercode']}`);
+      expect(emailBody()).toContain('Route: https://www.google.com/maps/dir/');
+      expect(emailBody()).not.toContain('<a ');
+    });
+
+    it('should escape the ampersand in the route address', () => {
+      post(valid);
+      expect(html()).toContain('dir/?api=1&amp;destination=');
+    });
+
+    it('should not let form input add links or markup', () => {
+      post({ ...valid, name: '<a href="https://evil.example">Klik</a>', title: '<img src=x>' });
+
+      expect(html()).not.toContain('evil.example">');
+      expect(html()).not.toContain('<img');
+      expect(html()).toContain('&lt;img src=x&gt;');
+    });
+
+    it('should not link to the calendar for an invalid slug', () => {
+      post({ ...valid, slug: '"><script>' });
+      expect(html()).not.toContain('agenda');
+    });
+  });
+
   describe('cancelling', () => {
     const code = '00000000-0000-4000-8000-000000000001';
 
@@ -464,6 +529,7 @@ describe('reservations script', () => {
       expect(body).toContain('Tijd: 16:00 uur');
       expect(body).toContain('Veldsestraat 12, Bergharen');
       expect(body).toContain('.ics');
+      expect(options.htmlBody).toContain('>Annuleer dan je reservering, zodat iemand anders je plek kan krijgen</a>');
       expect(body).toContain(`/annuleren/${reservations()[0]['Annuleercode']}`);
       expect(options.replyTo).toBe('bergharenklassiek@outlook.com');
     });

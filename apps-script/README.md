@@ -1,6 +1,6 @@
 # Reservations (Google Sheet)
 
-Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link, a link to add it to their calendar and a link to cancel. A week before the concert, it emails them a reminder (see [Reminders](#reminders)).
+Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link, a link to add it to their calendar and a link to cancel. A week before the concert, it emails them a reminder (see [Reminders](#reminders)). Emails show links as clickable text. Mail apps that don't show HTML get a plain text version with the full addresses.
 
 The Sheet and the script belong to the Google account `bergharen.klassiek.2021@gmail.com`, which also sends the confirmation emails. Guests see them as coming from the foundation's address, `bergharenklassiek@outlook.com`, once that's set up in Gmail (see [Sender address](#sender-address)).
 
