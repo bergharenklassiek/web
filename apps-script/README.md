@@ -1,6 +1,6 @@
 # Reservations (Google Sheet)
 
-Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link, a link to add it to their calendar and a link to cancel.
+Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link, a link to add it to their calendar and a link to cancel. A week before the concert, it emails them a reminder (see [Reminders](#reminders)).
 
 The Sheet and the script belong to the Google account `bergharen.klassiek.2021@gmail.com`, which also sends the confirmation emails. Guests see them as coming from the foundation's address, `bergharenklassiek@outlook.com`, once that's set up in Gmail (see [Sender address](#sender-address)).
 
@@ -50,7 +50,7 @@ To check the deployment, open the web app URL in a browser. It should show `{"st
 
 The script creates two tabs on the first reservation:
 
-- **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people, **Event ID** and **Annuleercode**.
+- **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people, **Event ID**, **Annuleercode**, **Concertmoment**, **Locatie**, **Slug** and **Herinnering verstuurd**.
 - **Concerten:** one row per concert, with its **Capaciteit**, the number of reserved seats (**Gereserveerd**), the number of seats still available (**Beschikbaar**) and its **Event ID**. Every concert gets a capacity of 120 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 120. Concerts added before the default changed keep the capacity they were given, so check those. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
 
 All counting is done by **Event ID**, the Storyblok ID of the concert. Unlike the title or the web address, it never changes, so renaming a concert in Storyblok doesn't affect its count. Don't edit the Event ID cells.
@@ -62,6 +62,20 @@ The **Gereserveerd** and **Beschikbaar** totals are written by the script, not b
 Guests cancel with the link in their confirmation email. It leads to `/annuleren/<Annuleercode>` on the website, where a button deletes their row and updates the totals. The code is what proves it's their reservation, so don't share it or edit those cells. Opening the link changes nothing, because mail scanners open links too. Reservations made before this column existed have no code, so those guests can reply to their email instead.
 
 To cancel a reservation yourself, delete its row in **Reserveringen**. The seats become available on the website straight away, because the script counts the rows on every reservation. Deleting a row doesn't count as an edit, so to see the new totals in **Concerten**, use **Reserveringen → Aantallen bijwerken**.
+
+## Reminders
+
+A daily trigger runs `sendReminders` between 10:00 and 11:00. It emails each guest a reminder a week before their concert, with the same details as the confirmation email and the cancel link.
+
+Turn it on once, after deploying: in the Apps Script editor, select `installReminderTrigger` in the toolbar, click **Run** (*Uitvoeren*) and allow the permissions it asks for (see [Allowing permissions](#allowing-permissions)). Google's triggers use the most recently uploaded code, so `npm run sheet:push` already changes the reminders, without `sheet:deploy`. To turn them off, delete the trigger under **Triggers** (*Triggers*, clock icon).
+
+- **Daily limit:** at most 80 reminders go out per day (`MAX_REMINDERS_PER_DAY`), which leaves room for confirmation emails. The rest go out the next day, so a concert with more than 100 reservations takes two days, starting with the soonest concert. A concert with 81 to 100 reservations also takes two days.
+- **Who gets one:** one email per reservation. Guests who booked in the final week don't get one, because they just got their confirmation. Cancelled reservations don't either, because their row is gone.
+- **Sent:** **Herinnering verstuurd** shows when the reminder went out. A failed email leaves it empty and is tried again the next day, until the day before the concert. Details are under **Executions** (*Uitvoeringen*).
+- **Changed concert:** the Storyblok date isn't checked. If a concert moves, change **Concertmoment** (written as `2026-11-22 16:00`) and **Datum concert** in its rows. If a concert is cancelled, delete its rows or type something in **Herinnering verstuurd**, such as `afgelast`, before the reminders go out.
+- **Older reservations:** reservations made before these columns existed get a reminder based on **Datum concert**, without the time, location or calendar link, and they're asked to reply to cancel.
+
+To change the timing, edit `REMINDER_DAYS_BEFORE` in the script. To change the hour, edit `REMINDER_HOUR` and run `installReminderTrigger` again.
 
 ## Changing the script
 
@@ -91,4 +105,4 @@ The script checks for the address on every email, so this takes effect without a
 
 ## Limits
 
-A free Google account can send about 100 emails a day. A Google Workspace account can send about 1,500.
+A free Google account can send about 100 emails a day. A Google Workspace account can send about 1,500. Reminders count towards this limit (see [Reminders](#reminders)).

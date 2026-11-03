@@ -6,7 +6,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Finish recent work
 
-- [ ] Run `npm run sheet:deploy` from `main` to add the route, parking, calendar and cancellation links to the confirmation email. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
+- [ ] Run `npm run sheet:deploy` from `main` to add the route, parking, calendar and cancellation links to the confirmation email, and the reminder emails. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
+- [ ] After that deploy, run `installReminderTrigger` once in the Apps Script editor to turn on the reminders (see [Reminders](apps-script/README.md#reminders)).
 - [ ] After that deploy, make one real test reservation: check the email and the calendar link (also on an iPhone), then cancel it with the link in the email and check that the row is gone from the Sheet.
 - [ ] Submit `https://bergharenklassiek.nl/sitemap.xml` in Google Search Console.
 - [ ] Test a concert page in Google's Rich Results Test.
@@ -19,7 +20,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ### Features
 
 - [x] Add a cancellation link to the confirmation email, so seats free up without someone editing the Sheet.
-- [ ] Send a reminder email the day before a concert. A free Google account can send about 100 emails a day, so a full concert could hit that limit.
+- [x] Send a reminder email a week before a concert. A free Google account can send about 100 emails a day, so a full concert is spread over two days.
 - [x] Add a 1200×630 share image for pages without their own photo, which now share the wide logo.
 - [x] Show a second tile on the home page and agenda page, when there is only one event coming up, saying we will be back next year
 
@@ -78,7 +79,7 @@ Tests run with [Vitest](https://vitest.dev), through Angular's unit test builder
 - `npm run test:watch`: run tests again when files change.
 - `npm run test:coverage`: run all tests with a coverage report, in the terminal and in `coverage/`. This fails when coverage drops below the thresholds in `angular.json`.
 
-`src/apps-script.spec.ts` tests the reservation script in `apps-script/reservations.gs` against a fake Sheet and Gmail. It can't show how Google's own services behave, so try a real reservation after deploying the script.
+`src/apps-script.spec.ts` tests the reservation script in `apps-script/reservations.gs` against a fake Sheet and Gmail. It can't show how Google's own services behave, so try a real reservation after deploying the script, and check the first reminders under **Executions**.
 
 ## Continuous integration
 
