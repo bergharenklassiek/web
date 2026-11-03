@@ -37,7 +37,7 @@ test('the honeypot field stays out of sight and out of reach', async ({ page }) 
   await page.getByRole('button', { name: 'Reserveer hier' }).click();
   await page.getByRole('dialog').getByRole('button', { name: fakeConcert.content.title }).click();
 
-  const honeypot = page.locator('.reservation-form__honeypot input');
+  const honeypot = page.getByTestId('honeypot');
   await expect(honeypot).toBeAttached();
   await expect(honeypot).not.toBeInViewport();
 

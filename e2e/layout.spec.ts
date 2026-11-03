@@ -82,7 +82,7 @@ test.describe('at phone width', () => {
     await expect(page.locator('app-event-card')).toHaveCount(1);
 
     // The first card starts at the left edge, and scrolling can't go further left than that
-    const list = page.locator('.app-home-page__events');
+    const list = page.getByTestId('event-list');
     await list.evaluate((el) => { el.scrollLeft = -1000; });
     expect((await card.boundingBox())!.x).toBeGreaterThanOrEqual(0);
 

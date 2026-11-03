@@ -3,7 +3,7 @@
         <h3 class="app-about-page__title">
             {{ aboutPage.content.title }}
         </h3>
-        <div class="app-about-page__description">
+        <div class="app-about-page__description" data-testid="about-description">
             <app-rich-text [richText]="aboutPage.content.description"></app-rich-text>
         </div>
     }

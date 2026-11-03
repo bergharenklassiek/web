@@ -7,17 +7,17 @@ test.describe('menu pages', () => {
       await page.goto(path);
 
       await expect(page).toHaveTitle(title);
-      await expect(page.locator(content)).toBeVisible();
+      await expect(content(page)).toBeVisible();
     });
 
     test(`${menu} opens through the menu`, async ({ page }) => {
       await page.goto(path === '/contact' ? '/' : '/contact');
       await page.getByRole('button', { name: 'Menu openen' }).click();
-      await page.locator('.app-header__menu__content').getByRole('link', { name: menu, exact: true }).click();
+      await page.getByRole('navigation', { name: 'Hoofdmenu' }).getByRole('link', { name: menu, exact: true }).click();
 
       await expect(page).toHaveURL(new RegExp(`${path === '/' ? '/' : path}/?$`));
       await expect(page).toHaveTitle(title);
-      await expect(page.locator(content)).toBeVisible();
+      await expect(content(page)).toBeVisible();
     });
   }
 });

@@ -1,11 +1,13 @@
+import type { Page } from '@playwright/test';
+
 export const menuPages = [
-  { menu: 'Home', path: '/', title: /^Bergharen Klassiek/, content: '.app-home-page__about' },
-  { menu: 'Agenda', path: '/agenda', title: /^Agenda/, content: '.app-agenda-page__toggle' },
-  { menu: 'Over ons', path: '/over-ons', title: /Bergharen Klassiek/, content: '.app-about-page__description' },
-  { menu: 'Gebouw', path: '/gebouw', title: /Bergharen Klassiek/, content: '.app-content-page__description' },
-  { menu: 'Concerten in de regio', path: '/concerten-in-de-regio', title: /Bergharen Klassiek/, content: '.app-content-page__description' },
-  { menu: 'ANBI', path: '/anbi', title: /ANBI/, content: '.app-content-page__description' },
-  { menu: 'Contact', path: '/contact', title: /^Contact/, content: '.app-contact-page app-contact-details' },
+  { menu: 'Home', path: '/', title: /^Bergharen Klassiek/, content: (page: Page) => page.getByTestId('home-about') },
+  { menu: 'Agenda', path: '/agenda', title: /^Agenda/, content: (page: Page) => page.getByRole('group', { name: 'Concerten' }) },
+  { menu: 'Over ons', path: '/over-ons', title: /Bergharen Klassiek/, content: (page: Page) => page.getByTestId('about-description') },
+  { menu: 'Gebouw', path: '/gebouw', title: /Bergharen Klassiek/, content: (page: Page) => page.getByTestId('content-description') },
+  { menu: 'Concerten in de regio', path: '/concerten-in-de-regio', title: /Bergharen Klassiek/, content: (page: Page) => page.getByTestId('content-description') },
+  { menu: 'ANBI', path: '/anbi', title: /ANBI/, content: (page: Page) => page.getByTestId('content-description') },
+  { menu: 'Contact', path: '/contact', title: /^Contact/, content: (page: Page) => page.getByTestId('contact-details') },
 ];
 
 // A past concert in Storyblok with several photos. Concert pages opened by URL are rendered on the server, where

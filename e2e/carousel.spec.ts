@@ -35,7 +35,7 @@ test('the carousel works on a concert page by direct URL', async ({ page }) => {
 test('the carousel works on a concert page reached through the agenda', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Menu openen' }).click();
-  await page.locator('.app-header__menu__content').getByRole('link', { name: 'Agenda', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Hoofdmenu' }).getByRole('link', { name: 'Agenda', exact: true }).click();
   await page.getByRole('button', { name: 'Eerder' }).click();
   await page.getByRole('link', { name: concertWithPhotos.title }).click();
 
@@ -52,7 +52,7 @@ test('the carousel works on Gebouw by direct URL', async ({ page }) => {
 test('the carousel works on Gebouw reached through the menu', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Menu openen' }).click();
-  await page.locator('.app-header__menu__content').getByRole('link', { name: 'Gebouw', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Hoofdmenu' }).getByRole('link', { name: 'Gebouw', exact: true }).click();
 
   await expectWorkingCarousel(page);
 });

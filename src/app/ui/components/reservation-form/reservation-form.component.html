@@ -43,7 +43,7 @@
 
         <!-- Hidden from people; bots that fill it in are ignored -->
         <div class="reservation-form__honeypot" aria-hidden="true">
-            <label>Website <input type="text" formControlName="website" tabindex="-1" autocomplete="off" /></label>
+            <label>Website <input type="text" formControlName="website" data-testid="honeypot" tabindex="-1" autocomplete="off" /></label>
         </div>
 
         @switch (status()) {
