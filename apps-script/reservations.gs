@@ -328,16 +328,20 @@ function reservedSeatsPerConcert(reservations) {
 }
 
 function sendConfirmation(reservation) {
-  const body = [
+  const lines = [
     `Beste ${reservation.name},`,
     "",
     "Bedankt voor je reservering. We hebben het volgende voor je genoteerd:",
     "",
     ...concertDetails(reservation),
-    `Kun je toch niet komen? Annuleer je reservering: ${SITE_URL}/annuleren/${reservation.cancelCode}`,
+    linkLine(
+      "Kun je toch niet komen? ",
+      "Annuleer je reservering",
+      `${SITE_URL}/annuleren/${reservation.cancelCode}`,
+    ),
     ...emailEnding(),
-  ].join("\n");
-  sendToGuest(reservation, `Bevestiging reservering: ${reservation.title}`, body);
+  ];
+  sendToGuest(reservation, `Bevestiging reservering: ${reservation.title}`, lines);
 }
 
 // Run this once from the Apps Script editor. Running it again replaces the trigger, so there's never more than one.
@@ -453,7 +457,7 @@ function nextDueReminder(reservations, today, failed) {
 }
 
 function sendReminder(reservation) {
-  const body = [
+  const lines = [
     `Beste ${reservation.name},`,
     "",
     "Binnenkort is het zover! Je hebt gereserveerd voor dit concert:",
@@ -461,11 +465,17 @@ function sendReminder(reservation) {
     ...concertDetails(reservation),
     // Reservations from before the Annuleercode column have no cancel link
     reservation.cancelCode
-      ? `Kun je toch niet komen? Annuleer dan je reservering, zodat iemand anders je plek kan krijgen: ${SITE_URL}/annuleren/${reservation.cancelCode}`
-      : "Kun je toch niet komen? Beantwoord dan deze e-mail, zodat iemand anders je plek kan krijgen.",
+      ? linkLine(
+          "Kun je toch niet komen? ",
+          "Annuleer dan je reservering, zodat iemand anders je plek kan krijgen",
+          `${SITE_URL}/annuleren/${reservation.cancelCode}`,
+        )
+      : textBullet(
+          "Kun je toch niet komen? Beantwoord dan deze e-mail, zodat iemand anders je plek kan krijgen.",
+        ),
     ...emailEnding(),
-  ].join("\n");
-  sendToGuest(reservation, `Herinnering: ${reservation.title}`, body);
+  ];
+  sendToGuest(reservation, `Herinnering: ${reservation.title}`, lines);
 }
 
 // A running count of days, which isn't affected by daylight saving time
@@ -513,19 +523,23 @@ function concertDetails(reservation) {
     "",
     ...(reservation.location === VENUE_NAME
       ? [
-          `Route: https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(VENUE_ADDRESS)}`,
-          PARKING_INFO,
-          "",
+          linkLine(
+            "",
+            "Route",
+            `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(VENUE_ADDRESS)}`,
+          ),
+          textBullet(PARKING_INFO),
         ]
       : []),
     ...(calendarLink(reservation)
-      ? [`Zet het concert in je agenda: ${calendarLink(reservation)}`, ""]
+      ? [linkLine("", "Zet het concert in je agenda", calendarLink(reservation))]
       : []),
   ];
 }
 
 function emailEnding() {
   return [
+    "",
     "Wil je je reservering wijzigen? Beantwoord dan deze e-mail.",
     "",
     "Tot ziens bij het concert!",
@@ -535,8 +549,51 @@ function emailEnding() {
   ];
 }
 
-function sendToGuest(reservation, subject, body) {
-  const options = { name: SENDER_NAME, replyTo: SENDER_EMAIL };
+// A bullet with a link: clickable text in the HTML version, and the full address in the plain text version
+function linkLine(before, text, url) {
+  return {
+    plain: `- ${before}${text}: ${url}`,
+    html: `${escapeHtml(before)}<a href="${escapeHtml(url)}">${escapeHtml(text)}</a>`,
+  };
+}
+
+function textBullet(text) {
+  return { plain: `- ${text}`, html: escapeHtml(text) };
+}
+
+// Bullets next to each other become one list. A list has its own spacing, so the empty lines around it are left out.
+function toHtml(lines) {
+  const isBullet = (line) => line !== undefined && line.html !== undefined;
+  let html = "";
+  lines.forEach((line, i) => {
+    if (isBullet(line)) {
+      html += `${isBullet(lines[i - 1]) ? "" : "<ul>"}<li>${line.html}</li>`;
+      html += isBullet(lines[i + 1]) ? "" : "</ul>";
+    } else if (line !== "" || !(isBullet(lines[i - 1]) || isBullet(lines[i + 1]))) {
+      html += `${escapeHtml(line)}<br>`;
+    }
+  });
+  return html;
+}
+
+// Names and titles come from a public form, so they mustn't be able to add links or markup to the email
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Sends an email with an HTML version, plus a plain text version for mail apps that don't show HTML
+function sendToGuest(reservation, subject, lines) {
+  const body = lines.map((line) => line.plain ?? line).join("\n");
+  const options = {
+    name: SENDER_NAME,
+    replyTo: SENDER_EMAIL,
+    htmlBody: toHtml(lines),
+  };
   if (GmailApp.getAliases().includes(SENDER_EMAIL)) {
     options.from = SENDER_EMAIL;
   }
