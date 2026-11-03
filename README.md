@@ -28,10 +28,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] Make `npm test` work, using Vitest.
 - [x] Add CI that runs the build and tests on every PR.
 - [x] Update the test instructions in this README, which still described Karma.
-- [ ] Set up end-to-end tests with Playwright and add the [scenarios](#end-to-end-test-scenarios) below.
+- [x] Set up end-to-end tests with Playwright and add the [scenarios](#end-to-end-test-scenarios) below.
 
 ### Fixes
 
+- [ ] Carousel dots are too small to tap easily (axe rule `target-size`), on Gebouw and on concerts with several photos. The accessibility test in `e2e/accessibility.spec.ts` allows this for now, so remove that exception in the fix.
 - [x] Swiper: `npm audit` reports a critical issue. The fix needs a major upgrade to version 14.
 - [x] Homepage video: it loads from `tube.rvere.com`, not YouTube. Find out who runs it, and replace it if it isn't ours.
 - [x] "Reserveer hier" button: it's a clickable `div`, so keyboard users can't reach it.
@@ -85,23 +86,36 @@ Tests run with [Vitest](https://vitest.dev), through Angular's unit test builder
 
 ## Running end-to-end tests
 
-End-to-end tests will use [Playwright](https://playwright.dev), which isn't set up yet. They only cover what needs a real browser or server, such as layout, CSS, focus and server responses. Everything else belongs in the unit tests, which are faster and run in jsdom.
+End-to-end tests in `e2e/` use [Playwright](https://playwright.dev). They only cover what needs a real browser or server, such as layout, CSS, focus and server responses. Everything else belongs in the unit tests, which are faster and run in jsdom.
+
+- `npx playwright install chromium webkit`: install the browsers, once.
+- `npm run e2e`: start the site and run all tests in Chromium and WebKit.
+- `npm run e2e:ui`: run tests in Playwright's interactive window.
+
+CI runs them on every pull request and on `main`.
+
+The tests run against the production build on Angular's server, with live content from Storyblok:
+
+- Upcoming concerts and reservations are faked in the browser (`e2e/support/fake-concert.ts`). Nothing needs adding to Storyblok, and a test fails if a reservation request isn't answered by the test, so nothing reaches the real Sheet.
+- Concert pages opened by URL are rendered on the server, where requests can't be faked. The carousel tests therefore need `/gebouw` and `/agenda/concert-dina-ivanova` to keep at least two photos each.
+- Netlify isn't involved, so its headers for static files aren't tested here. A unit test keeps them the same as the server's headers.
+- WebKit is close to Safari but isn't the same, and doesn't replace trying a real iPhone.
 
 ### End-to-end test scenarios
 
 Tick a scenario in the PR that adds its test.
 
-- [ ] Every menu page opens through the menu and by direct URL, with the right content and no console errors.
-- [ ] An old `/events/<concert>` link redirects to `/agenda/<concert>`, and an unknown URL returns status 404 with the site's own page.
-- [ ] On a concert page and on Gebouw, the carousel works by direct URL and when reached through the menu: all photos, dots and autoplay.
-- [ ] Loading the pages causes no layout shift.
-- [ ] A full reservation works from the "Reserveer hier" button to the thanks message. The test answers the `script.google.com` request, so nothing reaches the real Sheet.
-- [ ] The honeypot field in the reservation form isn't visible.
-- [ ] The reservation dialog keeps focus inside, closes with Escape, and returns focus to the button that opened it.
-- [ ] No page scrolls sideways at 390 px, and with two cards on the home page the first one stays reachable by swiping.
-- [ ] No page causes a Content Security Policy violation, including when playing the video and sending a reservation.
-- [ ] The main flows also pass in WebKit (Safari).
-- [ ] An automated check (axe) finds no serious problems on any page, or in the reservation dialog.
+- [x] Every menu page opens through the menu and by direct URL, with the right content and no console errors.
+- [x] An old `/events/<concert>` link redirects to `/agenda/<concert>`, and an unknown URL returns status 404 with the site's own page.
+- [x] On a concert page and on Gebouw, the carousel works by direct URL and when reached through the menu: all photos, dots and autoplay.
+- [x] Loading the pages causes no layout shift.
+- [x] A full reservation works from the "Reserveer hier" button to the thanks message. The test answers the `script.google.com` request, so nothing reaches the real Sheet.
+- [x] The honeypot field in the reservation form isn't visible.
+- [x] The reservation dialog keeps focus inside, closes with Escape, and returns focus to the button that opened it.
+- [x] No page scrolls sideways at 390 px, and with two cards on the home page the first one stays reachable by swiping.
+- [x] No page causes a Content Security Policy violation, including when playing the video and sending a reservation.
+- [x] The main flows also pass in WebKit (Safari).
+- [x] An automated check (axe) finds no serious problems on any page, or in the reservation dialog.
 
 ## Further help
 

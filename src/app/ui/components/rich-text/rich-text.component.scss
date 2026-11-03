@@ -1,4 +1,7 @@
 .app-rich-text {
+    // Long URLs would otherwise make the page scroll sideways on phones
+    overflow-wrap: anywhere;
+
     hr {
         border-top: 2px grey;
         border-left: 0px;
