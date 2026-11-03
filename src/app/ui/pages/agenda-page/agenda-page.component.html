@@ -32,5 +32,8 @@
         @for (story of events(); track $index) {
             <app-event-list-item class="app-agenda-page__item" [story]="story"></app-event-list-item>
         }
+        @if (showBackNextYearTile()) {
+            <app-back-next-year-tile class="app-agenda-page__item" [compact]="true"></app-back-next-year-tile>
+        }
     }
 </div>
