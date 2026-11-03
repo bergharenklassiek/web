@@ -5,14 +5,11 @@
     gap: vars.$space-default;
 
     @keyframes app-home-page-skeleton-pulse {
-        0% {
+        0%, 100% {
             opacity: 0.55;
         }
         50% {
             opacity: 1;
-        }
-        100% {
-            opacity: 0.55;
         }
     }
 
@@ -57,12 +54,12 @@
         
         // Only for one concert or none, not for a list of concerts. This looks at the content because Angular removes bound
         // classes for a moment when it takes over the rendered page, which makes the cards jump on slow devices.
-        &:has(> app-back-next-year-tile, > .app-home-page__events__no-events-message) {
+        &:has(> app-back-next-year-tile, > .app-home-page__events__no-events) {
             // Safe: when two cards don't fit, the first one must stay reachable by scrolling
             justify-content: safe center;
         }
         
-        &__no-events-message {
+        &__no-events {
             text-align: center;
             margin: 0 20%;
             @media (width <= 600px) {
@@ -72,8 +69,7 @@
     }
 
     &__events-loading-card {
-        width: 300px;
-        min-width: 300px;
+        flex: 0 0 300px;
         min-height: 340px;
         border-radius: 20px;
         background: linear-gradient(90deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.95));
