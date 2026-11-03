@@ -38,7 +38,7 @@ describe('page SEO', () => {
     });
 
     it('should fall back to the logo without photos', () => {
-      expect(eventSeo('pianorecital', { ...event, images: [] }).image?.url).toBe('https://bergharenklassiek.nl/full-logo-BK.png');
+      expect(eventSeo('pianorecital', { ...event, images: [] }).image?.url).toBe('https://bergharenklassiek.nl/share-image.png');
     });
 
     it('should add the address of our own venue to the structured data', () => {

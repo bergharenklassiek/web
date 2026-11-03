@@ -20,7 +20,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - [ ] Add a cancellation link to the confirmation email, so seats free up without someone editing the Sheet.
 - [ ] Send a reminder email the day before a concert. A free Google account can send about 100 emails a day, so a full concert could hit that limit.
-- [ ] Add a 1200×630 share image for pages without their own photo, which now share the wide logo.
+- [x] Add a 1200×630 share image for pages without their own photo, which now share the wide logo.
 - [x] Show a second tile on the home page and agenda page, when there is only one event coming up, saying we will be back next year
 
 ### Tests and CI
