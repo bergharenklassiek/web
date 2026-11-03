@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { Dispatcher } from '@ngrx/signals/events';
+import { of, Subject } from 'rxjs';
 import { Event } from '../../../core/models/event';
 import { Story } from '../../../core/models/story';
 import { ContentService } from '../../../core/services/content.service';
+import { eventLoaded } from '../../../core/store/content.events';
 import { AgendaPageComponent } from './agenda-page.component';
 
 describe('AgendaPageComponent', () => {
@@ -76,6 +78,28 @@ describe('AgendaPageComponent', () => {
     setup([], []);
 
     expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+  });
+
+  it('should wait for the list before showing the tile, when a concert page already stored one concert', () => {
+    const concert = story('nieuw', '2999-01-01 16:00');
+    const list = new Subject<Story<Event>[]>();
+    TestBed.configureTestingModule({
+      imports: [AgendaPageComponent],
+      providers: [provideRouter([]), { provide: ContentService, useValue: { loadEvents: () => list } }],
+    });
+    fixture = TestBed.createComponent(AgendaPageComponent);
+    element = fixture.nativeElement;
+    fixture.componentInstance.onClick(false);
+    TestBed.inject(Dispatcher).dispatch(eventLoaded({ event: concert }));
+    fixture.detectChanges();
+
+    expect(items()).toBe(1);
+    expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+
+    list.next([concert]);
+    fixture.detectChanges();
+
+    expect(element.querySelector('app-back-next-year-tile')).not.toBeNull();
   });
 
   it('should explain when there are no upcoming concerts', () => {
