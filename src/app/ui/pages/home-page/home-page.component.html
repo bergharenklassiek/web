@@ -19,7 +19,7 @@
     }
   </div>
 
-  <div class="app-home-page__events" [class.app-home-page__events--centered]="!!evts && evts.length <= 1" id="scroll-list">
+  <div class="app-home-page__events" id="scroll-list">
     @if (evts) {
       @if (evts.length > 0) {
         @for (event of evts; track event.id) {

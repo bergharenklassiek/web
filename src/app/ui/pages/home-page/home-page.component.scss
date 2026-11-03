@@ -55,7 +55,9 @@
             min-height: 340px;
         }
         
-        &--centered {
+        // Only for one concert or none, not for a list of concerts. This looks at the content because Angular removes bound
+        // classes for a moment when it takes over the rendered page, which makes the cards jump on slow devices.
+        &:has(> app-back-next-year-tile, > .app-home-page__events__no-events-message) {
             // Safe: when two cards don't fit, the first one must stay reachable by scrolling
             justify-content: safe center;
         }
