@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { ReservationFormComponent } from './reservation-form.component';
 import { ReservationService } from '../../../core/services/reservation.service';
@@ -55,6 +55,39 @@ describe('ReservationFormComponent', () => {
     respond({ status: 'full', remaining: 1 });
 
     expect(fixture.nativeElement.textContent).toContain('is nog maar 1 plaats');
+  });
+
+  it('says so when the concert is full', () => {
+    fillIn();
+    respond({ status: 'full', remaining: 0 });
+
+    expect(fixture.nativeElement.textContent).toContain('Dit concert is helaas vol');
+  });
+
+  it('asks to check the details when the script rejects them', () => {
+    fillIn();
+    respond({ status: 'invalid' });
+
+    expect(fixture.nativeElement.querySelector('[role="alert"]').textContent).toContain('Controleer je gegevens');
+  });
+
+  it('shows the button as busy while sending, and enables it again after an answer', () => {
+    const response = new Subject<ReservationResponse>();
+    reserve.mockReturnValue(response);
+    const button = (): HTMLButtonElement => fixture.nativeElement.querySelector('button[type="submit"]');
+    fillIn();
+
+    component.submit();
+    fixture.detectChanges();
+
+    expect(button().disabled).toBe(true);
+    expect(button().textContent).toContain('Bezig met versturen');
+
+    response.next({ status: 'error' });
+    fixture.detectChanges();
+
+    expect(button().disabled).toBe(false);
+    expect(button().textContent).toContain('Reserveer');
   });
 
   it('offers reserving by email when sending fails', () => {

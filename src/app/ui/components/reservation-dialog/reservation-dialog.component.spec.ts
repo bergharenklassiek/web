@@ -19,15 +19,17 @@ describe('ReservationDialogComponent', () => {
 
   let fixture: ComponentFixture<ReservationDialogComponent>;
   let element: HTMLElement;
+  let close: ReturnType<typeof vi.fn>;
 
   function setup(data: ReservationDialogData | null = null) {
+    close = vi.fn();
     TestBed.configureTestingModule({
       imports: [ReservationDialogComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: MAT_DIALOG_DATA, useValue: data },
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: { close } },
       ],
     });
     TestBed.inject(ContentStore);
@@ -71,6 +73,14 @@ describe('ReservationDialogComponent', () => {
 
     expect(element.querySelector('app-reservation-form')).toBeNull();
     expect(element.querySelector('app-reservation-dialog-row')).not.toBeNull();
+  });
+
+  it('should close with the close button', () => {
+    setup();
+
+    element.querySelector<HTMLButtonElement>('.reservation-dialog__close-button')!.click();
+
+    expect(close).toHaveBeenCalled();
   });
 
   it('should go straight to the form when opened for a concert, without a way back', () => {
