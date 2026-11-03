@@ -28,6 +28,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] Make `npm test` work, using Vitest.
 - [x] Add CI that runs the build and tests on every PR.
 - [x] Update the test instructions in this README, which still described Karma.
+- [ ] Set up end-to-end tests with Playwright and add the [scenarios](#end-to-end-test-scenarios) below.
 
 ### Fixes
 
@@ -84,7 +85,81 @@ Tests run with [Vitest](https://vitest.dev), through Angular's unit test builder
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+End-to-end tests will use [Playwright](https://playwright.dev), which isn't set up yet. They cover what the unit tests can't see, because those run in jsdom instead of a real browser.
+
+### End-to-end test scenarios
+
+Tick a scenario in the PR that adds its test. Scenarios marked "fixed concerts" depend on which concerts exist, so they need test data instead of the live Storyblok content.
+
+**Pages and navigation**
+
+- [ ] Every menu page opens through the menu and by direct URL, with the right title and no console errors.
+- [ ] The menu opens and closes, and closes by itself after choosing a page.
+- [ ] The logo leads back to the home page.
+- [ ] An old `/events/<concert>` link redirects to `/agenda/<concert>`.
+- [ ] An unknown URL returns status 404 and the site's own page, with working links to the agenda and home page.
+- [ ] An unknown concert shows "Dit concert konden we niet vinden", with a link to the agenda.
+
+**Home page**
+
+- [ ] Clicking a concert card opens that concert's page (fixed concerts).
+- [ ] One upcoming concert shows the "Volgend jaar zijn we er weer!" tile next to the card (fixed concerts).
+- [ ] Several upcoming concerts show no tile, and no upcoming concerts show the "druk bezig met ons programma" message (fixed concerts).
+- [ ] Clicking the video thumbnail loads the player from `youtube-nocookie.com`, and nothing loads from YouTube before that click, apart from the thumbnail.
+
+**Agenda**
+
+- [ ] "Binnenkort" is selected first, and the toggle switches between upcoming and past concerts.
+- [ ] Clicking a row opens that concert's page.
+- [ ] With one upcoming concert the tile shows under "Binnenkort" but not under "Eerder" (fixed concerts).
+- [ ] Going from a concert page to the agenda doesn't flash the tile while the list loads (fixed concerts).
+
+**Concert page**
+
+- [ ] An upcoming concert has a "Reserveer nu" button, and a past concert doesn't (fixed concerts).
+- [ ] The route link and the Google Agenda link point to the right place and time.
+- [ ] "Apple of Outlook" downloads a valid `.ics` file with the right time.
+- [ ] "Eerder bij Bergharen Klassiek" lists earlier concerts by the same artists (fixed concerts).
+
+**Carousels**
+
+- [ ] On a concert page and on Gebouw, the carousel works by direct URL and when reached through the menu: all photos, dots and autoplay.
+- [ ] Clicking a dot shows that photo.
+- [ ] Loading the page causes no layout shift.
+
+**Reservations** (the `script.google.com` request is answered by the test, so nothing reaches the real Sheet)
+
+- [ ] "Reserveer hier" shows the list of concerts, choosing one opens the form, and "Alle concerten" goes back.
+- [ ] "Reserveer nu" on a concert page opens the form for that concert straight away, without a back button.
+- [ ] Empty fields and an invalid email address show an error, and no request is sent.
+- [ ] A valid form sends the right data, shows the button as busy while sending, and then shows the thanks message with the number of people, the email address, and the route and calendar links.
+- [ ] The answer "full" shows the seats left, or "Dit concert is helaas vol" when there are none.
+- [ ] The answer "invalid" asks to check the details.
+- [ ] A failed request shows an error with a working "reserveer per e-mail" link.
+- [ ] The hidden honeypot field isn't visible and can't be reached with the keyboard.
+- [ ] "Sluiten" closes the dialog.
+
+**Keyboard**
+
+- [ ] The menu, the agenda toggle and the video can be used with only the keyboard.
+- [ ] The reservation dialog keeps focus inside, closes with Escape, and returns focus to the button that opened it.
+
+**Phones and browsers**
+
+- [ ] No page scrolls sideways at 390 px.
+- [ ] With two cards on the home page, the first card stays reachable by swiping.
+- [ ] The main scenarios also pass in WebKit (Safari), which no PR has been tested in so far.
+
+**Security and search engines**
+
+- [ ] No page causes a Content Security Policy violation, including when playing the video and sending a reservation.
+- [ ] Prerendered and server-rendered pages all send the security headers.
+- [ ] `/sitemap.xml` lists the pages and concerts, and every listed URL opens.
+- [ ] Every page has its own title and description, and a concert page has its structured data.
+
+**Accessibility**
+
+- [ ] An automated check (axe) finds no serious problems on any page, or in the reservation dialog.
 
 ## Further help
 
