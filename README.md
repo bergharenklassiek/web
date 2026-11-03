@@ -13,7 +13,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Content (Storyblok)
 
-- [ ] Gebouw page: replace "maximaal 80 bezoekers", because the capacity is 120.
+- [x] Gebouw page: replace "maximaal 80 bezoekers", because the capacity is 120.
 - [ ] Concerten in de regio: update the 2025 festival text, which is also used as the page's search description.
 
 ### Features
