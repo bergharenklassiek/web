@@ -16,6 +16,7 @@ const RESERVATION_COLUMNS = [
   "E-mail",
   "Aantal personen",
   "Event ID",
+  "Annuleercode",
 ];
 const CONCERT_COLUMNS = [
   "Concert",
@@ -49,6 +50,10 @@ function doPost(e) {
     return respond({ status: "invalid" });
   }
 
+  if (data.action === "lookup" || data.action === "cancel") {
+    return handleCancellation(data);
+  }
+
   // Honeypot: people never fill in this hidden field, bots do. Pretend it worked so they don't retry.
   if (data.website) {
     return respond({ status: "ok" });
@@ -65,6 +70,8 @@ function doPost(e) {
     name: clean(data.name, 100),
     email: clean(data.email, 200),
     seats: Number(data.seats),
+    // Secret, because anyone with this code can cancel the reservation. Only the guest gets it, in the email.
+    cancelCode: Utilities.getUuid(),
   };
 
   const isValid =
@@ -110,6 +117,7 @@ function doPost(e) {
       "E-mail": safeCell(reservation.email),
       "Aantal personen": reservation.seats,
       "Event ID": asText(reservation.id),
+      Annuleercode: reservation.cancelCode,
     });
     updateReservedTotals(spreadsheet);
     SpreadsheetApp.flush();
@@ -125,6 +133,55 @@ function doPost(e) {
     console.error(`Confirmation email to ${reservation.email} failed: ${err}`);
   }
   return respond({ status: "ok" });
+}
+
+/**
+ * For the cancel page on the website. "lookup" returns the reservation's details, and "cancel" also deletes its row, which
+ * frees the seats because they're counted from the rows. Guests see only what's in their confirmation email.
+ */
+function handleCancellation(data) {
+  const code = clean(data.code, 50);
+  // Also stops an empty code from matching older reservations, which have none
+  if (!/^[0-9a-f-]{36}$/i.test(code)) {
+    return respond({ status: "not_found" });
+  }
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const reservations = getOrCreateSheet(
+      spreadsheet,
+      RESERVATIONS_SHEET,
+      RESERVATION_COLUMNS,
+    );
+    const rows = reservations.sheet.getDataRange().getValues();
+    const value = (row, header) => row[reservations.columns[header] - 1];
+    const index = rows.findIndex(
+      (row, i) => i > 0 && String(value(row, "Annuleercode")) === code,
+    );
+    if (index === -1) {
+      return respond({ status: "not_found" });
+    }
+
+    if (data.action === "cancel") {
+      reservations.sheet.deleteRow(index + 1);
+      updateReservedTotals(spreadsheet);
+      SpreadsheetApp.flush();
+      return respond({ status: "ok" });
+    }
+
+    return respond({
+      status: "ok",
+      details: {
+        title: String(value(rows[index], "Concert")),
+        dateLabel: String(value(rows[index], "Datum concert")),
+        seats: Number(value(rows[index], "Aantal personen")),
+      },
+    });
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 // Lets you check the deployment by opening its URL in a browser
@@ -268,7 +325,8 @@ function sendConfirmation(reservation) {
     ...(calendarLink(reservation)
       ? [`Zet het concert in je agenda: ${calendarLink(reservation)}`, ""]
       : []),
-    "Wil je je reservering wijzigen of annuleren? Beantwoord dan deze e-mail.",
+    `Kun je toch niet komen? Annuleer je reservering: ${SITE_URL}/annuleren/${reservation.cancelCode}`,
+    "Wil je je reservering wijzigen? Beantwoord dan deze e-mail.",
     "",
     "Tot ziens bij het concert!",
     "",

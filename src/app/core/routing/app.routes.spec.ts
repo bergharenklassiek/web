@@ -10,6 +10,7 @@ import { ContactPageComponent } from '../../ui/pages/contact-page/contact-page.c
 import { ContentPageComponent } from '../../ui/pages/content-page/content-page.component';
 import { EventPageComponent } from '../../ui/pages/event-page/event-page.component';
 import { HomePageComponent } from '../../ui/pages/home-page/home-page.component';
+import { CancelPageComponent } from '../../ui/pages/cancel-page/cancel-page.component';
 import { NotFoundPageComponent } from '../../ui/pages/not-found-page/not-found-page.component';
 import { routes } from './app.routes';
 import { serverRoutes } from './app.routes.server';
@@ -53,6 +54,7 @@ describe('routes', () => {
     ['/gebouw', ContentPageComponent, 'app-content-page'],
     ['/concerten-in-de-regio', ContentPageComponent, 'app-content-page'],
     ['/anbi', ContentPageComponent, 'app-content-page'],
+    ['/annuleren/code', CancelPageComponent, 'app-cancel-page'],
     ['/bestaat-niet', NotFoundPageComponent, 'app-not-found-page'],
   ])('should render %s', async (url, _component, selector) => {
     const { element } = await navigate(url);
@@ -85,6 +87,10 @@ describe('routes', () => {
 
       expect(wildcard?.renderMode).toBe(RenderMode.Server);
       expect(wildcard?.status).toBe(404);
+    });
+
+    it('should render the cancel page on request, because its URLs aren\'t known ahead of time', () => {
+      expect(modeOf('annuleren/:code')).toBe(RenderMode.Server);
     });
 
     it('should prerender the other pages', () => {

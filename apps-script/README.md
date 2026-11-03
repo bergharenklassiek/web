@@ -1,6 +1,6 @@
 # Reservations (Google Sheet)
 
-Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link and a link to add it to their calendar.
+Reservations made on the website are stored in a Google Sheet by the script in `reservations.gs`. The script also emails the guest a confirmation, with the concert's date, time and location, a route link, a link to add it to their calendar and a link to cancel.
 
 The Sheet and the script belong to the Google account `bergharen.klassiek.2021@gmail.com`, which also sends the confirmation emails. Guests see them as coming from the foundation's address, `bergharenklassiek@outlook.com`, once that's set up in Gmail (see [Sender address](#sender-address)).
 
@@ -50,7 +50,7 @@ To check the deployment, open the web app URL in a browser. It should show `{"st
 
 The script creates two tabs on the first reservation:
 
-- **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people and **Event ID**.
+- **Reserveringen:** one row per reservation, with the time received, concert, concert date, name, email address, number of people, **Event ID** and **Annuleercode**.
 - **Concerten:** one row per concert, with its **Capaciteit**, the number of reserved seats (**Gereserveerd**), the number of seats still available (**Beschikbaar**) and its **Event ID**. Every concert gets a capacity of 120 (`DEFAULT_CAPACITY` in the script), which you can change per concert here. An empty cell also counts as 120. Concerts added before the default changed keep the capacity they were given, so check those. Once a concert is full, the website tells guests there are no seats left, or how many are still available.
 
 All counting is done by **Event ID**, the Storyblok ID of the concert. Unlike the title or the web address, it never changes, so renaming a concert in Storyblok doesn't affect its count. Don't edit the Event ID cells.
@@ -59,7 +59,9 @@ The script finds columns by their header, so you can reorder or add columns. Don
 
 The **Gereserveerd** and **Beschikbaar** totals are written by the script, not by a formula. They update after every reservation, whenever you edit a cell in either tab, and whenever the spreadsheet is opened. You can also update them from the **Reserveringen → Aantallen bijwerken** menu. That menu appears a few seconds after the spreadsheet opens.
 
-To cancel a reservation, delete its row in **Reserveringen**. The seats become available on the website straight away, because the script counts the rows on every reservation. Deleting a row doesn't count as an edit, so to see the new totals in **Concerten**, use **Reserveringen → Aantallen bijwerken**.
+Guests cancel with the link in their confirmation email. It leads to `/annuleren/<Annuleercode>` on the website, where a button deletes their row and updates the totals. The code is what proves it's their reservation, so don't share it or edit those cells. Opening the link changes nothing, because mail scanners open links too. Reservations made before this column existed have no code, so those guests can reply to their email instead.
+
+To cancel a reservation yourself, delete its row in **Reserveringen**. The seats become available on the website straight away, because the script counts the rows on every reservation. Deleting a row doesn't count as an edit, so to see the new totals in **Concerten**, use **Reserveringen → Aantallen bijwerken**.
 
 ## Changing the script
 

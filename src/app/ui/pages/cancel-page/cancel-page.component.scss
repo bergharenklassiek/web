@@ -1,0 +1,49 @@
+@use 'variables' as vars;
+
+.app-cancel-page {
+    display: grid;
+    justify-items: start;
+    gap: vars.$space-default-mobile;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: vars.$space-default;
+    color: vars.$primaryBlue;
+
+    @media (width <= 600px) {
+        padding: vars.$space-default-mobile;
+    }
+
+    h2, p {
+        margin: 0;
+    }
+
+    &__reservation {
+        display: grid;
+        gap: 4px;
+        justify-self: stretch;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background-color: vars.$backgroundTint;
+    }
+
+    &__button {
+        padding: 12px 20px;
+        border: 0;
+        border-radius: 20px;
+        background-color: vars.$primaryRedText;
+        color: white;
+        font: inherit;
+        font-weight: bold;
+        cursor: pointer;
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        &:focus-visible {
+            outline: 2px solid vars.$primaryBlue;
+            outline-offset: 2px;
+        }
+    }
+}

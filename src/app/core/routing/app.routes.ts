@@ -42,6 +42,11 @@ export const routes: Routes = [
         loadComponent: () => import('../../ui/pages/content-page/content-page.component').then(m => m.ContentPageComponent),
         pathMatch: 'full'
     },
+    {
+        path: `${ROUTE_NAMES.CANCEL}/:code`,
+        loadComponent: () => import('../../ui/pages/cancel-page/cancel-page.component').then(m => m.CancelPageComponent),
+        pathMatch: 'full'
+    },
     { 
         path: ROUTE_NAMES.HOME, 
         loadComponent: () => import('../../ui/pages/home-page/home-page.component').then(m => m.HomePageComponent),

@@ -26,3 +26,16 @@ export interface ReservationResponse {
     // Seats still available, sent along with 'full'
     remaining?: number;
 }
+
+// What the cancel page shows, from the reservation's row in the Sheet
+export interface ReservationDetails {
+    title: string;
+    dateLabel: string;
+    seats: number;
+}
+
+export interface CancellationResponse {
+    status: 'ok' | 'not_found' | 'error';
+    // Sent when looking up a reservation
+    details?: ReservationDetails;
+}

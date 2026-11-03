@@ -35,6 +35,10 @@ export const serverRoutes: ServerRoute[] = [
         renderMode: RenderMode.Prerender,
     },
     {
+        path: `${ROUTE_NAMES.CANCEL}/:code`,
+        renderMode: RenderMode.Server,
+    },
+    {
         path: ROUTE_NAMES.HOME,
         renderMode: RenderMode.Prerender,
     },
