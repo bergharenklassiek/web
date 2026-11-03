@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { BackNextYearTileComponent } from '../../components/back-next-year-tile/back-next-year-tile.component';
 import { EventCardComponent } from '../../components/event-card/event-card.component';
 import { RichTextComponent } from '../../components/rich-text/rich-text.component';
 import { Dispatcher } from '@ngrx/signals/events';
@@ -10,7 +11,7 @@ import { YoutubeVideoComponent } from '../../components/youtube-video/youtube-vi
 
 @Component({
     selector: 'app-home-page',
-    imports: [EventCardComponent, RichTextComponent, ReservationButtonComponent, YoutubeVideoComponent],
+    imports: [BackNextYearTileComponent, EventCardComponent, RichTextComponent, ReservationButtonComponent, YoutubeVideoComponent],
     templateUrl: './home-page.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './home-page.component.scss',

@@ -69,6 +69,30 @@ describe('HomePageComponent', () => {
     expect(element.querySelector('.app-home-page__events-loading-card')).toBeNull();
   });
 
+  it('should add a tile about next year when there is one upcoming concert', () => {
+    setup();
+
+    loadEvents([story]);
+
+    expect(element.querySelector('app-back-next-year-tile')).not.toBeNull();
+  });
+
+  it('should not show the tile with several upcoming concerts', () => {
+    setup();
+
+    loadEvents([story, { ...story, id: '2', slug: 'concert-2' }]);
+
+    expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+  });
+
+  it('should not show the tile without upcoming concerts', () => {
+    setup();
+
+    loadEvents([]);
+
+    expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+  });
+
   it('should explain when there are no upcoming concerts', () => {
     setup();
 

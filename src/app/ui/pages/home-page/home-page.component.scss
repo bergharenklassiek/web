@@ -56,7 +56,8 @@
         }
         
         &--centered {
-            justify-content: center;
+            // Safe: when two cards don't fit, the first one must stay reachable by scrolling
+            justify-content: safe center;
         }
         
         &__no-events-message {

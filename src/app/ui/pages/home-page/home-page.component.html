@@ -25,6 +25,9 @@
         @for (event of evts; track event.id) {
           <app-event-card id="{{ event.id }}" [story]="event" [cardIndex]="$index"></app-event-card>
         }
+        @if (evts.length === 1) {
+          <app-back-next-year-tile></app-back-next-year-tile>
+        }
       }
       @else {
         <div class="app-home-page__events__no-events-message">

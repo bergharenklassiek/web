@@ -55,6 +55,29 @@ describe('AgendaPageComponent', () => {
     expect(loadEvents).toHaveBeenCalledTimes(2);
   });
 
+  it('should add a tile about next year when there is one upcoming concert, only in that list', () => {
+    setup([story('nieuw', '2999-01-01 16:00')], [story('oud', '2000-01-01 16:00')]);
+    const tile = () => element.querySelector('app-back-next-year-tile');
+
+    expect(tile()).not.toBeNull();
+
+    toggle('Eerder');
+
+    expect(tile()).toBeNull();
+  });
+
+  it('should not show the tile with several upcoming concerts', () => {
+    setup([story('nieuw1', '2999-01-01 16:00'), story('nieuw2', '2999-02-01 16:00')], []);
+
+    expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+  });
+
+  it('should not show the tile without upcoming concerts', () => {
+    setup([], []);
+
+    expect(element.querySelector('app-back-next-year-tile')).toBeNull();
+  });
+
   it('should explain when there are no upcoming concerts', () => {
     setup([], []);
 
