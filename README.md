@@ -6,9 +6,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Finish recent work
 
-- [ ] Run `npm run sheet:deploy` from `main` to add the route, parking, calendar and cancellation links to the confirmation email, and the reminder emails. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
-- [ ] After that deploy, run `installReminderTrigger` once in the Apps Script editor to turn on the reminders (see [Reminders](apps-script/README.md#reminders)).
-- [ ] After that deploy, make one real test reservation: check the email and the calendar link (also on an iPhone), then cancel it with the link in the email and check that the row is gone from the Sheet.
+- [x] Run `npm run sheet:deploy` from `main` to add the route, parking, calendar and cancellation links to the confirmation email, and the reminder emails. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
+- [x] After that deploy, run `installReminderTrigger` once in the Apps Script editor to turn on the reminders (see [Reminders](apps-script/README.md#reminders)).
+- [x] After that deploy, make one real test reservation: check the email and the calendar link (also on an iPhone), then cancel it with the link in the email and check that the row is gone from the Sheet.
 - [ ] Submit `https://bergharenklassiek.nl/sitemap.xml` in Google Search Console.
 - [ ] Test a concert page in Google's Rich Results Test.
 
