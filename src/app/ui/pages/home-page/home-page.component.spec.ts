@@ -98,7 +98,7 @@ describe('HomePageComponent', () => {
 
     loadEvents([]);
 
-    expect(element.querySelector('.app-home-page__events__no-events-message')).not.toBeNull();
+    expect(element.querySelector('.app-home-page__events__no-events')).not.toBeNull();
   });
 
   it('should set the page title and show the video', () => {
