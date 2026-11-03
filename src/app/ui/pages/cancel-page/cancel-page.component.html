@@ -1,0 +1,33 @@
+<div class="app-cancel-page">
+    <h2>Reservering annuleren</h2>
+
+    @switch (status()) {
+        @case ('loading') {
+            <p role="status">Je reservering wordt opgehaald…</p>
+        }
+        @case ('cancelled') {
+            <p role="status"><strong>Je reservering is geannuleerd.</strong> Bedankt dat je het doorgeeft, zo kan iemand anders je plaats krijgen.</p>
+            <p>Kijk in de <a routerLink="/agenda">agenda</a> voor onze andere concerten.</p>
+        }
+        @case ('not_found') {
+            <p role="alert">Deze reservering konden we niet vinden. Misschien is ze al geannuleerd.</p>
+            <p>Klopt dat niet? Mail ons dan op <a [href]="'mailto:' + email">{{ email }}</a>.</p>
+        }
+        @case ('error') {
+            <p role="alert">Er ging iets mis. Probeer het opnieuw of mail ons op <a [href]="'mailto:' + email">{{ email }}</a>.</p>
+        }
+        @default {
+            @if (details(); as details) {
+                <div class="app-cancel-page__reservation">
+                    <strong>{{ details.title }}</strong>
+                    <span>{{ details.dateLabel }}</span>
+                    <span>{{ details.seats === 1 ? '1 persoon' : details.seats + ' personen' }}</span>
+                </div>
+            }
+            <p>Weet je zeker dat je deze reservering wilt annuleren?</p>
+            <button type="button" class="app-cancel-page__button" [disabled]="status() === 'cancelling'" (click)="cancel()">
+                {{ status() === 'cancelling' ? 'Bezig met annuleren…' : 'Annuleer reservering' }}
+            </button>
+        }
+    }
+</div>

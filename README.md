@@ -6,8 +6,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Finish recent work
 
-- [ ] Run `npm run sheet:deploy` from `main` to add the route, parking and calendar links to the confirmation email. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
-- [ ] After that deploy, make one real test reservation: check the email and the calendar link (also on an iPhone), then delete the row from the Sheet.
+- [ ] Run `npm run sheet:deploy` from `main` to add the route, parking, calendar and cancellation links to the confirmation email. This needs `npx clasp login` with the account that owns the script (see [apps-script/README.md](apps-script/README.md)).
+- [ ] After that deploy, make one real test reservation: check the email and the calendar link (also on an iPhone), then cancel it with the link in the email and check that the row is gone from the Sheet.
 - [ ] Submit `https://bergharenklassiek.nl/sitemap.xml` in Google Search Console.
 - [ ] Test a concert page in Google's Rich Results Test.
 
@@ -18,7 +18,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Features
 
-- [ ] Add a cancellation link to the confirmation email, so seats free up without someone editing the Sheet.
+- [x] Add a cancellation link to the confirmation email, so seats free up without someone editing the Sheet.
 - [ ] Send a reminder email the day before a concert. A free Google account can send about 100 emails a day, so a full concert could hit that limit.
 - [x] Add a 1200×630 share image for pages without their own photo, which now share the wide logo.
 - [x] Show a second tile on the home page and agenda page, when there is only one event coming up, saying we will be back next year
@@ -111,6 +111,7 @@ Tick a scenario in the PR that adds its test.
 - [x] Loading the pages causes no layout shift.
 - [x] A full reservation works from the "Reserveer hier" button to the thanks message. The test answers the `script.google.com` request, so nothing reaches the real Sheet.
 - [x] The honeypot field in the reservation form isn't visible.
+- [x] A reservation can be cancelled on the page the email links to. The test answers the `script.google.com` requests.
 - [x] The reservation dialog keeps focus inside, closes with Escape, and returns focus to the button that opened it.
 - [x] No page scrolls sideways at 390 px, and with two cards on the home page the first one stays reachable by swiping.
 - [x] No page causes a Content Security Policy violation, including when playing the video and sending a reservation.

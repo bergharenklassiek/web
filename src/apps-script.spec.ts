@@ -20,6 +20,9 @@ class FakeSheet {
     const stored = typeof value === 'string' && value.startsWith("'") ? value.slice(1) : value;
     this.rows[row - 1][column - 1] = stored;
   }
+  deleteRow(row: number) {
+    this.rows.splice(row - 1, 1);
+  }
   appendRow(values: unknown[]) {
     const row = this.rows.length + 1;
     values.forEach((value, i) => this.set(row, i + 1, value));
@@ -69,10 +72,12 @@ describe('reservations script', () => {
   let sendEmail: ReturnType<typeof vi.fn>;
   let aliases: string[];
   let releaseLock: ReturnType<typeof vi.fn>;
+  let codes: number;
   let context: Record<string, (...args: never[]) => { json: string }>;
 
   beforeEach(() => {
     sheets = new Map();
+    codes = 0;
     sendEmail = vi.fn();
     aliases = [];
     releaseLock = vi.fn();
@@ -93,6 +98,7 @@ describe('reservations script', () => {
         createTextOutput: (json: string) => ({ setMimeType: () => ({ json }) }),
       },
       GmailApp: { getAliases: () => aliases, sendEmail },
+      Utilities: { getUuid: () => `00000000-0000-4000-8000-${String(++codes).padStart(12, '0')}` },
     }) as never;
     runInContext(script, context as never);
   });
@@ -318,6 +324,82 @@ describe('reservations script', () => {
 
       expect(post(valid)).toEqual({ status: 'ok' });
       expect(reservations()).toHaveLength(1);
+    });
+  });
+
+  describe('cancelling', () => {
+    const code = '00000000-0000-4000-8000-000000000001';
+
+    it('should store a different code for every reservation, and email the link', () => {
+      post(valid);
+      post(valid);
+
+      expect(reservations().map((row) => row['Annuleercode'])).toEqual([code, '00000000-0000-4000-8000-000000000002']);
+      expect(emailBody()).toContain(`https://bergharenklassiek.nl/annuleren/${code}`);
+    });
+
+    it('should look up the details without changing anything', () => {
+      post(valid);
+
+      expect(post({ action: 'lookup', code })).toEqual({
+        status: 'ok',
+        details: { title: 'Pianorecital', dateLabel: 'zo 22 november 2026', seats: 2 },
+      });
+      expect(reservations().length).toBe(1);
+    });
+
+    it('should delete only that reservation and free its seats', () => {
+      post(valid);
+      post({ ...valid, name: 'Bert', seats: 3 });
+
+      expect(post({ action: 'cancel', code })).toEqual({ status: 'ok' });
+
+      expect(reservations().map((row) => row['Naam'])).toEqual(['Bert']);
+      expect(concerts()[0]['Gereserveerd']).toBe(3);
+      expect(concerts()[0]['Beschikbaar']).toBe(117);
+    });
+
+    it('should not find a reservation that was already cancelled', () => {
+      post(valid);
+      post({ action: 'cancel', code });
+
+      expect(post({ action: 'cancel', code })).toEqual({ status: 'not_found' });
+      expect(post({ action: 'lookup', code })).toEqual({ status: 'not_found' });
+    });
+
+    it.each([[''], ['geen-code'], [undefined]])('should not accept the code %s', (badCode) => {
+      post(valid);
+
+      expect(post({ action: 'cancel', code: badCode })).toEqual({ status: 'not_found' });
+      expect(reservations().length).toBe(1);
+    });
+
+    it('should not let an empty code match an older reservation without a code', () => {
+      post(valid);
+      const sheet = sheets.get('Reserveringen')!;
+      sheet.rows[1][(sheet.rows[0] as string[]).indexOf('Annuleercode')] = '';
+
+      expect(post({ action: 'cancel', code: '' })).toEqual({ status: 'not_found' });
+      expect(post({ action: 'cancel', code })).toEqual({ status: 'not_found' });
+      expect(reservations().length).toBe(1);
+    });
+
+    it('should release the lock', () => {
+      post(valid);
+      releaseLock.mockClear();
+
+      post({ action: 'lookup', code });
+
+      expect(releaseLock).toHaveBeenCalled();
+    });
+
+    it('should not send an email', () => {
+      post(valid);
+      sendEmail.mockClear();
+
+      post({ action: 'cancel', code });
+
+      expect(sendEmail).not.toHaveBeenCalled();
     });
   });
 
