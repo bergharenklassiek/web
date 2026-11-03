@@ -30,7 +30,7 @@ describe('SeoService', () => {
     service.update({ path: '/' });
 
     expect(document.title).toBe('Bergharen Klassiek');
-    expect(content('meta[property="og:image"]')).toBe('https://bergharenklassiek.nl/full-logo-BK.png');
+    expect(content('meta[property="og:image"]')).toBe('https://bergharenklassiek.nl/share-image.png');
   });
 
   it('should not pile up tags across pages', () => {

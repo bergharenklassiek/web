@@ -4,9 +4,9 @@ export const defaultDescription = 'Bergharen Klassiek: klassieke muziek in de Pr
 
 // Used when sharing a page that has no photo of its own
 export const defaultShareImage = {
-  url: `${siteUrl}/full-logo-BK.png`,
-  width: 1949,
-  height: 390,
+  url: `${siteUrl}/share-image.png`,
+  width: 1200,
+  height: 630,
   alt: `Logo van ${siteName}`,
 };
 
