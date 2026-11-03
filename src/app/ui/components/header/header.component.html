@@ -11,7 +11,7 @@
         <button type="button" class="app-header__menu__close-button" aria-label="Menu sluiten" (click)="onClose()">
             <app-icon [icon]="closeIcon" size="xl" />
         </button>
-        <div class="app-header__menu__content">
+        <nav class="app-header__menu__content" aria-label="Hoofdmenu">
             @for (option of ['Home', 'Agenda', 'Over ons', 'Gebouw', 'Concerten in de regio', 'ANBI', 'Contact']; track option) {
                 <a 
                     routerLink="/{{ option === 'Home' ? '' : option.toLowerCase().replaceAll(' ', '-') }}" 
@@ -21,6 +21,6 @@
                     {{ option }}
                 </a>
             }
-        </div>
+        </nav>
     </div>
 </div>

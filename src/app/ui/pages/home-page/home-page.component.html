@@ -19,7 +19,7 @@
     }
   </div>
 
-  <div class="app-home-page__events" id="scroll-list">
+  <div class="app-home-page__events" id="scroll-list" data-testid="event-list">
     @if (evts) {
       @if (evts.length > 0) {
         @for (event of evts; track event.id) {
@@ -42,7 +42,7 @@
     }
   </div>
 
-  <div class="app-home-page__about">
+  <div class="app-home-page__about" data-testid="home-about">
     @if (homePage()?.aboutTeaser) {
       <app-rich-text [richText]="homePage()!.aboutTeaser"></app-rich-text>
     }
